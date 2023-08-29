@@ -4,7 +4,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/variables.css';
 
-export default function Inicio() {
+export default function TablaUsuarios() {
     const location = useLocation();
 
     useEffect(() => {
@@ -12,6 +12,9 @@ export default function Inicio() {
     }, [location]);
 
     const [usuariosConServicios, setUsuariosConServicios] = useState([]);
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredUser, setFilteredUser] = useState(null);
 
     useEffect(() => {
         async function fetchUsuariosConServicios() {
@@ -33,10 +36,35 @@ export default function Inicio() {
         fetchUsuariosConServicios();
     }, []);
 
-    console.log('Usuarios con servicios:', usuariosConServicios.map(usuario => usuario.nombre));
+    const handleSearch = () => {
+        const foundUser = usuariosConServicios.find(usuario => (
+            usuario.nombre.includes(searchTerm) ||
+            usuario.dni.includes(searchTerm) ||
+            usuario.email.includes(searchTerm)
+        ));
+        setFilteredUser(foundUser);
+    };
+
+    const clearSearch = () => {
+        setSearchTerm("");
+        setFilteredUser(null);
+    };
+
     return (
         <div className="container mt-5">
             <h1>Lista de Usuarios con Servicios</h1>
+
+            <div className="mb-3">
+                <input
+                    type="text"
+                    placeholder="Filtrar por Nombre, DNI o Email"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button onClick={handleSearch}>Buscar</button>
+                <button onClick={clearSearch}>Limpiar</button>
+            </div>
+            
             <table className="table">
                 <thead>
                     <tr>
@@ -53,34 +81,77 @@ export default function Inicio() {
                         <th>Monto Pagado</th>
                         <th>Monto Total</th>
                         <th>Servicio</th>
+                        <th>Asesor</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {usuariosConServicios.map(usuario => (
-                        <tr key={usuario.id}>
-                            <td>{usuario.id}</td>
-                            <td>{usuario.nombre}</td>
-                            <td>{usuario.apePat}</td>
-                            <td>{usuario.departamento}</td>
-                            <td>{usuario.carrera}</td>
-                            <td>{usuario.email}</td>
-                            <td>{usuario.dni}</td>
-                            <td>{usuario.celular}</td>
-                            <td>{usuario.pdf_url}</td>
-                            <td>{usuario.monto_pagado}</td>
-                            <td>{usuario.monto_total}</td>
-                            {/* Agrega más celdas según tu modelo */}
+                    {filteredUser ? (
+                        <tr key={filteredUser.id}>
+                            <td>{filteredUser.id}</td>
+                            <td>{filteredUser.nombre}</td>
+                            <td>{filteredUser.apePat}</td>
+                            <td>{filteredUser.departamento}</td>
+                            <td>{filteredUser.carrera}</td>
+                            <td>{filteredUser.email}</td>
+                            <td>{filteredUser.dni}</td>
+                            <td>{filteredUser.celular}</td>
+                            <td>{filteredUser.pdf_url}</td>
+                            <td>{filteredUser.monto_pagado}</td>
+                            <td>{filteredUser.monto_total}</td>
                             <td>
                                 <ul>
-                                    {usuario.usuario_servicio.map(usuServ => (
+                                    {filteredUser.usuario_servicio && filteredUser.usuario_servicio.map(usuServ => (
                                         <li key={usuServ.id}>
                                             {usuServ.servicio.nombre_servicio}
                                         </li>
                                     ))}
                                 </ul>
                             </td>
+                            <td>
+                                <ul>
+                                    {filteredUser.asignacion && filteredUser.asignacion.map(usuAse => (
+                                        <li key={usuAse.id}>
+                                            {usuAse.asesor.nombre}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </td>
                         </tr>
-                    ))}
+                    ) : (
+                        usuariosConServicios.map(usuario => (
+                            <tr key={usuario.id}>
+                                <td>{usuario.id}</td>
+                                <td>{usuario.nombre}</td>
+                                <td>{usuario.apePat}</td>
+                                <td>{usuario.departamento}</td>
+                                <td>{usuario.carrera}</td>
+                                <td>{usuario.email}</td>
+                                <td>{usuario.dni}</td>
+                                <td>{usuario.celular}</td>
+                                <td>{usuario.pdf_url}</td>
+                                <td>{usuario.monto_pagado}</td>
+                                <td>{usuario.monto_total}</td>
+                                <td>
+                                    <ul>
+                                        {usuario.usuario_servicio.map(usuServ => (
+                                            <li key={usuServ.id}>
+                                                {usuServ.servicio.nombre_servicio}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        {usuario.asignacion.map(usuAse => (
+                                            <li key={usuAse.id}>
+                                                {usuAse.asesor.nombre}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
         </div>
