@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body {
   background: #b4b4b4;
 }
@@ -104,4 +105,23 @@ input {
 .button_backend {
   margin-top: 20px;
   width: 50%;
+}
+
+.custom-select {
+  width: 100%; /* Ancho del Select */
+}
+
+/* Estilos para las opciones del Select */
+.custom-select .css-1okebmr-indicatorSeparator {
+  display: none; /* Oculta el separador entre el indicador y el campo de entrada */
+}
+
+/* Ajustar el tamaño del menú emergente */
+.custom-select .css-1uccc91-singleValue {
+  font-size: 14px; /* Tamaño de fuente para el valor seleccionado */
+}
+
+.custom-select .css-1wy0on6 {
+  max-height: 200px; /* Altura máxima del menú emergente */
+  overflow-y: auto; /* Agregar desplazamiento vertical si el contenido excede la altura máxima */
 }/*# sourceMappingURL=variables.css.map */

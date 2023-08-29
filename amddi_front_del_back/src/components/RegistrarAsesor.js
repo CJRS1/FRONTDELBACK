@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
+import Select from 'react-select';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/variables.css';
 
@@ -16,7 +17,8 @@ export default function RegistrarAsesor() {
         apeMat: "",
         dni: "",
         email: "",
-        pwd_hash: ""
+        pwd_hash: "",
+        especialidades: []
     });
 
     const handleInputChange = (event) => {
@@ -68,7 +70,21 @@ export default function RegistrarAsesor() {
         if (!validateForm()) {
             return;
         }
+
+        if (formData.especialidades.length === 0) {
+            setFormErrors({
+                ...formErrors,
+                especialidades: "Seleccione al menos una especialidad"
+            });
+            return;
+        }
         try {
+
+            if (!formData.pwd_hash || !formData.confirma_pwd_hash) {
+                console.error("Por favor, completa ambos campos de contraseña");
+                window.alert("Por favor, completa ambos campos de contraseña");
+                return;
+            }
 
             if (formData.pwd_hash !== formData.confirma_pwd_hash) {
                 console.error("Las contraseñas no coinciden");
@@ -100,6 +116,33 @@ export default function RegistrarAsesor() {
             // Manejo de errores
         }
     };
+
+
+    const [especialidades, setEspecialidades] = useState({ content: [] });
+
+
+
+    useEffect(() => {
+        const obtenerEspecialidades = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/especialidades");
+                const data = await response.json();
+                setEspecialidades(data);
+            } catch (error) {
+                console.error("Error al obtener las especialidades:", error);
+            }
+        };
+
+        obtenerEspecialidades();
+    }, []);
+
+
+    const handleEspecialidadesChange = (selectedOptions) => {
+        const selectedValues = selectedOptions.map(option => option.value);
+        setFormData({ ...formData, especialidades: selectedValues });
+        setFormErrors({ ...formErrors, especialidades: selectedValues.length === 0 ? "Seleccione al menos una especialidad" : "" });
+    };
+
 
     return (
         <section className="resiasesor">
@@ -163,10 +206,32 @@ export default function RegistrarAsesor() {
                             value={formData.confirma_pwd_hash}
                         />
                         {formErrors.confirma_pwd_hash && <span className="error-message">{formErrors.confirma_pwd_hash}</span>}
-                        {/* <select className="form-control my-input input_card" name="departamento" style={{ width: '300px' }} id="contact-method" defaultValue="" required>
-                        <option value="" disabled >Seleccione una Especialidad</option>
-                        <option value="Ancash">Ancash</option>
-                    </select> */}
+
+                        {/* Aqui va lo de especialidades */}
+                        {especialidades.content ? (
+                            <div>
+                                <Select
+                                    isMulti
+                                    options={especialidades.content ? especialidades.content.map(especialidad => ({
+                                        value: especialidad.id,
+                                        label: especialidad.nombre_especialidad
+                                    })) : []}
+                                    value={formData.especialidades ? formData.especialidades.map(id => ({
+                                        value: id,
+                                        label: especialidades.content.find(especialidad => especialidad.id === id).nombre_especialidad
+                                    })) : []}
+                                    onChange={handleEspecialidadesChange}
+                                    className="custom-select"
+                                />
+
+                                {formErrors.especialidades && <span className="error-message">{formErrors.especialidades}</span>}
+                            </div>
+                        ) : (
+                            <p>Cargando especialidades...</p>
+                        )}
+
+
+
                         <button type="submit" className="button_backend">Registrarse</button>
                     </form>
                 </div>
