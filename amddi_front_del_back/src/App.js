@@ -20,7 +20,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Inicio />} />
-        <Route path="/asignar" element={<Asignar />} />
+        <Route path="/asignar_usuario" element={<Asignar />} />
         <Route path="/mi_info" element={<MiInfo />} />
 
         <Route path="/editar-asesor/:id" element={<EditarAsesor/>} />

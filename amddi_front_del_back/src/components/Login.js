@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/variables.css';
@@ -10,12 +10,12 @@ export default function Inicio() {
         window.scrollTo(0, 0);
     }, [location]);
 
-    const nombre = "Christian"
+    const [usuariosConServicios, setUsuariosConServicios] = useState([]);
+
 
     return (
-        <div className="inicio_container">
-            <h1>Hola {nombre}, bienvenido a la plataforma de AMDDI</h1>
-            
+        <div>
+
         </div>
     );
 }
