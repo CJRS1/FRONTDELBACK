@@ -8,7 +8,8 @@ import Asignar from '../src/components/Asignar';
 import MiInfo from '../src/components/MiInformacion';
 import RegistrarAsesor from '../src/components/RegistrarAsesor'
 import SubirArchivo from './components/SubirArchivo';
-
+import EditarAsesor from './components/EditarAsesor';
+// import EditarUsuario from './components/EditarUsuario';
 
 
 import '../src/styles/variables.css';
@@ -21,6 +22,9 @@ function App() {
         <Route path="/" element={<Inicio />} />
         <Route path="/asignar" element={<Asignar />} />
         <Route path="/mi_info" element={<MiInfo />} />
+
+        <Route path="/editar-asesor/:id" element={<EditarAsesor/>} />
+        
         <Route path="/registrar_asesor" element={<RegistrarAsesor />} />
         <Route path="/subir_archivo" element={<SubirArchivo />} />
         <Route path="/tabla_usuarios" element={<Usuario />} />

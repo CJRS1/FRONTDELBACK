@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/variables.css';
+import ReactPaginate from 'react-js-pagination';
 
 export default function TablaUsuarios() {
     const location = useLocation();
@@ -49,6 +50,20 @@ export default function TablaUsuarios() {
         setSearchTerm("");
         setFilteredUser(null);
     };
+
+
+    const itemsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const itemsCount = usuariosConServicios.length;
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentData = usuariosConServicios.slice(startIndex, endIndex);
 
     return (
         <div className="container mt-5">
@@ -118,7 +133,7 @@ export default function TablaUsuarios() {
                             </td>
                         </tr>
                     ) : (
-                        usuariosConServicios.map(usuario => (
+                        currentData.map(usuario => (
                             <tr key={usuario.id}>
                                 <td>{usuario.id}</td>
                                 <td>{usuario.nombre}</td>
@@ -154,6 +169,15 @@ export default function TablaUsuarios() {
                     )}
                 </tbody>
             </table>
+            <ReactPaginate
+                activePage={currentPage}
+                itemsCountPerPage={itemsPerPage}
+                totalItemsCount={itemsCount}
+                pageRangeDisplayed={5}
+                onChange={handlePageChange}
+                itemClass="page-item"
+                linkClass="page-link"
+            />
         </div>
     );
 }

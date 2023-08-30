@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/variables.css';
+import ReactPaginate from 'react-js-pagination';
+
 
 export default function TablaAsesores() {
     const location = useLocation();
@@ -12,6 +14,8 @@ export default function TablaAsesores() {
     }, [location]);
 
     const [AsesorConUsuario, setAsesorConUsuario] = useState([]);
+    const itemsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         async function fetchAsesorConUsuario() {
@@ -22,8 +26,10 @@ export default function TablaAsesores() {
                 console.log('Response from server:', res.data);
 
                 if (res.data.content && Array.isArray(res.data.content)) {
+                    const sortedAsesores = res.data.content.sort((a, b) => a.id - b.id);
+                    /* SE ORDENA POR ID */
                     console.log('Asesores con usuarios:', res.data.content);
-                    setAsesorConUsuario(res.data.content);
+                    setAsesorConUsuario(sortedAsesores);
                 }
             } catch (error) {
                 console.error('Error fetching usuarios con servicios:', error);
@@ -33,7 +39,34 @@ export default function TablaAsesores() {
         fetchAsesorConUsuario();
     }, []);
 
-    // console.log('Usuarios con servicios:', AsesorConUsuario.map(usuario => usuario.nombre));
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const itemsCount = AsesorConUsuario.length;
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentData = AsesorConUsuario.slice(startIndex, endIndex);
+
+    const handleEditar = (id) => {
+        // Aquí puedes redirigir a una página de edición o mostrar un modal de edición
+        console.log(`Editar asesor con id: ${id}`);
+    };
+
+    const handleEliminar = async (id) => {
+        try {
+            const res = await axios.delete(`http://localhost:5000/asesores/${id}`);
+            console.log('Asesor eliminado:', res.data.message);
+
+            // Actualizar la lista de asesores después de eliminar uno
+            const updatedAsesores = AsesorConUsuario.filter(asesor => asesor.id !== id);
+            setAsesorConUsuario(updatedAsesores);
+            setCurrentPage(1);
+        } catch (error) {
+            console.error('Error al eliminar asesor:', error);
+        }
+    };
     return (
         <div className="container mt-5">
             <h1>Lista de Asesores con Servicio</h1>
@@ -48,11 +81,12 @@ export default function TablaAsesores() {
                         <th>DNI</th>
                         <th>Especialidad</th>
                         <th>Asesorados</th>
-
+                        <th>Editar</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {AsesorConUsuario.map(asesor => (
+                    {currentData.map(asesor => (
                         <tr key={asesor.id}>
                             <td>{asesor.id}</td>
                             <td>{asesor.nombre}</td>
@@ -78,10 +112,26 @@ export default function TablaAsesores() {
                                     ))}
                                 </ul>
                             </td>
+                            <td>
+                                <Link to={{pathname: `/editar-asesor/${asesor.id}`}} >
+                                <button onClick={() => handleEditar(asesor.id)}>Editar</button>
+                                </Link>
+                                </td>
+                            <td><button onClick={() => handleEliminar(asesor.id)}>Eliminar</button></td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {/* Pagination */}
+            <ReactPaginate
+                activePage={currentPage}
+                itemsCountPerPage={itemsPerPage}
+                totalItemsCount={itemsCount}
+                pageRangeDisplayed={5}
+                onChange={handlePageChange}
+                itemClass="page-item"
+                linkClass="page-link"
+            />
         </div>
     );
 }

@@ -108,7 +108,7 @@ input {
 }
 
 .custom-select {
-  width: 100%; /* Ancho del Select */
+  width: 400px !important; /* Ancho del Select */
 }
 
 /* Estilos para las opciones del Select */
