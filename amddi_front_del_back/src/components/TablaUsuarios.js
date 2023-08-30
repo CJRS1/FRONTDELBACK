@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/variables.css';
@@ -65,6 +65,27 @@ export default function TablaUsuarios() {
     const endIndex = startIndex + itemsPerPage;
     const currentData = usuariosConServicios.slice(startIndex, endIndex);
 
+
+    const handleEditar = (id) => {
+        // Aquí puedes redirigir a una página de edición o mostrar un modal de edición
+        console.log(`Editar asesor con id: ${id}`);
+    };
+
+    const handleEliminar = async (id) => {
+        try {
+            const res = await axios.delete(`http://localhost:5000/asesores/${id}`);
+            console.log('Asesor eliminado:', res.data.message);
+
+            // Actualizar la lista de asesores después de eliminar uno
+            const updatedAsesores = usuariosConServicios.filter(asesor => asesor.id !== id);
+            setUsuariosConServicios(updatedAsesores);
+            setCurrentPage(1);
+        } catch (error) {
+            console.error('Error al eliminar asesor:', error);
+        }
+    };
+
+
     return (
         <div className="container mt-5">
             <h1>Lista de Usuarios con Servicios</h1>
@@ -97,6 +118,8 @@ export default function TablaUsuarios() {
                         <th>Monto Total</th>
                         <th>Servicio</th>
                         <th>Asesor</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -164,6 +187,12 @@ export default function TablaUsuarios() {
                                         ))}
                                     </ul>
                                 </td>
+                                <td>
+                                <Link to={{pathname: `/editar-usuario/${usuario.id}`}} >
+                                <button onClick={() => handleEditar(usuario.id)}>Editar</button>
+                                </Link>
+                                </td>
+                            <td><button onClick={() => handleEliminar(usuario.id)}>Eliminar</button></td>
                             </tr>
                         ))
                     )}
