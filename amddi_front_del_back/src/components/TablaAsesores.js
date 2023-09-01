@@ -76,7 +76,6 @@ export default function TablaAsesores() {
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Apellido Paterno</th>
-                        {/* Agrega más encabezados según tu modelo */}
                         <th>Email</th>
                         <th>DNI</th>
                         <th>Especialidad</th>
@@ -93,7 +92,6 @@ export default function TablaAsesores() {
                             <td>{asesor.apePat}</td>
                             <td>{asesor.email}</td>
                             <td>{asesor.dni}</td>
-                            {/* Agrega más celdas según tu modelo */}
                             <td>
                                 <ul>
                                     {asesor.asesor_especialidad.map(AseEsp => (

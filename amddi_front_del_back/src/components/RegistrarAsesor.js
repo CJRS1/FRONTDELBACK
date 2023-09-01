@@ -103,15 +103,58 @@ export default function RegistrarAsesor() {
             const data = await response.json();
 
             if (response.ok) {
-                // Mostrar mensaje de éxito
-                console.log(data.msg);
-                window.alert(data.msg);
-                handleRegistrationSuccess();
+                try {
+                    // Mostrar mensaje de éxito
+                    console.log(data.msg);
+                    // handleRegistrationSuccess();
+                    const asesorResponse = await fetch("http://localhost:5000/ultimo_asesor");
+                    const asesorData = await asesorResponse.json();
+            
+                    console.log(asesorData);
+            
+                    if (asesorResponse.ok) {
+                        const asesorId = asesorData.content.id;
+            
+                        try {
+                            const response = await fetch("http://localhost:5000/asesor_especialidad", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    id_asesor: asesorId,
+                                    id_especialidades: formData.especialidades
+                                })
+                            });
+            
+                            const data = await response.json();
+            
+                            if (response.ok) {
+                                // Mostrar mensaje de éxito
+                                console.log(data.msg);
+                                handleRegistrationSuccess();
+                            } else {
+                                // Mostrar mensaje de error
+                                window.alert(data.msg);
+                                console.error(data.msg);
+                            }
+                        } catch (error) {
+                            // Manejo de errores para la asignación de especialidades
+                            console.error("Error al asignar especialidades:", error);
+                        }
+                    } else {
+                        console.error("Error al obtener el último asesor registrado:", asesorData.message);
+                    }
+                } catch (error) {
+                    // Manejo de errores para obtener el último asesor
+                    console.error("Error al obtener el último asesor:", error);
+                }
             } else {
                 // Mostrar mensaje de error
                 window.alert(data.msg);
                 console.error(data.msg);
             }
+            
         } catch (error) {
             // Manejo de errores
         }
@@ -148,8 +191,8 @@ export default function RegistrarAsesor() {
         <section className="resiasesor">
             <div className="registro_asesor_container">
                 <h2>Registre un Asesor</h2>
-                <div className="regisasesor_container" onSubmit={handleSubmit}>
-                    <form className="form_registro_asesor">
+                <div className="regisasesor_container" >
+                    <form className="form_registro_asesor" onSubmit={handleSubmit} >
                         <input className="input_registro_asesor"
                             type="text"
                             name="nombre"
@@ -208,6 +251,7 @@ export default function RegistrarAsesor() {
                         {formErrors.confirma_pwd_hash && <span className="error-message">{formErrors.confirma_pwd_hash}</span>}
 
                         {/* Aqui va lo de especialidades */}
+
                         {especialidades.content ? (
                             <div>
                                 <Select
@@ -223,18 +267,16 @@ export default function RegistrarAsesor() {
                                     onChange={handleEspecialidadesChange}
                                     className="custom-select"
                                 />
-
                                 {formErrors.especialidades && <span className="error-message">{formErrors.especialidades}</span>}
                             </div>
                         ) : (
                             <p>Cargando especialidades...</p>
                         )}
 
-
-
-                        <button type="submit" className="button_backend">Registrarse</button>
+                        <button type="submit" className="button_backend">Registrar Asesor</button>
                     </form>
                 </div>
+
             </div>
 
         </section>
