@@ -10,6 +10,7 @@ import RegistrarAsesor from '../src/components/RegistrarAsesor'
 import SubirArchivo from './components/SubirArchivo';
 import EditarAsesor from './components/EditarAsesor';
 // import EditarUsuario from './components/EditarUsuario';
+import ServicioEspecialidad from './components/ServicioYEspecialidad';
 
 
 import '../src/styles/variables.css';
@@ -24,6 +25,7 @@ function App() {
         <Route path="/mi_info" element={<MiInfo />} />
 
         <Route path="/editar-asesor/:id" element={<EditarAsesor/>} />
+        <Route path="/servicio_especialidad" element={<ServicioEspecialidad/>} />
         
         <Route path="/registrar_asesor" element={<RegistrarAsesor />} />
         <Route path="/subir_archivo" element={<SubirArchivo />} />

@@ -47,6 +47,11 @@ export default function NavBarLat() {
                         </Link>
                     </li>
                     <li>
+                        <Link to="/servicio_especialidad" className="Link_anc">
+                            X SERVICIOS Y ESPECIALIDADES
+                        </Link>
+                    </li>
+                    <li>
                         <Link to="/mi_info" className="Link_anc">
                             X MI INFORMACIÓN
                         </Link>
