@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/variables.css';
@@ -16,6 +16,35 @@ export default function TablaAsesores() {
     const [AsesorConUsuario, setAsesorConUsuario] = useState([]);
     const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(1);
+
+    const handleEditar = (id) => {
+        // setEditingServiceId(id);
+        // const serviceToEdit = servicio.find(servicio => servicio.id === id);
+        // if (serviceToEdit) {
+        //     setEditedServiceName(serviceToEdit.nombre_servicio);
+        // }
+    };
+
+    const handleCancelar = () => {
+
+        // setEditingServiceId(null);
+        // setEditedServiceName("");
+    };
+
+    const handleOk = async (id) => {
+        // console.log(editedServiceName);
+        // try {
+        //     const res = await axios.put(`http://localhost:5000/servicios/${id}`, {
+        //         nombre_servicio: editedServiceName,
+        //     });
+        //     console.log('Servicio actualizado:', res.data.message);
+
+        //     setEditingServiceId(null);
+        //     window.location.reload();
+        // } catch (error) {
+        //     console.error('Error al actualizar servicio:', error);
+        // }
+    };
 
     useEffect(() => {
         async function fetchAsesorConUsuario() {
@@ -49,10 +78,6 @@ export default function TablaAsesores() {
     const endIndex = startIndex + itemsPerPage;
     const currentData = AsesorConUsuario.slice(startIndex, endIndex);
 
-    const handleEditar = (id) => {
-        // Aquí puedes redirigir a una página de edición o mostrar un modal de edición
-        console.log(`Editar asesor con id: ${id}`);
-    };
 
     const handleEliminar = async (id) => {
         try {
@@ -111,9 +136,14 @@ export default function TablaAsesores() {
                                 </ul>
                             </td>
                             <td>
-                                <Link to={{pathname: `/editar-asesor/${asesor.id}`}} >
-                                <button onClick={() => handleEditar(asesor.id)}>Editar</button>
-                                </Link>
+                                    {1 === 1 ? (
+                                        <>
+                                            <button onClick={() => handleOk(1)}>Ok</button>
+                                            <button onClick={handleCancelar}>Cancelar</button>
+                                        </>
+                                    ) : (
+                                        <button onClick={() => handleEditar(1)}>Editar</button>
+                                    )}
                                 </td>
                             <td><button onClick={() => handleEliminar(asesor.id)}>Eliminar</button></td>
                         </tr>
