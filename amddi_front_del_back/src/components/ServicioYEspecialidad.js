@@ -20,7 +20,7 @@ export default function ServicioYEspecialidad() {
 
     const [editingServiceId, setEditingServiceId] = useState(null);
     const [editedServiceName, setEditedServiceName] = useState("");
-    
+
     const [editingEspecialidadId, setEditingEspecialidadId] = useState(null);
     const [editedEspecialidadName, setEditedEspecialidadName] = useState("");
 
@@ -352,7 +352,7 @@ export default function ServicioYEspecialidad() {
                                     editingEspecialidadId
                                     editedEspecialidadName
                                 </td> */}
-                                                                <td>
+                                <td>
                                     {editingEspecialidadId === especialidad.id ? (
                                         <input
                                             type="text"

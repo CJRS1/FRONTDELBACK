@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/variables.css';
@@ -13,38 +13,127 @@ export default function TablaUsuarios() {
     }, [location]);
 
     const [usuariosConServicios, setUsuariosConServicios] = useState([]);
-
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredUser, setFilteredUser] = useState(null);
 
+    const [editingService, setEditingService] = useState(false);
+    const [selectedService, setSelectedService] = useState(null);
+
+    const [servicios, setServicios] = useState([]);
+
+    const [editingUserId, setEditingUserId] = useState(null);
+
+    const [editedUserName, setEditedUserName] = useState("");
+    const [editedLastName, setEditedLastName] = useState("");
+    const [editedDepartment, setEditedDepartment] = useState("");
+    const [editedCareer, setEditedCareer] = useState("");
+    const [editedDNI, setEditedDNI] = useState("");
+    const [editedPhone, setEditedPhone] = useState("");
+    const [editedEmail, setEditedEmail] = useState("");
+    const [editedPDF_URL, setEditedPDF_URL] = useState("");
+    const [editedMontoPagado, setEditedMontoPagado] = useState(0.0);
+    const [editedMontoTotal, setEditedMontoTotal] = useState(0.0);
+
+
+    useEffect(() => {
+        async function fetchServicios() {
+            try {
+                console.log('Haciendo llamada a la API a:', 'http://localhost:5000/servicios');
+                const res = await axios.get('http://localhost:5000/servicios');
+                console.log(res.data.message);
+                console.log('Response from server:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    console.log('Los servicios son:', res.data.content);
+                    setServicios(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching servicios:', error);
+            }
+        }
+
+        fetchServicios();
+    }, []);
+
     const handleEditar = (id) => {
-        // setEditingServiceId(id);
-        // const serviceToEdit = servicio.find(servicio => servicio.id === id);
-        // if (serviceToEdit) {
-        //     setEditedServiceName(serviceToEdit.nombre_servicio);
-        // }
+        setEditingUserId(id);
+        const userToEdit = usuariosConServicios.find(usuario => usuario.id === id);
+        if (userToEdit) {
+            setEditedUserName(userToEdit.nombre);
+            setEditedLastName(userToEdit.apePat);
+            setEditedDepartment(userToEdit.departamento);
+            setEditedCareer(userToEdit.carrera);
+            setEditedDNI(userToEdit.dni);
+            setEditedPhone(userToEdit.celular);
+            setEditedEmail(userToEdit.email);
+            setEditedPDF_URL(userToEdit.pdf_url);
+            setEditedMontoPagado(userToEdit.monto_pagado);
+            setEditedMontoTotal(userToEdit.monto_total);
+            // Configuramos el servicio seleccionado para edición
+            setSelectedService(userToEdit.usuario_servicio[0]?.servicio.id || null);
+        }
+        // Activamos la edición del servicio
+        setEditingService(true);
+        console.log(editingService);
     };
 
     const handleCancelar = () => {
 
-        // setEditingServiceId(null);
-        // setEditedServiceName("");
+        setEditingUserId(null);
+        setEditedUserName("");
+        setEditedLastName("");
+        setEditedDepartment("");
+        setEditedCareer("");
+        setEditedEmail("");
+        setEditedDNI("");
+        setEditedPhone("");
+        setEditedPDF_URL("");
+        setEditedMontoPagado(0.0);
+        setEditedMontoTotal(0.0);
+
+        // Limpiamos el servicio seleccionado al cancelar
+        setSelectedService(null);
+
+        // Desactivamos la edición del servicio
+        setEditingService(false);
     };
 
     const handleOk = async (id) => {
-        // console.log(editedServiceName);
-        // try {
-        //     const res = await axios.put(`http://localhost:5000/servicios/${id}`, {
-        //         nombre_servicio: editedServiceName,
-        //     });
-        //     console.log('Servicio actualizado:', res.data.message);
+        try {
+            // Actualiza el usuario
+            const usuarioData = {
+                nombre: editedUserName,
+                apePat: editedLastName,
+                departamento: editedDepartment,
+                carrera: editedCareer,
+                dni: editedDNI,
+                email: editedEmail,
+                celular: editedPhone,
+                pdf_url: editedPDF_URL,
+                monto_pagado: editedMontoPagado,
+                monto_total: editedMontoTotal,
+            };
 
-        //     setEditingServiceId(null);
-        //     window.location.reload();
-        // } catch (error) {
-        //     console.error('Error al actualizar servicio:', error);
-        // }
+            const usuarioRes = await axios.put(`http://localhost:5000/usuarios/${id}`, usuarioData);
+            console.log('Usuario actualizado:', usuarioRes.data.message);
+
+            // Actualiza el servicio si se ha seleccionado uno nuevo
+            if (selectedService !== null) {
+                const servicioData = {
+                    id_servicio: selectedService,
+                };
+
+                const servicioRes = await axios.put(`http://localhost:5000/usuario_servicio/${id}/${selectedService}`, servicioData);
+                console.log('Servicio actualizado:', servicioRes.data.message);
+            }
+
+            setEditingUserId(null);
+            // window.location.reload();
+        } catch (error) {
+            console.error('Error al actualizar usuario o servicio:', error);
+        }
     };
+
 
     useEffect(() => {
         async function fetchUsuariosConServicios() {
@@ -130,7 +219,6 @@ export default function TablaUsuarios() {
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Apellido Paterno</th>
-                        {/* Agrega más encabezados según tu modelo */}
                         <th>Departamento</th>
                         <th>Carrera</th>
                         <th>Email</th>
@@ -182,24 +270,138 @@ export default function TablaUsuarios() {
                         currentData.map(usuario => (
                             <tr key={usuario.id}>
                                 <td>{usuario.id}</td>
-                                <td>{usuario.nombre}</td>
-                                <td>{usuario.apePat}</td>
-                                <td>{usuario.departamento}</td>
-                                <td>{usuario.carrera}</td>
-                                <td>{usuario.email}</td>
-                                <td>{usuario.dni}</td>
-                                <td>{usuario.celular}</td>
-                                <td>{usuario.pdf_url}</td>
-                                <td>{usuario.monto_pagado}</td>
-                                <td>{usuario.monto_total}</td>
                                 <td>
-                                    <ul>
+                                    {editingUserId === usuario.id ? (
+                                        <input
+                                            type="text"
+                                            value={editedUserName}
+                                            onChange={(e) => setEditedUserName(e.target.value)}
+                                        />
+                                    ) : (
+                                        usuario.nombre
+                                    )}
+                                </td>
+                                <td>
+                                    {editingUserId === usuario.id ? (
+                                        <input
+                                            type="text"
+                                            value={editedLastName}
+                                            onChange={(e) => setEditedLastName(e.target.value)}
+                                        />
+                                    ) : (
+                                        usuario.apePat
+                                    )}
+                                </td>
+                                <td>
+                                    {editingUserId === usuario.id ? (
+                                        <input
+                                            type="text"
+                                            value={editedDepartment}
+                                            onChange={(e) => setEditedDepartment(e.target.value)}
+                                        />
+                                    ) : (
+                                        usuario.departamento
+                                    )}
+                                </td>
+                                <td>
+                                    {editingUserId === usuario.id ? (
+                                        <input
+                                            type="text"
+                                            value={editedCareer}
+                                            onChange={(e) => setEditedCareer(e.target.value)}
+                                        />
+                                    ) : (
+                                        usuario.carrera
+                                    )}
+                                </td>
+                                <td>
+                                    {editingUserId === usuario.id ? (
+                                        <input
+                                            type="text"
+                                            value={editedEmail}
+                                            onChange={(e) => setEditedEmail(e.target.value)}
+                                        />
+                                    ) : (
+                                        usuario.email
+                                    )}
+                                </td>
+                                <td>
+                                    {editingUserId === usuario.id ? (
+                                        <input
+                                            type="text"
+                                            value={editedDNI}
+                                            onChange={(e) => setEditedDNI(e.target.value)}
+                                        />
+                                    ) : (
+                                        usuario.dni
+                                    )}
+                                </td>
+                                <td>
+                                    {editingUserId === usuario.id ? (
+                                        <input
+                                            type="text"
+                                            value={editedPhone}
+                                            onChange={(e) => setEditedPhone(e.target.value)}
+                                        />
+                                    ) : (
+                                        usuario.celular
+                                    )}
+                                </td>
+                                <td>
+                                    {editingUserId === usuario.id ? (
+                                        <input
+                                            type="text"
+                                            value={editedPDF_URL}
+                                            onChange={(e) => setEditedPDF_URL(e.target.value)}
+                                        />
+                                    ) : (
+                                        usuario.pdf_url
+                                    )}
+                                </td>
+                                <td>
+                                    {editingUserId === usuario.id ? (
+                                        <input
+                                            type="text"
+                                            value={editedMontoPagado}
+                                            onChange={(e) => setEditedMontoPagado(e.target.value)}
+                                        />
+                                    ) : (
+                                        usuario.monto_pagado
+                                    )}
+                                </td>
+                                <td>
+                                    {editingUserId === usuario.id ? (
+                                        <input
+                                            type="text"
+                                            value={editedMontoTotal}
+                                            onChange={(e) => setEditedMontoTotal(e.target.value)}
+                                        />
+                                    ) : (
+                                        usuario.monto_total
+                                    )}
+                                </td>
+                                <td>
+                                    {/* <ul>
                                         {usuario.usuario_servicio.map(usuServ => (
                                             <li key={usuServ.id}>
                                                 {usuServ.servicio.nombre_servicio}
                                             </li>
                                         ))}
-                                    </ul>
+                                    </ul> */}
+                                    {editingUserId === usuario.id ? (
+                                        <select
+                                            value={selectedService}
+                                            onChange={(e) => setSelectedService(e.target.value)}
+                                        >
+                                            {servicios.map(servicio => (
+                                                <option key={servicio.id} value={servicio.id}>
+                                                    {servicio.nombre_servicio}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    ) : (
+                                        usuario.usuario_servicio[0]?.servicio.nombre_servicio || ""
+                                    )}
                                 </td>
                                 <td>
                                     <ul>
@@ -211,16 +413,14 @@ export default function TablaUsuarios() {
                                     </ul>
                                 </td>
                                 <td>
-                                <td>
-                                    {1 === 1 ? (
+                                    {editingUserId === usuario.id ? (
                                         <>
-                                            <button onClick={() => handleOk(1)}>Ok</button>
+                                            <button onClick={() => handleOk(usuario.id)}>Ok</button>
                                             <button onClick={handleCancelar}>Cancelar</button>
                                         </>
                                     ) : (
-                                        <button onClick={() => handleEditar(1)}>Editar</button>
+                                        <button onClick={() => handleEditar(usuario.id)}>Editar</button>
                                     )}
-                                </td>
                                 </td>
                                 <td><button onClick={() => handleEliminar(usuario.id)}>Eliminar</button></td>
                             </tr>
