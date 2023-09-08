@@ -67,100 +67,107 @@ export default function Asignar() {
 
     return (
         <div className="asignar_container">
-            <div className="asignar_card">
-                <h3>Buscar usuario por DNI:</h3>
-                <input
-                    type="text"
-                    value={dniInput}
-                    onChange={(e) => setDniInput(e.target.value)}
-                    placeholder="DNI"
-                />
-                <button onClick={() => buscarUsuarioPorDNI(dniInput)}>Buscar</button>
-                <button onClick={() => setusuarioporDNI([])}>Limpiar</button>
+            <div className="franja_verd">
+                <h1>Buscar usuario por DNI</h1>
             </div>
-            <h3>Usuario</h3>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellido Paterno</th>
-                        <th>DNI</th>
-                        <th>Celular</th>
-                        <th>Carrera</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {usuarioporDNI.map((usuario) => (
-                        <tr key={usuario.id}>
-                            <td>{usuario.id}</td>
-                            <td>{usuario.nombre}</td>
-                            <td>{usuario.apePat}</td>
-                            <td>{usuario.dni}</td>
-                            <td>{usuario.celular}</td>
-                            <td>{usuario.carrera}</td>
+            <div className="asinar_asesor_container">
+                <div className="asignar_card">
+                    <h3>Coloque el DNI del usuario:</h3>
+                    <input
+                        type="text"
+                        className="input_dni_usuario"
+                        value={dniInput}
+                        onChange={(e) => setDniInput(e.target.value)}
+                        placeholder="DNI"
+                    />
+                    <button className="button_backend_filtro" onClick={() => buscarUsuarioPorDNI(dniInput)}>Buscar</button>
+                    <button className="button_backend_filtro" onClick={() => setusuarioporDNI([])}>Limpiar</button>
+                </div>
+                <h3>Usuario Encontrado</h3>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido Paterno</th>
+                            <th>DNI</th>
+                            <th>Celular</th>
+                            <th>Carrera</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-            <h3>Asesor</h3>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellido Paterno</th>
-                        <th>Especialidad</th>
-                        <th>Asesorados</th>
-                        <th>Escoger</th>
-                        <th>Asignar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {asesorPorEspecialidad.map((innerArray, outerIndex) => (
-                        innerArray.map((asesor) => (
-                            <tr key={`${outerIndex}-${asesor.id}`}>
-                                <td>{asesor.id}</td>
-                                <td>{asesor.nombre}</td>
-                                <td>{asesor.apePat}</td>
-
-                                <td>
-                                    <ul>
-                                        {asesor.asesor_especialidad && asesor.asesor_especialidad.map(aseEsp => (
-                                            <li key={aseEsp.id}>
-                                                {aseEsp.especialidad.nombre_especialidad}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </td>
-
-                                <td>
-                                    <ul>
-                                        {asesor.asignacion && asesor.asignacion.map(aseEsp => (
-                                            <li key={aseEsp.id}>
-                                                {aseEsp.usuario.nombre}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </td>
-
-                                <td>
-                                    <input
-                                        type="checkbox"
-
-
-                                    />
-                                </td>
-                                <td>
-                                    <button onClick={() => asignarUsuarioAsesor(usuarioporDNI[outerIndex].id, asesor.id)}>
-                                        Asignar
-                                    </button>
-                                </td>
+                    </thead>
+                    <tbody>
+                        {usuarioporDNI.map((usuario) => (
+                            <tr key={usuario.id}>
+                                <td>{usuario.id}</td>
+                                <td>{usuario.nombre}</td>
+                                <td>{usuario.apePat}</td>
+                                <td>{usuario.dni}</td>
+                                <td>{usuario.celular}</td>
+                                <td>{usuario.carrera}</td>
                             </tr>
-                        ))
-                    ))}
-                </tbody>
-            </table>
+                        ))}
+                    </tbody>
+                </table>
+                <h3>Posibles Asesores</h3>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido Paterno</th>
+                            <th>Especialidad</th>
+                            <th>Asesorados</th>
+                            <th>Escoger</th>
+                            <th>Asignar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {asesorPorEspecialidad.map((innerArray, outerIndex) => (
+                            innerArray.map((asesor) => (
+                                <tr key={`${outerIndex}-${asesor.id}`}>
+                                    <td>{asesor.id}</td>
+                                    <td>{asesor.nombre}</td>
+                                    <td>{asesor.apePat}</td>
+
+                                    <td>
+                                        <ul>
+                                            {asesor.asesor_especialidad && asesor.asesor_especialidad.map(aseEsp => (
+                                                <li key={aseEsp.id}>
+                                                    {aseEsp.especialidad.nombre_especialidad}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </td>
+
+                                    <td>
+                                        <ul>
+                                            {asesor.asignacion && asesor.asignacion.map(aseEsp => (
+                                                <li key={aseEsp.id}>
+                                                    {aseEsp.usuario.nombre}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </td>
+
+                                    <td>
+                                        <input
+                                            type="checkbox"
+
+
+                                        />
+                                    </td>
+                                    <td>
+                                        <button onClick={() => asignarUsuarioAsesor(usuarioporDNI[outerIndex].id, asesor.id)}>
+                                            Asignar
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     );
 }

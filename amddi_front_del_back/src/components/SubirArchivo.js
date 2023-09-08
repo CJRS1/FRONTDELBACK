@@ -13,32 +13,36 @@ export default function SubirArchivo() {
 
     return (
         <div className="subarchivo_container">
-            <h3>Asesor: Christian Reyes</h3>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellido Paterno</th>
-                        <th>PDF_URL</th>
-                        <th>Servicio</th>
-                        <th>Tema</th>
-                        <th>Subir Trabajo</th>
-                        {/* Subir Trabajo debe de generar un link */}
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Jose</td>
-                        <td>Montoya</td>
-                        <td></td>
-                        <td>Tesis Pregrado</td>
-                        <td>Camiones</td>
-                        <td><button>Subir Documento</button></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div className="franja_verd">
+                <h1>Subir Archivo</h1>
+            </div>
+            <div className="tabla_subir_archivo">
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido Paterno</th>
+                            <th>PDF_URL</th>
+                            <th>Servicio</th>
+                            <th>Tema</th>
+                            <th>Subir Trabajo</th>
+                            {/* Subir Trabajo debe de generar un link */}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Jose</td>
+                            <td>Montoya</td>
+                            <td></td>
+                            <td>Tesis Pregrado</td>
+                            <td>Camiones</td>
+                            <td><button >Adjuntar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

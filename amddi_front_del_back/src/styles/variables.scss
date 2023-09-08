@@ -25,6 +25,7 @@ li {
     flex-direction: column;
     z-index: 2;
     box-shadow: 5px 0 5px rgba(0, 0, 0, 0.2);
+    position: fixed;
 }
 
 .img-navlat {
@@ -97,6 +98,7 @@ input {
 }
 
 .resiasesor {
+    margin-left: 100px;
     width: calc(100% - 100px);
     height: 100vh;
     display: flex;
@@ -164,6 +166,7 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 100px;
     width: calc(100% - 100px);
     height: 100vh;
 }
@@ -187,11 +190,12 @@ input {
 }
 
 .asignar_container {
+    margin-left: 100px;
     width: calc(100% - 100px);
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -231,6 +235,7 @@ input {
 }
 
 .inicio_container {
+    margin-left: 100px;
     width: calc(100% - 100px);
 }
 
@@ -248,6 +253,7 @@ input {
 }
 
 .tabla_usuarios {
+    margin-left: 100px;
     width: calc(100% - 100px);
     height: 100vh;
     background: white;
@@ -267,11 +273,13 @@ input {
 .input_filtro {
     width: 800px;
     margin-bottom: 0;
+    padding-left: 10px;
 }
 
 .input_filtro_asesor{
     width: 650px;
     margin-bottom: 0;
+    padding-left: 10px;
 }
 
 .table {
@@ -330,10 +338,103 @@ input {
 }
 
 .tabla_asesores {
+    margin-left: 100px;
     width: calc(100% - 100px);
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+}
+
+
+.subarchivo_container{
+    margin-left: 100px;
+    width: calc(100% - 100px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.tabla_subir_archivo{
+
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 1000px;
+}
+
+.asinar_asesor_container{
+    margin-top: 30px;
+    min-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.input_dni_usuario{
+    width: 400px;
+    margin-bottom: 0;
+    padding-left: 10px;
+}
+
+.asignar_card{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.servicio_especialidad{
+    margin-left: 100px;
+    width: calc(100% - 100px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.servicios_c{
+    margin-top: 30px;
+    min-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.especialidad_c{
+    margin-top: 30px;
+    min-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ingresar_soe{
+    margin-top: 20px;
+    width: 70%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.input_soe{
+    margin-bottom: 0;
+    width: 400px;
+    padding-left: 10px;
+}
+
+.button_agregar_soe{
+    width: 200px;
+    border: none;
+    background: #00d799;
+    border-radius: 5px;
+    padding: 10px 0 10px 0;
+    color: white;
 }

@@ -257,18 +257,25 @@ export default function ServicioYEspecialidad() {
     };
 
     return (
-        <div className="container mt-5">
+        <div className="servicio_especialidad">
+            <div className="franja_verd">
+                <h1>Lista de Servicios y Especialidades</h1>
+            </div>
             <div className="servicios_c">
                 <h1>Lista de Servicios</h1>
-                <input type="text"
-                    name="servicio"
-                    placeholder="Nombre del Servicio"
-                    onChange={handleInputChange}
-                    value={agservicio} />
+                <div className="ingresar_soe">
 
-                <button onClick={handleServicio}>
-                    Agregar Servicio
-                </button>
+                    <input type="text"
+                        name="servicio"
+                        className="input_soe"
+                        placeholder="Nombre del Servicio"
+                        onChange={handleInputChange}
+                        value={agservicio} />
+
+                    <button className="button_agregar_soe"  onClick={handleServicio}>
+                        Agregar Servicio
+                    </button>
+                </div>
 
                 <table className="table">
                     <thead>
@@ -322,15 +329,19 @@ export default function ServicioYEspecialidad() {
             </div>
             <div className="especialidad_c">
                 <h1>Lista de Especialidades</h1>
-                <input type="text"
-                    name="especialidad"
-                    placeholder="Nombre de la Especialidad"
-                    onChange={handleInputChange2}
-                    value={agespecialidad} />
+                <div className="ingresar_soe">
 
-                <button onClick={handleEspecialidad}>
-                    Agregar Servicio
-                </button>
+                    <input type="text"
+                        name="especialidad"
+                        className="input_soe"
+                        placeholder="Nombre de la Especialidad"
+                        onChange={handleInputChange2}
+                        value={agespecialidad} />
+
+                    <button className="button_agregar_soe" onClick={handleEspecialidad}>
+                        Agregar Especialidad
+                    </button>
+                </div>
                 <table className="table">
                     <thead>
                         <tr>
@@ -389,6 +400,7 @@ export default function ServicioYEspecialidad() {
                     linkClass="page-link"
                 />
             </div>
+
         </div>
     );
 }

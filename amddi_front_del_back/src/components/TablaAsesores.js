@@ -101,7 +101,7 @@ export default function TablaAsesores() {
     return (
         <div className="tabla_asesores">
             <div className="franja_verd">
-                <h1>Lista de Asesores con Servicio</h1>
+                <h1>Lista de Asesores</h1>
             </div>
             <div className="tabla_asesor_container">
                 <div className="filtro_container">
@@ -156,7 +156,7 @@ export default function TablaAsesores() {
                                     </ul>
                                 </td>
                                 <td>
-                                    {1 === 1 ? (
+                                    {true ? (
                                         <>
                                             <button onClick={() => handleOk(1)}>Ok</button>
                                             <button onClick={handleCancelar}>Cancelar</button>
