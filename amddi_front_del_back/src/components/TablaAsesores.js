@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/variables.css';
@@ -46,6 +46,12 @@ export default function TablaAsesores() {
         // }
     };
 
+    const handleSearch = () => {
+
+    }
+    const clearSearch = () => {
+
+    }
     useEffect(() => {
         async function fetchAsesorConUsuario() {
             try {
@@ -93,49 +99,63 @@ export default function TablaAsesores() {
         }
     };
     return (
-        <div className="container mt-5">
-            <h1>Lista de Asesores con Servicio</h1>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellido Paterno</th>
-                        <th>Email</th>
-                        <th>DNI</th>
-                        <th>Especialidad</th>
-                        <th>Asesorados</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {currentData.map(asesor => (
-                        <tr key={asesor.id}>
-                            <td>{asesor.id}</td>
-                            <td>{asesor.nombre}</td>
-                            <td>{asesor.apePat}</td>
-                            <td>{asesor.email}</td>
-                            <td>{asesor.dni}</td>
-                            <td>
-                                <ul>
-                                    {asesor.asesor_especialidad.map(AseEsp => (
-                                        <li key={AseEsp.id}>
-                                            {AseEsp.especialidad.nombre_especialidad}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </td>
-                            <td>
-                                <ul>
-                                    {asesor.asignacion.map(AseUsu => (
-                                        <li key={AseUsu.id}>
-                                            {AseUsu.asesor.nombre}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </td>
-                            <td>
+        <div className="tabla_asesores">
+            <div className="franja_verd">
+                <h1>Lista de Asesores con Servicio</h1>
+            </div>
+            <div className="tabla_asesor_container">
+                <div className="filtro_container">
+                    <input
+                        type="text"
+                        className="input_filtro_asesor"
+                        placeholder="Filtrar por Nombre, DNI o Email"
+                    // value={searchTerm}
+                    // onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <button className="button_backend_filtro" onClick={handleSearch}>Buscar</button>
+                    <button className="button_backend_filtro" onClick={clearSearch}>Limpiar</button>
+                </div>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido Paterno</th>
+                            <th>Email</th>
+                            <th>DNI</th>
+                            <th>Especialidad</th>
+                            <th>Asesorados</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentData.map(asesor => (
+                            <tr key={asesor.id}>
+                                <td>{asesor.id}</td>
+                                <td>{asesor.nombre}</td>
+                                <td>{asesor.apePat}</td>
+                                <td>{asesor.email}</td>
+                                <td>{asesor.dni}</td>
+                                <td>
+                                    <ul>
+                                        {asesor.asesor_especialidad.map(AseEsp => (
+                                            <li key={AseEsp.id}>
+                                                {AseEsp.especialidad.nombre_especialidad}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        {asesor.asignacion.map(AseUsu => (
+                                            <li key={AseUsu.id}>
+                                                {AseUsu.asesor.nombre}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </td>
+                                <td>
                                     {1 === 1 ? (
                                         <>
                                             <button onClick={() => handleOk(1)}>Ok</button>
@@ -145,21 +165,22 @@ export default function TablaAsesores() {
                                         <button onClick={() => handleEditar(1)}>Editar</button>
                                     )}
                                 </td>
-                            <td><button onClick={() => handleEliminar(asesor.id)}>Eliminar</button></td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            {/* Pagination */}
-            <ReactPaginate
-                activePage={currentPage}
-                itemsCountPerPage={itemsPerPage}
-                totalItemsCount={itemsCount}
-                pageRangeDisplayed={5}
-                onChange={handlePageChange}
-                itemClass="page-item"
-                linkClass="page-link"
-            />
+                                <td><button onClick={() => handleEliminar(asesor.id)}>Eliminar</button></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                {/* Pagination */}
+                <ReactPaginate
+                    activePage={currentPage}
+                    itemsCountPerPage={itemsPerPage}
+                    totalItemsCount={itemsCount}
+                    pageRangeDisplayed={5}
+                    onChange={handlePageChange}
+                    itemClass="page-item"
+                    linkClass="page-link"
+                />
+            </div>
         </div>
     );
 }

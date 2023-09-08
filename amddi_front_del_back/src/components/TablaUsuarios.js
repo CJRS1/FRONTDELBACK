@@ -116,7 +116,7 @@ export default function TablaUsuarios() {
 
             const usuarioRes = await axios.put(`http://localhost:5000/usuarios/${id}`, usuarioData);
             console.log('Usuario actualizado:', usuarioRes.data.message);
-
+            window.location.reload();
             // Actualiza el servicio si se ha seleccionado uno nuevo
             if (selectedService !== null) {
                 const servicioData = {
@@ -199,244 +199,247 @@ export default function TablaUsuarios() {
 
 
     return (
-        <div className="container mt-5">
-            <h1>Lista de Usuarios con Servicios</h1>
-
-            <div className="mb-3">
-                <input
-                    type="text"
-                    placeholder="Filtrar por Nombre, DNI o Email"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <button onClick={handleSearch}>Buscar</button>
-                <button onClick={clearSearch}>Limpiar</button>
+        <div className="tabla_usuarios">
+            <div className="franja_verd">
+                <h1>Lista de Usuarios</h1>
             </div>
-
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellido Paterno</th>
-                        <th>Departamento</th>
-                        <th>Carrera</th>
-                        <th>Email</th>
-                        <th>DNI</th>
-                        <th>Celular</th>
-                        <th>PDF_URL</th>
-                        <th>Monto Pagado</th>
-                        <th>Monto Total</th>
-                        <th>Servicio</th>
-                        <th>Asesor</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredUser ? (
-                        <tr key={filteredUser.id}>
-                            <td>{filteredUser.id}</td>
-                            <td>{filteredUser.nombre}</td>
-                            <td>{filteredUser.apePat}</td>
-                            <td>{filteredUser.departamento}</td>
-                            <td>{filteredUser.carrera}</td>
-                            <td>{filteredUser.email}</td>
-                            <td>{filteredUser.dni}</td>
-                            <td>{filteredUser.celular}</td>
-                            <td>{filteredUser.pdf_url}</td>
-                            <td>{filteredUser.monto_pagado}</td>
-                            <td>{filteredUser.monto_total}</td>
-                            <td>
-                                <ul>
-                                    {filteredUser.usuario_servicio && filteredUser.usuario_servicio.map(usuServ => (
-                                        <li key={usuServ.id}>
-                                            {usuServ.servicio.nombre_servicio}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </td>
-                            <td>
-                                <ul>
-                                    {filteredUser.asignacion && filteredUser.asignacion.map(usuAse => (
-                                        <li key={usuAse.id}>
-                                            {usuAse.asesor.nombre}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </td>
+            <div className="tabla_usuario_container">
+                <div className="filtro_container">
+                    <input
+                        type="text"
+                        className="input_filtro"
+                        placeholder="Filtrar por Nombre, DNI o Email"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <button className="button_backend_filtro" onClick={handleSearch}>Buscar</button>
+                    <button className="button_backend_filtro" onClick={clearSearch}>Limpiar</button>
+                </div>
+                <table className="table">
+                    <thead>
+                        <tr className="fondo_header">
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Departamento</th>
+                            <th>Carrera</th>
+                            <th>Email</th>
+                            <th>DNI</th>
+                            <th>Celular</th>
+                            <th>PDF_URL</th>
+                            <th>Monto Pagado</th>
+                            <th>Monto Total</th>
+                            <th>Servicio</th>
+                            <th>Asesor</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
                         </tr>
-                    ) : (
-                        currentData.map(usuario => (
-                            <tr key={usuario.id}>
-                                <td>{usuario.id}</td>
+                    </thead>
+                    <tbody>
+                        {filteredUser ? (
+                            <tr key={filteredUser.id}>
+                                <td>{filteredUser.id}</td>
+                                <td>{filteredUser.nombre}</td>
+                                <td>{filteredUser.apePat}</td>
+                                <td>{filteredUser.departamento}</td>
+                                <td>{filteredUser.carrera}</td>
+                                <td>{filteredUser.email}</td>
+                                <td>{filteredUser.dni}</td>
+                                <td>{filteredUser.celular}</td>
+                                <td>{filteredUser.pdf_url}</td>
+                                <td>{filteredUser.monto_pagado}</td>
+                                <td>{filteredUser.monto_total}</td>
                                 <td>
-                                    {editingUserId === usuario.id ? (
-                                        <input
-                                            type="text"
-                                            value={editedUserName}
-                                            onChange={(e) => setEditedUserName(e.target.value)}
-                                        />
-                                    ) : (
-                                        usuario.nombre
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === usuario.id ? (
-                                        <input
-                                            type="text"
-                                            value={editedLastName}
-                                            onChange={(e) => setEditedLastName(e.target.value)}
-                                        />
-                                    ) : (
-                                        usuario.apePat
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === usuario.id ? (
-                                        <input
-                                            type="text"
-                                            value={editedDepartment}
-                                            onChange={(e) => setEditedDepartment(e.target.value)}
-                                        />
-                                    ) : (
-                                        usuario.departamento
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === usuario.id ? (
-                                        <input
-                                            type="text"
-                                            value={editedCareer}
-                                            onChange={(e) => setEditedCareer(e.target.value)}
-                                        />
-                                    ) : (
-                                        usuario.carrera
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === usuario.id ? (
-                                        <input
-                                            type="text"
-                                            value={editedEmail}
-                                            onChange={(e) => setEditedEmail(e.target.value)}
-                                        />
-                                    ) : (
-                                        usuario.email
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === usuario.id ? (
-                                        <input
-                                            type="text"
-                                            value={editedDNI}
-                                            onChange={(e) => setEditedDNI(e.target.value)}
-                                        />
-                                    ) : (
-                                        usuario.dni
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === usuario.id ? (
-                                        <input
-                                            type="text"
-                                            value={editedPhone}
-                                            onChange={(e) => setEditedPhone(e.target.value)}
-                                        />
-                                    ) : (
-                                        usuario.celular
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === usuario.id ? (
-                                        <input
-                                            type="text"
-                                            value={editedPDF_URL}
-                                            onChange={(e) => setEditedPDF_URL(e.target.value)}
-                                        />
-                                    ) : (
-                                        usuario.pdf_url
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === usuario.id ? (
-                                        <input
-                                            type="text"
-                                            value={editedMontoPagado}
-                                            onChange={(e) => setEditedMontoPagado(e.target.value)}
-                                        />
-                                    ) : (
-                                        usuario.monto_pagado
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === usuario.id ? (
-                                        <input
-                                            type="text"
-                                            value={editedMontoTotal}
-                                            onChange={(e) => setEditedMontoTotal(e.target.value)}
-                                        />
-                                    ) : (
-                                        usuario.monto_total
-                                    )}
-                                </td>
-                                <td>
-                                    {/* <ul>
-                                        {usuario.usuario_servicio.map(usuServ => (
+                                    <ul>
+                                        {filteredUser.usuario_servicio && filteredUser.usuario_servicio.map(usuServ => (
                                             <li key={usuServ.id}>
                                                 {usuServ.servicio.nombre_servicio}
                                             </li>
                                         ))}
-                                    </ul> */}
-                                    {editingUserId === usuario.id ? (
-                                        <select
-                                            value={selectedService}
-                                            onChange={(e) => setSelectedService(e.target.value)}
-                                        >
-                                            {servicios.map(servicio => (
-                                                <option key={servicio.id} value={servicio.id}>
-                                                    {servicio.nombre_servicio}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    ) : (
-                                        usuario.usuario_servicio[0]?.servicio.nombre_servicio || ""
-                                    )}
+                                    </ul>
                                 </td>
                                 <td>
                                     <ul>
-                                        {usuario.asignacion.map(usuAse => (
+                                        {filteredUser.asignacion && filteredUser.asignacion.map(usuAse => (
                                             <li key={usuAse.id}>
                                                 {usuAse.asesor.nombre}
                                             </li>
                                         ))}
                                     </ul>
                                 </td>
-                                <td>
-                                    {editingUserId === usuario.id ? (
-                                        <>
-                                            <button onClick={() => handleOk(usuario.id)}>Ok</button>
-                                            <button onClick={handleCancelar}>Cancelar</button>
-                                        </>
-                                    ) : (
-                                        <button onClick={() => handleEditar(usuario.id)}>Editar</button>
-                                    )}
-                                </td>
-                                <td><button onClick={() => handleEliminar(usuario.id)}>Eliminar</button></td>
                             </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
-            <ReactPaginate
-                activePage={currentPage}
-                itemsCountPerPage={itemsPerPage}
-                totalItemsCount={itemsCount}
-                pageRangeDisplayed={5}
-                onChange={handlePageChange}
-                itemClass="page-item"
-                linkClass="page-link"
-            />
+                        ) : (
+                            currentData.map(usuario => (
+                                <tr key={usuario.id}>
+                                    <td>{usuario.id}</td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                type="text"
+                                                value={editedUserName}
+                                                onChange={(e) => setEditedUserName(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.nombre
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                type="text"
+                                                value={editedLastName}
+                                                onChange={(e) => setEditedLastName(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.apePat
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                type="text"
+                                                value={editedDepartment}
+                                                onChange={(e) => setEditedDepartment(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.departamento
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                type="text"
+                                                value={editedCareer}
+                                                onChange={(e) => setEditedCareer(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.carrera
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                type="text"
+                                                value={editedEmail}
+                                                onChange={(e) => setEditedEmail(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.email
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                type="text"
+                                                value={editedDNI}
+                                                onChange={(e) => setEditedDNI(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.dni
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                type="text"
+                                                value={editedPhone}
+                                                onChange={(e) => setEditedPhone(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.celular
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                type="text"
+                                                value={editedPDF_URL}
+                                                onChange={(e) => setEditedPDF_URL(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.pdf_url
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                type="text"
+                                                value={editedMontoPagado}
+                                                onChange={(e) => setEditedMontoPagado(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.monto_pagado
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                type="text"
+                                                value={editedMontoTotal}
+                                                onChange={(e) => setEditedMontoTotal(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.monto_total
+                                        )}
+                                    </td>
+                                    <td>
+                                        {/* <ul>
+                                        {usuario.usuario_servicio.map(usuServ => (
+                                            <li key={usuServ.id}>
+                                                {usuServ.servicio.nombre_servicio}
+                                            </li>
+                                        ))}
+                                    </ul> */}
+                                        {editingUserId === usuario.id ? (
+                                            <select
+                                                value={selectedService}
+                                                onChange={(e) => setSelectedService(e.target.value)}
+                                            >
+                                                {servicios.map(servicio => (
+                                                    <option key={servicio.id} value={servicio.id}>
+                                                        {servicio.nombre_servicio}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        ) : (
+                                            usuario.usuario_servicio[0]?.servicio.nombre_servicio || ""
+                                        )}
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            {usuario.asignacion.map(usuAse => (
+                                                <li key={usuAse.id}>
+                                                    {usuAse.asesor.nombre}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <>
+                                                <button onClick={() => handleOk(usuario.id)}>Ok</button>
+                                                <button onClick={handleCancelar}>Cancelar</button>
+                                            </>
+                                        ) : (
+                                            <button onClick={() => handleEditar(usuario.id)}>Editar</button>
+                                        )}
+                                    </td>
+                                    <td><button onClick={() => handleEliminar(usuario.id)}>Eliminar</button></td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+                <ReactPaginate
+                    activePage={currentPage}
+                    itemsCountPerPage={itemsPerPage}
+                    totalItemsCount={itemsCount}
+                    pageRangeDisplayed={5}
+                    onChange={handlePageChange}
+                    itemClass="page-item"
+                    linkClass="page-link"
+                />
+            </div>
         </div>
     );
 }

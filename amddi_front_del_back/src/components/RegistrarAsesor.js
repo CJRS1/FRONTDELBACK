@@ -109,12 +109,12 @@ export default function RegistrarAsesor() {
                     // handleRegistrationSuccess();
                     const asesorResponse = await fetch("http://localhost:5000/ultimo_asesor");
                     const asesorData = await asesorResponse.json();
-            
+
                     console.log(asesorData);
-            
+
                     if (asesorResponse.ok) {
                         const asesorId = asesorData.content.id;
-            
+
                         try {
                             const response = await fetch("http://localhost:5000/asesor_especialidad", {
                                 method: "POST",
@@ -126,9 +126,9 @@ export default function RegistrarAsesor() {
                                     id_especialidades: formData.especialidades
                                 })
                             });
-            
+
                             const data = await response.json();
-            
+
                             if (response.ok) {
                                 // Mostrar mensaje de éxito
                                 console.log(data.msg);
@@ -154,7 +154,7 @@ export default function RegistrarAsesor() {
                 window.alert(data.msg);
                 console.error(data.msg);
             }
-            
+
         } catch (error) {
             // Manejo de errores
         }
@@ -189,8 +189,10 @@ export default function RegistrarAsesor() {
 
     return (
         <section className="resiasesor">
+            <div className="franja_verd">
+                <h1>Registre un Asesor</h1>
+            </div>
             <div className="registro_asesor_container">
-                <h2>Registre un Asesor</h2>
                 <div className="regisasesor_container" >
                     <form className="form_registro_asesor" onSubmit={handleSubmit} >
                         <input className="input_registro_asesor"
@@ -266,6 +268,8 @@ export default function RegistrarAsesor() {
                                     })) : []}
                                     onChange={handleEspecialidadesChange}
                                     className="custom-select"
+                                    placeholder="Seleecciona especialidades"
+                                    noOptionsMessage={() => "No hay opciones disponibles"}
                                 />
                                 {formErrors.especialidades && <span className="error-message">{formErrors.especialidades}</span>}
                             </div>
