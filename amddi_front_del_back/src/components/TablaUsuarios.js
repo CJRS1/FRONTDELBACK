@@ -69,10 +69,8 @@ export default function TablaUsuarios() {
             setEditedPDF_URL(userToEdit.pdf_url);
             setEditedMontoPagado(userToEdit.monto_pagado);
             setEditedMontoTotal(userToEdit.monto_total);
-            // Configuramos el servicio seleccionado para edición
             setSelectedService(userToEdit.usuario_servicio[0]?.servicio.id || null);
         }
-        // Activamos la edición del servicio
         setEditingService(true);
         console.log(editingService);
     };
@@ -230,9 +228,10 @@ export default function TablaUsuarios() {
                             <th>Monto Pagado</th>
                             <th>Monto Total</th>
                             <th>Servicio</th>
-                            <th>Asesor</th>
-                            <th>Editar</th>
-                            <th>Eliminar</th>
+                            <th>Asesor Principal</th>
+                            <th>Asesor Secundario</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -275,6 +274,7 @@ export default function TablaUsuarios() {
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
+                                                className="input_table_usuario"
                                                 type="text"
                                                 value={editedUserName}
                                                 onChange={(e) => setEditedUserName(e.target.value)}
@@ -286,6 +286,7 @@ export default function TablaUsuarios() {
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
+                                                className="input_table_usuario"
                                                 type="text"
                                                 value={editedLastName}
                                                 onChange={(e) => setEditedLastName(e.target.value)}
@@ -297,6 +298,7 @@ export default function TablaUsuarios() {
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
+                                                className="input_table_usuario"
                                                 type="text"
                                                 value={editedDepartment}
                                                 onChange={(e) => setEditedDepartment(e.target.value)}
@@ -308,6 +310,8 @@ export default function TablaUsuarios() {
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
+
+                                                className="input_table_usuario"
                                                 type="text"
                                                 value={editedCareer}
                                                 onChange={(e) => setEditedCareer(e.target.value)}
@@ -319,6 +323,7 @@ export default function TablaUsuarios() {
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
+                                                className="input_table_usuario"
                                                 type="text"
                                                 value={editedEmail}
                                                 onChange={(e) => setEditedEmail(e.target.value)}
@@ -330,6 +335,7 @@ export default function TablaUsuarios() {
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
+                                                className="input_table_usuario"
                                                 type="text"
                                                 value={editedDNI}
                                                 onChange={(e) => setEditedDNI(e.target.value)}
@@ -341,6 +347,7 @@ export default function TablaUsuarios() {
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
+                                                className="input_table_usuario"
                                                 type="text"
                                                 value={editedPhone}
                                                 onChange={(e) => setEditedPhone(e.target.value)}
@@ -352,6 +359,7 @@ export default function TablaUsuarios() {
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
+                                                className="input_table_usuario"
                                                 type="text"
                                                 value={editedPDF_URL}
                                                 onChange={(e) => setEditedPDF_URL(e.target.value)}
@@ -363,6 +371,7 @@ export default function TablaUsuarios() {
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
+                                                className="input_table_usuario"
                                                 type="text"
                                                 value={editedMontoPagado}
                                                 onChange={(e) => setEditedMontoPagado(e.target.value)}
@@ -374,6 +383,7 @@ export default function TablaUsuarios() {
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
+                                                className="input_table_usuario"
                                                 type="text"
                                                 value={editedMontoTotal}
                                                 onChange={(e) => setEditedMontoTotal(e.target.value)}
@@ -410,6 +420,19 @@ export default function TablaUsuarios() {
                                             {usuario.asignacion.map(usuAse => (
                                                 <li key={usuAse.id}>
                                                     {usuAse.asesor.nombre}
+                                                    <br />
+                                                    {usuAse.asesor.apePat}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul>
+                                            {usuario.asignacion_secundaria.map(usuAse => (
+                                                <li key={usuAse.id}>
+                                                    {usuAse.asesor.nombre}
+                                                    <br />
+                                                    {usuAse.asesor.apePat}
                                                 </li>
                                             ))}
                                         </ul>
@@ -417,14 +440,33 @@ export default function TablaUsuarios() {
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <>
-                                                <button onClick={() => handleOk(usuario.id)}>Ok</button>
-                                                <button onClick={handleCancelar}>Cancelar</button>
+                                                <button onClick={() => handleOk(usuario.id)}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                    </svg>
+                                                </button>
+                                                <button onClick={handleCancelar}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                                    </svg>
+                                                </button>
                                             </>
                                         ) : (
-                                            <button onClick={() => handleEditar(usuario.id)}>Editar</button>
+                                            <button onClick={() => handleEditar(usuario.id)}><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                            </svg>
+                                            </button>
                                         )}
                                     </td>
-                                    <td><button onClick={() => handleEliminar(usuario.id)}>Eliminar</button></td>
+                                    <td><button onClick={() => handleEliminar(usuario.id)}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                        </svg>
+                                    </button></td>
                                 </tr>
                             ))
                         )}

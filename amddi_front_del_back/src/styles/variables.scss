@@ -29,7 +29,7 @@ li {
 }
 
 .img-navlat {
-    margin-top: 50px;
+    margin-top: 20px;
     margin-bottom: 30px;
 }
 
@@ -40,7 +40,7 @@ li {
 
 .navlat_list {
     height: 75%;
-    margin-top: 30px;
+    // margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -65,7 +65,7 @@ li {
     }
 
     li:last-child {
-        margin-top: auto;
+        // margin-top: 45px;
         margin-bottom: 0;
         color: black !important;
     }
@@ -100,7 +100,7 @@ input {
 .resiasesor {
     margin-left: 100px;
     width: calc(100% - 100px);
-    height: 100vh;
+    height: auto;
     display: flex;
     flex-direction: column;
     // justify-content: center;
@@ -108,9 +108,8 @@ input {
     background: white;
 
     .registro_asesor_container {
-        margin-top: 100px;
+        margin-top: 30px;
         width: 600px;
-        height: 60&;
         border-radius: 10px;
         display: flex;
         flex-direction: column;
@@ -139,6 +138,8 @@ input {
 }
 
 .custom-select {
+    border: 2px solid #00d799;
+    border-radius: 5px;
     width: 400px !important;
     /* Ancho del Select */
 }
@@ -164,7 +165,8 @@ input {
 
 .miinfo_container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     margin-left: 100px;
     width: calc(100% - 100px);
@@ -172,10 +174,26 @@ input {
 }
 
 .miinfo_card {
-    width: 50%;
-    height: 50%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     background: white;
+    padding: 30px 30px 30px 30px;
+    border-radius: 5px;
+    width: 550px;
+    margin-top: 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.input_miinfo{
+    width: 200px;
+}
+
+.miinfo_cards_container{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
 }
 
 .info {
@@ -186,13 +204,16 @@ input {
 
 .info_card {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    h3{
+        color: #666666;
+    }
 }
 
 .asignar_container {
     margin-left: 100px;
     width: calc(100% - 100px);
-    height: 100vh;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -253,14 +274,28 @@ input {
 }
 
 .tabla_usuarios {
-    margin-left: 100px;
-    width: calc(100% - 100px);
-    height: 100vh;
+    padding-left: 100px;
+    height: 135vh;
+    // min-width: calc(100% - 100px);
+    // width: 5000px !important;
     background: white;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    // overflow-x: auto;
+}
+
+.tabla_usuario_container {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 40px;
+    // margin-right: 40px;
+    // overflow-x: auto;
 }
 
 .filtro_container {
@@ -276,7 +311,7 @@ input {
     padding-left: 10px;
 }
 
-.input_filtro_asesor{
+.input_filtro_asesor {
     width: 650px;
     margin-bottom: 0;
     padding-left: 10px;
@@ -311,15 +346,7 @@ input {
     }
 }
 
-.tabla_usuario_container {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.tabla_asesor_container{
+.tabla_asesor_container {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -348,7 +375,7 @@ input {
 }
 
 
-.subarchivo_container{
+.subarchivo_container {
     margin-left: 100px;
     width: calc(100% - 100px);
     display: flex;
@@ -357,7 +384,7 @@ input {
     align-items: center;
 }
 
-.tabla_subir_archivo{
+.tabla_subir_archivo {
 
     margin-top: 20px;
     display: flex;
@@ -367,7 +394,7 @@ input {
     min-width: 1000px;
 }
 
-.asinar_asesor_container{
+.asinar_asesor_container {
     margin-top: 30px;
     min-width: 1000px;
     display: flex;
@@ -376,21 +403,23 @@ input {
     align-items: center;
 }
 
-.input_dni_usuario{
+.input_dni_usuario {
     width: 400px;
     margin-bottom: 0;
     padding-left: 10px;
 }
 
-.asignar_card{
+.asignar_card {
     width: 100%;
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
 }
 
-.servicio_especialidad{
+.servicio_especialidad {
     margin-left: 100px;
+    padding-bottom: 50px;
+    height: auto;
     width: calc(100% - 100px);
     display: flex;
     flex-direction: column;
@@ -398,7 +427,7 @@ input {
     align-items: center;
 }
 
-.servicios_c{
+.servicios_c {
     margin-top: 30px;
     min-width: 1000px;
     display: flex;
@@ -407,7 +436,7 @@ input {
     align-items: center;
 }
 
-.especialidad_c{
+.especialidad_c {
     margin-top: 30px;
     min-width: 1000px;
     display: flex;
@@ -416,7 +445,7 @@ input {
     align-items: center;
 }
 
-.ingresar_soe{
+.ingresar_soe {
     margin-top: 20px;
     width: 70%;
     display: flex;
@@ -424,13 +453,13 @@ input {
     align-items: center;
 }
 
-.input_soe{
+.input_soe {
     margin-bottom: 0;
     width: 400px;
     padding-left: 10px;
 }
 
-.button_agregar_soe{
+.button_agregar_soe {
     width: 200px;
     border: none;
     background: #00d799;
@@ -438,3 +467,33 @@ input {
     padding: 10px 0 10px 0;
     color: white;
 }
+
+button {
+    background: white;
+    border: none;
+}
+
+tr, td{
+    text-align: center;
+}
+
+th{
+    vertical-align: middle;
+}
+
+.input_table_usuario {
+    width: 100px;
+}
+
+.input_asignar_servicio{
+    width: 650px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.asignar_servicio{
+    margin-top: 20px;
+}
+

@@ -11,7 +11,7 @@ import SubirArchivo from './components/SubirArchivo';
 import EditarAsesor from './components/EditarAsesor';
 // import EditarUsuario from './components/EditarUsuario';
 import ServicioEspecialidad from './components/ServicioYEspecialidad';
-
+import AsignarServicio from './components/AsignarServicio';
 
 import '../src/styles/variables.css';
 
@@ -23,6 +23,8 @@ function App() {
         <Route path="/" element={<Inicio />} />
         <Route path="/asignar_usuario" element={<Asignar />} />
         <Route path="/mi_info" element={<MiInfo />} />
+
+        <Route path="/asignar_servicio" element={<AsignarServicio />} />
 
         <Route path="/editar-asesor/:id" element={<EditarAsesor/>} />
         <Route path="/servicio_especialidad" element={<ServicioEspecialidad/>} />

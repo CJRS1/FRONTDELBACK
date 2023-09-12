@@ -132,6 +132,7 @@ export default function RegistrarAsesor() {
                             if (response.ok) {
                                 // Mostrar mensaje de éxito
                                 console.log(data.msg);
+                                alert("Asesor creado exitosamente");
                                 handleRegistrationSuccess();
                             } else {
                                 // Mostrar mensaje de error
@@ -268,7 +269,7 @@ export default function RegistrarAsesor() {
                                     })) : []}
                                     onChange={handleEspecialidadesChange}
                                     className="custom-select"
-                                    placeholder="Seleecciona especialidades"
+                                    placeholder="Seleccione sus especialidades"
                                     noOptionsMessage={() => "No hay opciones disponibles"}
                                 />
                                 {formErrors.especialidades && <span className="error-message">{formErrors.especialidades}</span>}
