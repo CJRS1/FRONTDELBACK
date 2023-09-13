@@ -11,6 +11,7 @@ ul {
 
 li {
   margin-right: 0;
+  list-style: none;
 }
 
 #root {
@@ -255,6 +256,7 @@ input {
 .tabla_usuarios {
   padding-left: 100px;
   height: 135vh;
+  width: 100%;
   background: white;
   display: flex;
   flex-direction: column;

@@ -10,6 +10,7 @@ ul {
 
 li {
     margin-right: 0;
+    list-style: none;
 }
 
 #root {
@@ -276,7 +277,7 @@ input {
 .tabla_usuarios {
     padding-left: 100px;
     height: 135vh;
-    // min-width: calc(100% - 100px);
+    width: 100%;
     // width: 5000px !important;
     background: white;
     display: flex;
