@@ -10,6 +10,15 @@ export default function MiInformacion() {
     const [dniInput, setDniInput] = useState("");
     const [usuarioporDNI, setusuarioporDNI] = useState([]);
 
+    const [servicios, setServicios] = useState([]);
+    const [formData, setFormData] = useState({
+        monto_total: "",
+        tema: "",
+        id_servicio: "",
+        id_usuarios: "",
+        monto_pagado: "",
+    });
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location]);
@@ -20,8 +29,10 @@ export default function MiInformacion() {
 
             if (res.data.content) {
                 console.log(res.data.content.carrera);
+                const IdUsuario = res.data.content.id;
+                console.log(IdUsuario);
                 setusuarioporDNI([res.data.content]);
-
+                setFormData({ ...formData, id_usuarios: IdUsuario });
             } else {
                 setusuarioporDNI([]); // No se encontró ningún usuario, establecer el estado como un array vacío
             }
@@ -30,6 +41,40 @@ export default function MiInformacion() {
             console.error("Error buscando usuario por DNI:", error);
         }
 
+
+    }
+
+    useEffect(() => {
+        const obtenerServicios = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/servicios");
+                const data = await response.json();
+                console.log(data);
+
+                // Accede a la propiedad 'content' para obtener el array de Servicios
+                setServicios(data.content);
+            } catch (error) {
+                console.error("Error al obtener las Servicios:", error);
+            }
+        };
+
+        obtenerServicios();
+    }, []);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(formData);
+        try {
+            const res = await axios.post("http://localhost:5000/monto_pagado", formData);
+            if (res.data.content){
+                
+                console.log(res.data.content);
+            } else {
+
+            }
+        } catch (err) { 
+            console.log(err);
+        }
 
     }
 
@@ -75,47 +120,57 @@ export default function MiInformacion() {
                     ))}
                 </tbody>
             </table>
-            <div className="input_asignar_servicio">
-                <h4>Monto Pagado:</h4>
-                <input type="text"
-                    name="especialidad"
-                    className="input_soe"
-                    placeholder="Ingrese el monto pagado"
-                // onChange={handleInputChange2}
-                // value={agespecialidad}
-                />
-            </div>
-            <div className="input_asignar_servicio">
-                <h4>Monto Total:</h4>
-                <input type="text"
-                    name="especialidad"
-                    className="input_soe"
-                    placeholder="Ingrese el monto total"
-                // onChange={handleInputChange2}
-                // value={agespecialidad}
-                />
-            </div>
-            <div className="input_asignar_servicio">
-                <h4>Servicio:</h4>
-                <input type="text"
-                    name="especialidad"
-                    className="input_soe"
-                    placeholder="Nombre del Servicio"
-                // onChange={handleInputChange2}
-                // value={agespecialidad}
-                />
-            </div>
-            <div className="input_asignar_servicio">
-                <h4>Tema del Proyecto:</h4>
-                <input type="text"
-                    name="especialidad"
-                    className="input_soe"
-                    placeholder="Nombre del Proyecto"
-                // onChange={handleInputChange2}
-                // value={agespecialidad}
-                />
-            </div>
-            <button className="button_agregar_soe">Asignar Servicio</button>
+            <form className="form_submit" onSubmit={handleSubmit}>
+                <div className="input_asignar_servicio">
+                    <h4>Monto Pagado:</h4>
+                    <input type="text"
+                        name="especialidad"
+                        className="input_soe"
+                        placeholder="Ingrese el monto pagado"
+                        onChange={(e) => setFormData({ ...formData, monto_pagado: e.target.value })}
+                        value={formData.monto_pagado}
+                    />
+                </div>
+                <div className="input_asignar_servicio">
+                    <h4>Monto Total:</h4>
+                    <input type="text"
+                        name="especialidad"
+                        className="input_soe"
+                        placeholder="Ingrese el monto total"
+                        onChange={(e) => setFormData({ ...formData, monto_total: e.target.value })}
+                        value={formData.monto_total}
+                    />
+                </div>
+                <div className="input_asignar_servicio">
+                    <h4>Servicio:</h4>
+                    <select
+                        className="input_asignar_servicio_select"
+                        id="especialidad"
+                        name="carrera"
+                        onChange={(e) => setFormData({ ...formData, id_servicio: e.target.value })}
+                        value={formData.id_servicio}
+                    >
+                        <option value="">Selecciona una Servicio</option>
+                        {servicios.map((servicio) => (
+                            <option key={servicio.id} value={servicio.id}>
+                                {servicio.nombre_servicio}
+                            </option>
+                        ))}
+                    </select>
+
+                </div>
+                <div className="input_asignar_servicio">
+                    <h4>Tema del Proyecto:</h4>
+                    <input type="text"
+                        name="especialidad"
+                        className="input_soe"
+                        placeholder="Nombre del Proyecto"
+                        onChange={(e) => setFormData({ ...formData, tema: e.target.value })}
+                        value={formData.tema}
+                    />
+                </div>
+                <button type="submit" className="button_agregar_soe">Asignar Servicio</button>
+            </form>
         </div>
     );
 }
