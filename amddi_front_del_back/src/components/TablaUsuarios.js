@@ -543,8 +543,8 @@ export default function TablaUsuarios() {
                     totalItemsCount={itemsCount}
                     pageRangeDisplayed={5}
                     onChange={handlePageChange}
-                    itemclassName="page-item"
-                    linkclassName="page-link"
+                    itemClass="page-item"
+                    linkClass="page-link"
                 />
             </div>
         </div>

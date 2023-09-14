@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect} from "react";
 import { useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/variables.css";
@@ -9,6 +9,11 @@ export default function MiInformacion() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
+
+
+const storedData = localStorage.getItem('data');
+const parsedData = JSON.parse(storedData);
+console.log("hola",parsedData.id);
 
   return (
     <div className="miinfo_container">
@@ -21,30 +26,40 @@ export default function MiInformacion() {
             <h3>Nombre:</h3>
             <input type="text"
               className="input_miinfo"
+              value={parsedData.nombre}
+              readOnly
             />
           </div>
           <div className="info_card">
             <h3>Apellido Paterno:</h3>
             <input type="text"
               className="input_miinfo"
+              value={parsedData.apePat}
+              readOnly
             />
           </div>
           <div className="info_card">
             <h3>Apellido Materno:</h3>
             <input type="text"
               className="input_miinfo"
+              value={parsedData.apeMat}
+              readOnly
             />
           </div>
           <div className="info_card">
             <h3>DNI:</h3>
             <input type="text"
               className="input_miinfo"
+              value={parsedData.dni}
+              readOnly
             />
           </div>
           <div className="info_card">
             <h3>Email:</h3>
             <input type="text"
               className="input_miinfo"
+              value={parsedData.email}
+              readOnly
             />
           </div>
           <div className="info_card">
