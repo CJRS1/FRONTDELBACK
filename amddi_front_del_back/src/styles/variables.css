@@ -84,6 +84,14 @@ li {
   fill: #00d799;
 }
 
+.Link_anc.center {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
 .navbar_header_container.minimized {
   width: 100px !important;
 }
@@ -305,6 +313,10 @@ input {
   padding: 5px 0 5px 0;
   border-radius: 5px;
   color: white;
+}
+
+.btn_cerrar {
+  padding: 0;
 }
 
 .tabla_usuarios {

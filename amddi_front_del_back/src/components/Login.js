@@ -16,9 +16,7 @@ export default function Inicio() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [data, setData] = useState([]);
-
-    console.log(data);
+    // const [data, setData] = useState([]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -47,15 +45,14 @@ export default function Inicio() {
                     console.log(decodedToken.rol);
                 } else if (decodedToken.rol === "asesor") {
                     console.log("Este es un", decodedToken.rol);
-                    navigate("/");
                     try {
                         const res = await axios.get(`http://localhost:5000/asesoress/${email}`);
                         if (res.status === 200) {
                             // La solicitud fue exitosa (código de estado 200)
                             const responseData = res.data.content;
                             console.log(responseData);
-                            setData(responseData);
-
+                            // setData(responseData);
+                            
                             // Opcional: Guardar los datos en el localStorage
                             localStorage.setItem('data', JSON.stringify(responseData));
                         } else {
@@ -64,6 +61,7 @@ export default function Inicio() {
                     } catch (e) {
                         console.error(e);
                     }
+                    navigate("/");
                 }
             } else {
                 // Error en el inicio de sesión
