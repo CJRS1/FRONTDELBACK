@@ -100,6 +100,7 @@ export default function TablaAsesores() {
             console.error('Error al eliminar asesor:', error);
         }
     };
+    
     return (
         <div className="tabla_asesores">
             <div className="franja_verd">

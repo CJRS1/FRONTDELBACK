@@ -38,10 +38,11 @@ export default function MiInformacion() {
     }
   }, [location]);
 
-  const storedData = localStorage.getItem("data");
-  const parsedData = JSON.parse(storedData) || userData;
+  console.log("el user", userData);
 
-  // console.log("parsedData", parsedData)
+  // const storedData = localStorage.getItem("data");
+  const parsedData = userData;
+
   return (
     <div className="miinfo_container">
       <div className="franja_verd">
@@ -110,7 +111,7 @@ export default function MiInformacion() {
             <input
               type="text"
               className="input_miinfo"
-              value={parsedData && parsedData.asignacion ? parsedData.asignacion.map((item) => item.especialidad.nombre_especialidad).join(', ') : ''}
+              value={parsedData && parsedData.asignacion ? parsedData.asignacion.map((item) => item.usuario.nombre).join(', ') : ''}
               readOnly
             />
           </div>

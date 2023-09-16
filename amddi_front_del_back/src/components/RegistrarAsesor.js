@@ -193,97 +193,97 @@ export default function RegistrarAsesor() {
             <div className="franja_verd">
                 <h1>Registre un Asesor</h1>
             </div>
-            <div className="registro_asesor_container">
-                <div className="regisasesor_container" >
-                    <form className="form_registro_asesor" onSubmit={handleSubmit} >
-                        <input className="input_registro_asesor"
-                            type="text"
-                            name="nombre"
-                            placeholder="Nombre"
-                            onChange={handleInputChange}
-                            value={formData.nombre}
-                        />
-                        {formErrors.nombre && <span className="error-message">{formErrors.nombre}</span>}
-                        <input className="input_registro_asesor"
-                            type="text"
-                            name="apePat"
-                            placeholder="Apellido Paterno"
-                            onChange={handleInputChange}
-                            value={formData.apePat}
-                        />
-                        {formErrors.apePat && <span className="error-message">{formErrors.apePat}</span>}
-                        <input className="input_registro_asesor"
-                            type="text"
-                            name="apeMat"
-                            placeholder="Apellido Materno"
-                            onChange={handleInputChange}
-                            value={formData.apeMat}
-                        />
-                        {formErrors.apeMat && <span className="error-message">{formErrors.apeMat}</span>}
-                        <input className="input_registro_asesor"
-                            type="text"
-                            name="dni"
-                            placeholder="DNI"
-                            onChange={handleInputChange}
-                            value={formData.dni}
-                        />
-                        {formErrors.dni && <span className="error-message">{formErrors.dni}</span>}
-                        <input className="input_registro_asesor"
-                            type="text"
-                            name="email"
-                            placeholder="Email"
-                            onChange={handleInputChange}
-                            value={formData.email}
-                        />
-                        {formErrors.email && <span className="error-message">{formErrors.email}</span>}
-                        <input className="input_registro_asesor"
-                            type="password"
-                            name="pwd_hash"
-                            placeholder="Contraseña"
-                            onChange={handleInputChange}
-                            value={formData.pwd_hash}
-                        />
-                        {formErrors.pwd_hash && <span className="error-message">{formErrors.pwd_hash}</span>}
-                        <input className="input_registro_asesor"
-                            type="password"
-                            name="confirma_pwd_hash"
-                            placeholder="Confirmar Contraseña"
-                            onChange={handleInputChange}
-                            value={formData.confirma_pwd_hash}
-                        />
-                        {formErrors.confirma_pwd_hash && <span className="error-message">{formErrors.confirma_pwd_hash}</span>}
+            <div className="regisasesor_container_a">
+                <div className="registro_asesor_container">
+                    <div className="regisasesor_container" >
+                        <form className="form_registro_asesor" onSubmit={handleSubmit} >
+                            <input className="input_registro_asesor"
+                                type="text"
+                                name="nombre"
+                                placeholder="Nombre"
+                                onChange={handleInputChange}
+                                value={formData.nombre}
+                            />
+                            {formErrors.nombre && <span className="error-message">{formErrors.nombre}</span>}
+                            <input className="input_registro_asesor"
+                                type="text"
+                                name="apePat"
+                                placeholder="Apellido Paterno"
+                                onChange={handleInputChange}
+                                value={formData.apePat}
+                            />
+                            {formErrors.apePat && <span className="error-message">{formErrors.apePat}</span>}
+                            <input className="input_registro_asesor"
+                                type="text"
+                                name="apeMat"
+                                placeholder="Apellido Materno"
+                                onChange={handleInputChange}
+                                value={formData.apeMat}
+                            />
+                            {formErrors.apeMat && <span className="error-message">{formErrors.apeMat}</span>}
+                            <input className="input_registro_asesor"
+                                type="text"
+                                name="dni"
+                                placeholder="DNI"
+                                onChange={handleInputChange}
+                                value={formData.dni}
+                            />
+                            {formErrors.dni && <span className="error-message">{formErrors.dni}</span>}
+                            <input className="input_registro_asesor"
+                                type="text"
+                                name="email"
+                                placeholder="Email"
+                                onChange={handleInputChange}
+                                value={formData.email}
+                            />
+                            {formErrors.email && <span className="error-message">{formErrors.email}</span>}
+                            <input className="input_registro_asesor"
+                                type="password"
+                                name="pwd_hash"
+                                placeholder="Contraseña"
+                                onChange={handleInputChange}
+                                value={formData.pwd_hash}
+                            />
+                            {formErrors.pwd_hash && <span className="error-message">{formErrors.pwd_hash}</span>}
+                            <input className="input_registro_asesor"
+                                type="password"
+                                name="confirma_pwd_hash"
+                                placeholder="Confirmar Contraseña"
+                                onChange={handleInputChange}
+                                value={formData.confirma_pwd_hash}
+                            />
+                            {formErrors.confirma_pwd_hash && <span className="error-message">{formErrors.confirma_pwd_hash}</span>}
 
-                        {/* Aqui va lo de especialidades */}
+                            {/* Aqui va lo de especialidades */}
 
-                        {especialidades.content ? (
-                            <div>
-                                <Select
-                                    isMulti
-                                    options={especialidades.content ? especialidades.content.map(especialidad => ({
-                                        value: especialidad.id,
-                                        label: especialidad.nombre_especialidad
-                                    })) : []}
-                                    value={formData.especialidades ? formData.especialidades.map(id => ({
-                                        value: id,
-                                        label: especialidades.content.find(especialidad => especialidad.id === id).nombre_especialidad
-                                    })) : []}
-                                    onChange={handleEspecialidadesChange}
-                                    className="custom-select"
-                                    placeholder="Seleccione sus especialidades"
-                                    noOptionsMessage={() => "No hay opciones disponibles"}
-                                />
-                                {formErrors.especialidades && <span className="error-message">{formErrors.especialidades}</span>}
-                            </div>
-                        ) : (
-                            <p>Cargando especialidades...</p>
-                        )}
+                            {especialidades.content ? (
+                                <div>
+                                    <Select
+                                        isMulti
+                                        options={especialidades.content ? especialidades.content.map(especialidad => ({
+                                            value: especialidad.id,
+                                            label: especialidad.nombre_especialidad
+                                        })) : []}
+                                        value={formData.especialidades ? formData.especialidades.map(id => ({
+                                            value: id,
+                                            label: especialidades.content.find(especialidad => especialidad.id === id).nombre_especialidad
+                                        })) : []}
+                                        onChange={handleEspecialidadesChange}
+                                        className="custom-select"
+                                        placeholder="Seleccione sus especialidades"
+                                        noOptionsMessage={() => "No hay opciones disponibles"}
+                                    />
+                                    {formErrors.especialidades && <span className="error-message">{formErrors.especialidades}</span>}
+                                </div>
+                            ) : (
+                                <p>Cargando especialidades...</p>
+                            )}
 
-                        <button type="submit" className="button_backend">Registrar Asesor</button>
-                    </form>
+                            <button type="submit" className="button_backend">Registrar Asesor</button>
+                        </form>
+                    </div>
                 </div>
-
             </div>
-
         </section>
     );
 }

@@ -18,17 +18,23 @@ export default function TablaUsuarios() {
 
     const [editingService, setEditingService] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
+    // const [selectedEspecialidad, setSelectedEspecialidad] = useState(null);
 
     const [servicios, setServicios] = useState([]);
+    const [especialidades, setEspecialidades] = useState([]);
 
     const [editingUserId, setEditingUserId] = useState(null);
 
     const [editedUserName, setEditedUserName] = useState("");
     const [editedLastName, setEditedLastName] = useState("");
+    const [editedSLastName, setEditedSLastName] = useState("");
     const [editedDepartment, setEditedDepartment] = useState("");
+
     const [editedCareer, setEditedCareer] = useState("");
+
     const [editedDNI, setEditedDNI] = useState("");
     const [editedPhone, setEditedPhone] = useState("");
+    const [editedTema, setEditedTema] = useState("");
     const [editedEmail, setEditedEmail] = useState("");
     const [editedPDF_URL, setEditedPDF_URL] = useState("");
     const [editedMontoPagado, setEditedMontoPagado] = useState(0.0);
@@ -38,13 +44,13 @@ export default function TablaUsuarios() {
     useEffect(() => {
         async function fetchServicios() {
             try {
-                console.log('Haciendo llamada a la API a:', 'http://localhost:5000/servicios');
+                // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/servicios');
                 const res = await axios.get('http://localhost:5000/servicios');
-                console.log(res.data.message);
-                console.log('Response from server:', res.data);
+                // console.log(res.data.message);
+                // console.log('Response from server:', res.data);
 
                 if (res.data.content && Array.isArray(res.data.content)) {
-                    console.log('Los servicios son:', res.data.content);
+                    // console.log('Los servicios son:', res.data.content);
                     setServicios(res.data.content);
                 }
             } catch (error) {
@@ -55,6 +61,26 @@ export default function TablaUsuarios() {
         fetchServicios();
     }, []);
 
+    useEffect(() => {
+        async function fetchEspecialidades() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/especialidades');
+                const res = await axios.get('http://localhost:5000/especialidades');
+                // console.log(res.data.message);
+                // console.log('Response from server:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setEspecialidades(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching servicios:', error);
+            }
+        }
+
+        fetchEspecialidades();
+    }, []);
+
 
     const handleEditar = (id) => {
         setEditingUserId(id);
@@ -62,11 +88,13 @@ export default function TablaUsuarios() {
         if (userToEdit) {
             setEditedUserName(userToEdit.nombre);
             setEditedLastName(userToEdit.apePat);
+            setEditedSLastName(userToEdit.apeMat);
             setEditedDepartment(userToEdit.departamento);
             setEditedCareer(userToEdit.carrera);
             setEditedDNI(userToEdit.dni);
             setEditedPhone(userToEdit.celular);
             setEditedEmail(userToEdit.email);
+            setEditedTema(userToEdit.tema);
             setEditedPDF_URL(userToEdit.pdf_url);
             setEditedMontoPagado(userToEdit.monto_pagado);
             setEditedMontoTotal(userToEdit.monto_total);
@@ -83,6 +111,7 @@ export default function TablaUsuarios() {
         setEditedLastName("");
         setEditedDepartment("");
         setEditedCareer("");
+        setEditedTema("");
         setEditedEmail("");
         setEditedDNI("");
         setEditedPhone("");
@@ -92,6 +121,7 @@ export default function TablaUsuarios() {
 
         // Limpiamos el servicio seleccionado al cancelar
         setSelectedService(null);
+        // setSelectedEspecialidad(null);
 
         // Desactivamos la edición del servicio
         setEditingService(false);
@@ -103,15 +133,19 @@ export default function TablaUsuarios() {
             const usuarioData = {
                 nombre: editedUserName,
                 apePat: editedLastName,
+                // apeMat: editedSLastName,
                 departamento: editedDepartment,
                 carrera: editedCareer,
                 dni: editedDNI,
                 email: editedEmail,
                 celular: editedPhone,
-                pdf_url: editedPDF_URL,
-                monto_pagado: editedMontoPagado,
+                tema: editedTema,
+                // pdf_url: editedPDF_URL,
+                // monto_pagado: editedMontoPagado,
                 monto_total: editedMontoTotal,
             };
+
+            console.log("hola",usuarioData); 
 
             const usuarioRes = await axios.put(`http://localhost:5000/usuarios/${id}`, usuarioData);
             console.log('Usuario actualizado:', usuarioRes.data.message);
@@ -137,12 +171,12 @@ export default function TablaUsuarios() {
     useEffect(() => {
         async function fetchUsuariosConServicios() {
             try {
-                console.log('Haciendo llamada a la API a:', 'http://localhost:5000/usuarios_con_servicio');
+                // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/usuarios_con_servicio');
                 const res = await axios.get('http://localhost:5000/usuarios_con_servicio');
                 console.log(res.data.message);
-                console.log('Response from server:', res.data);
+                // console.log('Response from server:', res.data);
                 if (res.data.content && Array.isArray(res.data.content)) {
-                    console.log('Usuarios con servicios recibidos:', res.data.content);
+                    // console.log('Usuarios con servicios recibidos:', res.data.content);
                     setUsuariosConServicios(res.data.content);
                 }
             } catch (error) {
@@ -152,6 +186,7 @@ export default function TablaUsuarios() {
 
         fetchUsuariosConServicios();
     }, []);
+
 
     const handleSearch = () => {
         const foundUser = usuariosConServicios.find(usuario => (
@@ -242,7 +277,9 @@ export default function TablaUsuarios() {
                             <tr key={filteredUser.id}>
                                 <td>{filteredUser.id}</td>
                                 <td>{filteredUser.nombre}</td>
-                                <td>{filteredUser.apePat}</td>
+                                <td>{filteredUser.apePat}
+                                    <br />
+                                    {filteredUser.apeMat}</td>
                                 <td>{filteredUser.departamento}</td>
                                 <td>{filteredUser.carrera}</td>
                                 <td>{filteredUser.email}</td>
@@ -299,6 +336,19 @@ export default function TablaUsuarios() {
                                             />
                                         ) : (
                                             usuario.apePat
+
+                                        )}
+                                        <br />
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedSLastName}
+                                                onChange={(e) => setEditedLastName(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.apeMat
+
                                         )}
                                     </td>
                                     <td>
@@ -314,7 +364,7 @@ export default function TablaUsuarios() {
                                         )}
                                     </td>
                                     <td>
-                                        {editingUserId === usuario.id ? (
+                                        {/* {editingUserId === usuario.id ? (
                                             <input
 
                                                 className="input_table_usuario"
@@ -322,6 +372,21 @@ export default function TablaUsuarios() {
                                                 value={editedCareer}
                                                 onChange={(e) => setEditedCareer(e.target.value)}
                                             />
+                                        ) : (
+                                            usuario.carrera
+                                        )} */}
+                                        {editingUserId === usuario.id ? (
+                                            <select
+                                                className="select_serv"
+                                                value={editedCareer}
+                                                onChange={(e) => setEditedCareer(e.target.value)}
+                                            >
+                                                {especialidades.map(especialidad => (
+                                                    <option key={especialidad.id} value={especialidad.nombre_especialidad}>
+                                                        {especialidad.nombre_especialidad}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         ) : (
                                             usuario.carrera
                                         )}
@@ -430,6 +495,7 @@ export default function TablaUsuarios() {
                                     </ul> */}
                                         {editingUserId === usuario.id ? (
                                             <select
+                                                className="select_serv"
                                                 value={selectedService}
                                                 onChange={(e) => setSelectedService(e.target.value)}
                                             >
@@ -449,8 +515,8 @@ export default function TablaUsuarios() {
                                             <input
                                                 className="input_table_usuario"
                                                 type="text"
-                                                value={editedPhone}
-                                                onChange={(e) => setEditedPhone(e.target.value)}
+                                                value={editedTema}
+                                                onChange={(e) => setEditedTema(e.target.value)}
                                             />
                                         ) : (
                                             usuario.tema
