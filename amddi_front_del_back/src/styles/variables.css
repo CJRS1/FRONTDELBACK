@@ -259,10 +259,20 @@ input {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .asignar_card {
   width: 60%;
+}
+
+.asignar_s_u {
+  width: 800px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .datos_backend_card {
@@ -444,7 +454,7 @@ input {
 }
 
 .input_dni_usuario {
-  width: 400px;
+  width: 200px;
   margin-bottom: 0;
   padding-left: 10px;
 }
@@ -452,8 +462,21 @@ input {
 .asignar_card {
   width: 100%;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: space-around;
   margin-bottom: 20px;
+}
+
+.search_u {
+  margin-top: 20px;
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.usu_e {
+  margin-top: 20px;
 }
 
 .servicio_especialidad {
@@ -467,9 +490,17 @@ input {
   align-items: center;
 }
 
+.se_container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .servicios_c {
   margin-top: 30px;
-  min-width: 1000px;
+  width: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -478,7 +509,7 @@ input {
 
 .especialidad_c {
   margin-top: 30px;
-  min-width: 1000px;
+  width: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -487,7 +518,7 @@ input {
 
 .ingresar_soe {
   margin-top: 20px;
-  width: 70%;
+  width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -495,7 +526,7 @@ input {
 
 .input_soe {
   margin-bottom: 0;
-  width: 400px;
+  width: 250px;
   padding-left: 10px;
 }
 
@@ -531,11 +562,30 @@ th {
 }
 
 .input_asignar_servicio {
-  width: 650px;
+  width: 500px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
+}
+
+table {
+  margin-top: 15px !important;
+}
+
+.asesor_c {
+  margin-top: 10px;
+  width: 500px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.subirarchivo_c {
+  margin-top: 15px;
+  width: 500px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .asignar_servicio {
@@ -545,7 +595,7 @@ th {
 .input_asignar_servicio_select {
   border: 3px solid #00d799;
   border-radius: 5px;
-  width: 400px;
+  width: 250px;
   height: 45px;
   padding-left: 5px;
   padding-right: 10px;

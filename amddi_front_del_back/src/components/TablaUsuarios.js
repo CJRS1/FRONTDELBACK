@@ -18,6 +18,7 @@ export default function TablaUsuarios() {
 
     const [editingService, setEditingService] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
+    const [selectedEstado, setSelectedEstado] = useState(null);
     // const [selectedEspecialidad, setSelectedEspecialidad] = useState(null);
 
     const [servicios, setServicios] = useState([]);
@@ -37,8 +38,10 @@ export default function TablaUsuarios() {
     const [editedTema, setEditedTema] = useState("");
     const [editedEmail, setEditedEmail] = useState("");
     const [editedPDF_URL, setEditedPDF_URL] = useState("");
-    const [editedMontoPagado, setEditedMontoPagado] = useState(0.0);
+    // const [editedMontoPagado, setEditedMontoPagado] = useState(0.0);
     const [editedMontoTotal, setEditedMontoTotal] = useState(0.0);
+
+    const [editedDDate, setEditedDDate] = useState("");
 
 
     useEffect(() => {
@@ -96,9 +99,12 @@ export default function TablaUsuarios() {
             setEditedEmail(userToEdit.email);
             setEditedTema(userToEdit.tema);
             setEditedPDF_URL(userToEdit.pdf_url);
-            setEditedMontoPagado(userToEdit.monto_pagado);
+            setEditedDDate(userToEdit.fecha_estimada);
+            // setEditedMontoPagado(userToEdit.monto_pagado);
             setEditedMontoTotal(userToEdit.monto_total);
             setSelectedService(userToEdit.usuario_servicio[0]?.servicio.id || null);
+
+            // setSelectedEstado(userToEdit.usuario_servicio[0]?.servicio.id || null);
         }
         setEditingService(true);
         console.log(editingService);
@@ -116,11 +122,13 @@ export default function TablaUsuarios() {
         setEditedDNI("");
         setEditedPhone("");
         setEditedPDF_URL("");
-        setEditedMontoPagado(0.0);
+        // setEditedMontoPagado(0.0);
         setEditedMontoTotal(0.0);
+        setEditedDDate("");
 
         // Limpiamos el servicio seleccionado al cancelar
         setSelectedService(null);
+        setSelectedEstado(null);
         // setSelectedEspecialidad(null);
 
         // Desactivamos la edición del servicio
@@ -140,12 +148,13 @@ export default function TablaUsuarios() {
                 email: editedEmail,
                 celular: editedPhone,
                 tema: editedTema,
+                fecha_estimada: editedDDate,
                 // pdf_url: editedPDF_URL,
                 // monto_pagado: editedMontoPagado,
                 monto_total: editedMontoTotal,
             };
 
-            console.log("hola",usuarioData); 
+            console.log("hola", usuarioData);
 
             const usuarioRes = await axios.put(`http://localhost:5000/usuarios/${id}`, usuarioData);
             console.log('Usuario actualizado:', usuarioRes.data.message);
@@ -545,22 +554,35 @@ export default function TablaUsuarios() {
                                         </ul>
                                     </td>
                                     <td>
-                                        {usuario.asignacion.map(usuAse => (
-                                            <li key={usuAse.id}>
-                                                {usuAse.estado.id}
-                                                <br />
-                                                {usuAse.estado.estado}
-                                                {/* {usuAse.asesor.apePat} */}
-                                            </li>
-                                        ))}
+                                        {editingUserId === usuario.id ? (
+                                            <select
+                                                className="select_serv"
+                                                value={selectedEstado}
+                                                onChange={(e) => setSelectedEstado(e.target.value)}
+                                            >
+                                                {usuario.asignacion.map(usuAse => (
+                                                    <option key={usuAse.id} value={usuAse.id}>
+                                                        {usuAse.estado.estado}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        ) : (
+                                            <ul>
+                                                {usuario.asignacion.map(usuAse => (
+                                                    <li key={usuAse.id}>
+                                                        {usuAse.estado.estado}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
                                     </td>
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
                                                 className="input_table_usuario"
                                                 type="text"
-                                                value={editedMontoTotal}
-                                                onChange={(e) => setEditedMontoTotal(e.target.value)}
+                                                value={editedDDate}
+                                                onChange={(e) => setEditedDDate(e.target.value)}
                                             />
                                         ) : (
                                             usuario.fecha_estimada

@@ -122,6 +122,8 @@ export default function Asignar() {
             <div className="asinar_asesor_container">
                 <div className="asignar_card">
                     <h3>Coloque el DNI del usuario:</h3>
+                    <div className="asesor_c">
+
                     <input
                         type="text"
                         className="input_dni_usuario"
@@ -131,6 +133,7 @@ export default function Asignar() {
                     />
                     <button className="button_backend_filtro" onClick={() => buscarUsuarioPorDNI(dniInput)}>Buscar</button>
                     <button className="button_backend_filtro" onClick={() => setusuarioporDNI([])}>Limpiar</button>
+                    </div>
                 </div>
                 <h3>Usuario Encontrado</h3>
                 <table className="table">
