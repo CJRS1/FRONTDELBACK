@@ -19,7 +19,6 @@ export default function TablaUsuarios() {
     const [editingService, setEditingService] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
     const [selectedEstado, setSelectedEstado] = useState(null);
-    // const [selectedEspecialidad, setSelectedEspecialidad] = useState(null);
 
     const [servicios, setServicios] = useState([]);
     const [especialidades, setEspecialidades] = useState([]);
@@ -38,11 +37,14 @@ export default function TablaUsuarios() {
     const [editedTema, setEditedTema] = useState("");
     const [editedEmail, setEditedEmail] = useState("");
     const [editedPDF_URL, setEditedPDF_URL] = useState("");
-    // const [editedMontoPagado, setEditedMontoPagado] = useState(0.0);
+
     const [editedMontoTotal, setEditedMontoTotal] = useState(0.0);
 
     const [editedDDate, setEditedDDate] = useState("");
 
+    const [montoEditado, setMontoEditado] = useState([]);
+
+    console.log("elmonto", montoEditado)
 
     useEffect(() => {
         async function fetchServicios() {
@@ -103,6 +105,7 @@ export default function TablaUsuarios() {
             // setEditedMontoPagado(userToEdit.monto_pagado);
             setEditedMontoTotal(userToEdit.monto_total);
             setSelectedService(userToEdit.usuario_servicio[0]?.servicio.id || null);
+            setMontoEditado(userToEdit.monto_pagado);
 
             // setSelectedEstado(userToEdit.usuario_servicio[0]?.servicio.id || null);
         }
@@ -135,13 +138,15 @@ export default function TablaUsuarios() {
         setEditingService(false);
     };
 
+
+
     const handleOk = async (id) => {
         try {
             // Actualiza el usuario
             const usuarioData = {
                 nombre: editedUserName,
                 apePat: editedLastName,
-                // apeMat: editedSLastName,
+                apeMat: editedSLastName,
                 departamento: editedDepartment,
                 carrera: editedCareer,
                 dni: editedDNI,
@@ -158,19 +163,44 @@ export default function TablaUsuarios() {
 
             const usuarioRes = await axios.put(`http://localhost:5000/usuarios/${id}`, usuarioData);
             console.log('Usuario actualizado:', usuarioRes.data.message);
-            window.location.reload();
+            // window.location.reload();
             // Actualiza el servicio si se ha seleccionado uno nuevo
             if (selectedService !== null) {
                 const servicioData = {
                     id_servicio: selectedService,
                 };
-
                 const servicioRes = await axios.put(`http://localhost:5000/usuario_servicio/${id}/${selectedService}`, servicioData);
                 console.log('Servicio actualizado:', servicioRes.data.message);
             }
 
+            if (montoEditado !== null) {
+                const monto_pagado = montoEditado.map((montoEditadoObj, index) => ({
+                    // index, 
+                    monto: montoEditadoObj.monto_pagado,
+                    fecha: montoEditadoObj.fecha_pago,
+                }));
+                console.log("holaaaa", monto_pagado)
+
+                const res = await axios.put(`http://localhost:5000/monto_pagado/${id}`, {
+                    monto_pagado: monto_pagado,
+                });
+                console.log("Monto pago", res.data.message);
+            }
+            console.log("elasesorp", asesorPrincipal);
+            if (asesorPrincipal !== "") {
+                const data = {
+                    id_usuario: id,
+                    id_asesor: asesorPrincipal
+                }
+                console.log(data);
+                const res = await axios.put(`http://localhost:5000/asignaciones`,
+                    data
+                );
+                console.log("la data", res.data.message)
+            }
+
             setEditingUserId(null);
-            // window.location.reload();
+            window.location.reload();
         } catch (error) {
             console.error('Error al actualizar usuario o servicio:', error);
         }
@@ -194,6 +224,30 @@ export default function TablaUsuarios() {
         }
 
         fetchUsuariosConServicios();
+    }, []);
+
+    const [asesores, setAsesores] = useState([]); // Utiliza useState para inicializar asesores como un arreglo vacío
+    console.log(asesores);
+    const [asesorPrincipal, setAsesorPrincipal] = useState(""); // Utiliza useState
+    const [asesorSecundario, setAsesorSecundario] = useState([]); // Utiliza useState
+
+    console.log("xd",selectedService)
+    console.log("los asesores secundarios", asesorSecundario);
+    useEffect(() => {
+        async function fetchAsesores() {
+            try {
+                const res = await axios.get('http://localhost:5000/asesores');
+                console.log(res.data.message);
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    console.log('Asesores:', res.data.content);
+                    setAsesores(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching asesores:', error);
+            }
+        }
+
+        fetchAsesores();
     }, []);
 
 
@@ -353,7 +407,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedSLastName}
-                                                onChange={(e) => setEditedLastName(e.target.value)}
+                                                onChange={(e) => setEditedSLastName(e.target.value)}
                                             />
                                         ) : (
                                             usuario.apeMat
@@ -373,17 +427,6 @@ export default function TablaUsuarios() {
                                         )}
                                     </td>
                                     <td>
-                                        {/* {editingUserId === usuario.id ? (
-                                            <input
-
-                                                className="input_table_usuario"
-                                                type="text"
-                                                value={editedCareer}
-                                                onChange={(e) => setEditedCareer(e.target.value)}
-                                            />
-                                        ) : (
-                                            usuario.carrera
-                                        )} */}
                                         {editingUserId === usuario.id ? (
                                             <select
                                                 className="select_serv"
@@ -460,28 +503,51 @@ export default function TablaUsuarios() {
                                         )}
                                     </td>
                                     <td>
-                                        {/* {editingUserId === usuario.id ? (
-                                            <input
-                                                className="input_table_usuario"
-                                                type="text"
-                                                value={editedMontoPagado}
-                                                onChange={(e) => setEditedMontoPagado(e.target.value)}
-                                            />
-                                        ) : (
-                                            usuario.monto_pagado[0].monto_pagado 
-                                        )} */}
-                                        {usuario.monto_pagado.length > 0 ? (
-                                            usuario.monto_pagado.map((monto, index) => (
-                                                <div key={index}>
-                                                    Monto: {monto.monto_pagado}
-                                                    <br />
-                                                    Fecha: {monto.fecha_pago}
-                                                </div>
-                                            ))
-                                        ) : (
-                                            'No disponible'
-                                        )}
+                                        {usuario.monto_pagado.map((monto, index) => (
+                                            <div key={index}>
+                                                {editingUserId === usuario.id ? (
+                                                    <div>
+                                                        <input
+                                                            className="input_table_usuario"
+                                                            type="text"
+                                                            value={montoEditado[index].monto_pagado}
+                                                            onChange={(e) =>
+                                                                setMontoEditado((prevMontoEditado) => {
+                                                                    const updatedMontoEditado = [...prevMontoEditado];
+                                                                    updatedMontoEditado[index] = {
+                                                                        ...updatedMontoEditado[index],
+                                                                        monto_pagado: e.target.value
+                                                                    };
+                                                                    return updatedMontoEditado;
+                                                                })}
+
+                                                        />
+                                                        <input
+                                                            className="input_table_usuario"
+                                                            type="text"
+                                                            value={montoEditado[index].fecha_pago}
+                                                            onChange={(e) => setMontoEditado((prevMontoEditado) => {
+                                                                const updatedMontoEditado = [...prevMontoEditado];
+                                                                updatedMontoEditado[index] = {
+                                                                    ...updatedMontoEditado[index],
+                                                                    fecha_pago: e.target.value
+                                                                };
+                                                                return updatedMontoEditado;
+                                                            })}
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <div>
+                                                        Monto: {monto.monto_pagado}
+                                                        <br />
+                                                        Fecha: {monto.fecha_pago}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+
                                     </td>
+
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
@@ -495,19 +561,13 @@ export default function TablaUsuarios() {
                                         )}
                                     </td>
                                     <td>
-                                        {/* <ul>
-                                        {usuario.usuario_servicio.map(usuServ => (
-                                            <li key={usuServ.id}>
-                                                {usuServ.servicio.nombre_servicio}
-                                            </li>
-                                        ))}
-                                    </ul> */}
                                         {editingUserId === usuario.id ? (
                                             <select
                                                 className="select_serv"
                                                 value={selectedService}
                                                 onChange={(e) => setSelectedService(e.target.value)}
                                             >
+                                               
                                                 {servicios.map(servicio => (
                                                     <option key={servicio.id} value={servicio.id}>
                                                         {servicio.nombre_servicio}
@@ -532,27 +592,108 @@ export default function TablaUsuarios() {
                                         )}
                                     </td>
                                     <td>
-                                        <ul>
-                                            {usuario.asignacion.map(usuAse => (
-                                                <li key={usuAse.id}>
-                                                    {usuAse.asesor.nombre}
-                                                    <br />
-                                                    {usuAse.asesor.apePat}
-                                                </li>
-                                            ))}
-                                        </ul>
+                                        {editingUserId === usuario.id ? (
+                                            <select
+                                                className="select_serv"
+                                                value={asesorPrincipal}
+                                                onChange={(e) => setAsesorPrincipal(e.target.value)}
+                                            >
+                                                {/* <option value="">Seleccione un asesor</option> */}
+                                                {asesores.map(asesor => (
+                                                    <option key={asesor.id} value={asesor.id}>
+                                                        {asesor.nombre} {asesor.apePat}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        ) : (
+                                            <ul>
+                                                {usuario.asignacion.map(usuAse => (
+                                                    <li key={usuAse.id}>
+                                                        {usuAse.asesor.nombre}
+                                                        <br />
+                                                        {usuAse.asesor.apePat}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
                                     </td>
+                                    {/* <td>
+                                        {editingUserId === usuario.id ? (
+                                            <>
+                                                {usuario.asignacion_secundaria.map((asesorSecundario) => (
+                                                    <select
+                                                        key={asesorSecundario.id}
+                                                        className="select_serv"
+                                                        value={asesorSecundario[asesorSecundario] || ''}
+                                                        onChange={(e) => {
+                                                            const selectedId = e.target.value;
+                                                            setAsesorSecundario((prevState) => ({
+                                                                ...prevState,
+                                                                [asesorSecundario]: selectedId,
+                                                            }));
+                                                        }}
+                                                    >
+                                                        <option value="">Seleccione un asesor</option>
+                                                        {asesores.map((asesor) => (
+                                                            <option key={asesor.id} value={asesor.id}>
+                                                                {asesor.nombre} {asesor.apePat}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                ))}
+                                            </>
+                                        ) : (
+                                            <ul>
+                                                {usuario.asignacion_secundaria.map((usuAseSec) => (
+                                                    <li key={usuAseSec.id}>
+                                                        {usuAseSec.asesor.nombre}
+                                                        <br />
+                                                        {usuAseSec.asesor.apePat}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </td> */}
                                     <td>
-                                        <ul>
-                                            {usuario.asignacion_secundaria.map(usuAse => (
-                                                <li key={usuAse.id}>
-                                                    {usuAse.asesor.nombre}
-                                                    <br />
-                                                    {usuAse.asesor.apePat}
-                                                </li>
-                                            ))}
-                                        </ul>
+                                        {editingUserId === usuario.id ? (
+                                            <>
+                                                {usuario.asignacion_secundaria.map((asesorSecundario) => (
+                                                    <select
+                                                        key={asesorSecundario.id}
+                                                        className="select_serv"
+                                                        value={asesorSecundario}
+                                                        onChange={(e) => {
+                                                            const selectedId = e.target.value;
+                                                            setAsesorSecundario((prevState) => ({
+                                                                ...prevState,
+                                                                [asesorSecundario.id]: selectedId,
+                                                            }));
+                                                        }}
+                                                    >
+                                                        {/* <option value="">Seleccione un asesor</option> */}
+                                                        {asesores.map((asesor) => (
+                                                            <option key={asesor.id} value={asesor.id}>
+                                                                {asesor.nombre} {asesor.apePat}
+                                                                <hr />
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                ))}
+                                            </>
+                                        ) : (
+                                            <ul>
+                                                {usuario.asignacion_secundaria.map((usuAseSec) => (
+                                                    <li key={usuAseSec.id}>
+                                                        {usuAseSec.asesor.nombre}
+                                                        <br />
+                                                        {usuAseSec.asesor.apePat}
+                                                        <hr />
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
                                     </td>
+
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <select
