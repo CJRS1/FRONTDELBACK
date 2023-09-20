@@ -19,27 +19,34 @@ export default function NavBarLat() {
     // const primeraLetraA = parsedData?.apePat?.charAt(0) || '';
     // const email = parsedData?.email || '';
 
-    const [navClass, setNavClass] = useState('navbar_header_container');
-    const [opcionesClass, setOpcionesClass] = useState('opciones_backend');
-    const [imgClass, setImgClass] = useState('img_navlat');
-    const [imgClass1, setImgClass1] = useState('img_navlat1');
-    const [nameClass, setNameClass] = useState('name_text');
-    const [imgNext, setImgNext] = useState('btn_left_right hidden');
-    const [imgPrev, setImgPrev] = useState('btn_left_right ');
-    const [linkClass, setLinkClass] = useState('Link_anc');
+    // const [navClass, setNavClass] = useState('navbar_header_container');
+    // const [opcionesClass, setOpcionesClass] = useState('opciones_backend');
+    // const [imgClass, setImgClass] = useState('img_navlat');
+    // const [imgClass1, setImgClass1] = useState('img_navlat1');
+    // const [nameClass, setNameClass] = useState('name_text');
+    // const [imgNext, setImgNext] = useState('btn_left_right hidden');
+    // const [imgPrev, setImgPrev] = useState('btn_left_right ');
+    // const [linkClass, setLinkClass] = useState('Link_anc');
+    const [navClass, setNavClass] = useState('navbar_header_container minimized');
+    const [opcionesClass, setOpcionesClass] = useState('opciones_backend hidden');
+    const [imgClass, setImgClass] = useState('img_navlat hidden');
+    const [imgClass1, setImgClass1] = useState('img_navlat block');
+    const [nameClass, setNameClass] = useState('name_text block');
+    const [imgNext, setImgNext] = useState('btn_left_right block');
+    const [imgPrev, setImgPrev] = useState('btn_left_right hidden ');
+    const [linkClass, setLinkClass] = useState('Link_anc center');
 
     // Función para manejar el clic en el botón de minimizar/mostrar
     const handleToggleNav = () => {
-        if (navClass === 'navbar_header_container') {
-            setNavClass('navbar_header_container minimized');
-            setOpcionesClass('opciones_backend hidden');
-            setImgClass('img_navlat hidden');
-            setImgClass1('img_navlat block');
-            setNameClass('name_text block');
-            setImgPrev('btn_left_right hidden');
-            setImgNext('btn_left_right block');
-            setLinkClass('Link_anc center');
-        } else {
+        if (navClass === 'navbar_header_container minimized') {
+            // setNavClass('navbar_header_container minimized');
+            // setOpcionesClass('opciones_backend hidden');
+            // setImgClass('img_navlat hidden');
+            // setImgClass1('img_navlat block');
+            // setNameClass('name_text block');
+            // setImgPrev('btn_left_right hidden');
+            // setImgNext('btn_left_right block');
+            // setLinkClass('Link_anc center');
             setNavClass('navbar_header_container');
             setOpcionesClass('opciones_backend');
             setImgClass('img_navlat');
@@ -48,6 +55,23 @@ export default function NavBarLat() {
             setImgPrev('btn_left_right')
             setImgNext('btn_left_right hidden');
             setLinkClass('Link_anc');
+        } else {
+            // setNavClass('navbar_header_container');
+            // setOpcionesClass('opciones_backend');
+            // setImgClass('img_navlat');
+            // setImgClass1('img_navlat1');
+            // setNameClass('name_text');
+            // setImgPrev('btn_left_right')
+            // setImgNext('btn_left_right hidden');
+            // setLinkClass('Link_anc');
+            setNavClass('navbar_header_container minimized');
+            setOpcionesClass('opciones_backend hidden');
+            setImgClass('img_navlat hidden');
+            setImgClass1('img_navlat block');
+            setNameClass('name_text block');
+            setImgPrev('btn_left_right hidden');
+            setImgNext('btn_left_right block');
+            setLinkClass('Link_anc center');
         }
     };
 

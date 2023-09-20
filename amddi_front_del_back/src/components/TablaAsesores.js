@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
+import Select from 'react-select';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/variables.css';
@@ -24,12 +25,32 @@ export default function TablaAsesores() {
     const [editedDNI, setEditedDNI] = useState("");
     const [editedEmail, setEditedEmail] = useState("");
 
+    const [especialidades, setEspecialidades] = useState({ content: [] });
+    const [selectedEspecialidades, setSelectedEspecialidades] = useState([]);
+
+    useEffect(() => {
+        const obtenerEspecialidades = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/especialidades");
+                const data = await response.json();
+                setEspecialidades(data);
+            } catch (error) {
+                console.error("Error al obtener las especialidades:", error);
+            }
+        };
+
+        obtenerEspecialidades();
+    }, []);
+
     const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(1);
 
     const handleEditar = (id) => {
         setEditingAsesorId(id);
+        console.log('el id es',id);
         const asesorToEdit = AsesorConUsuario.find(aseUsu => aseUsu.id === id);
+        const espe = especialidades;
+        console.log("lasespeeeeee",espe);
         if (asesorToEdit) {
             setEditedAsesorName(asesorToEdit.nombre);
             setEditedLastName(asesorToEdit.apePat);
@@ -37,6 +58,23 @@ export default function TablaAsesores() {
             setEditedDNI(asesorToEdit.dni);
             setEditedEmail(asesorToEdit.email);
         }
+
+        // const especialidadesSeleccionadas = AsesorConUsuario[id].asesor_especialidad.map(especialidad => ({
+        //     value: especialidad.id_especialidad,
+        //     label: espe.content[especialidad.id_especialidad].nombre_especialidad
+        // }));
+        console.log(asesorToEdit);
+        const especialidadesSeleccionadas = asesorToEdit.asesor_especialidad.map(especialidad => {
+            const especialidadEncontrada = espe.content.find(espe => espe.id === especialidad.id_especialidad);
+            return {
+                value: especialidad.id_especialidad,
+                label: especialidadEncontrada ? especialidadEncontrada.nombre_especialidad : 'Especialidad no encontrada'
+            };
+        });
+        console.log("laespe",especialidadesSeleccionadas);
+        
+        // Actualizar selectedEspecialidades con las especialidades del asesor
+        setSelectedEspecialidades(especialidadesSeleccionadas);
     };
 
     const handleCancelar = () => {
@@ -46,6 +84,7 @@ export default function TablaAsesores() {
         setEditedSLastName("");
         setEditedDNI("");
         setEditedEmail("");
+        setSelectedEspecialidades([]);
     };
 
     const handleOk = async (id) => {
@@ -135,6 +174,15 @@ export default function TablaAsesores() {
     const endIndex = startIndex + itemsPerPage;
     const currentData = AsesorConUsuario.slice(startIndex, endIndex);
 
+    const [aseEsp, setAseEsp] = useState({ asesor_especialidad: [] });
+
+    const handleEditarEspecialidades = (selectedOptions) => {
+        // Crear una nueva lista de especialidades seleccionadas
+        console.log(selectedOptions);
+        setSelectedEspecialidades(selectedOptions);
+    };
+
+
     return (
         <div className="tabla_asesores">
             <div className="franja_verd">
@@ -161,7 +209,8 @@ export default function TablaAsesores() {
                             <th>Email</th>
                             <th>DNI</th>
                             <th>Especialidad</th>
-                            <th>Asesorados</th>
+                            <th>Asesorados <br /> como Principal</th>
+                            <th>Asesorados <br /> como Secundario</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -245,11 +294,31 @@ export default function TablaAsesores() {
                                     </td>
                                     <td>
                                         <ul>
-                                            {asesor.asesor_especialidad.map(AseEsp => (
-                                                <li key={AseEsp.id}>
-                                                    {AseEsp.especialidad.nombre_especialidad}
-                                                </li>
-                                            ))}
+                                            {editingAsesorId === asesor.id ? (
+                                                <Select
+                                                    isMulti={true}
+                                                    options={especialidades.content ? especialidades.content.map(especialidad => ({
+                                                        value: especialidad.id,
+                                                        label: especialidad.nombre_especialidad
+                                                    })) : []}
+                                                    // value={asesor.asesor_especialidad ? asesor.asesor_especialidad.map(AseEsp => ({
+                                                    //     value: AseEsp.especialidad.id,
+                                                    //     label: AseEsp.especialidad.nombre_especialidad
+                                                    // })) : []}
+                                                    value ={selectedEspecialidades}
+                                                    onChange={handleEditarEspecialidades}
+                                                    className="custom-select"
+                                                    placeholder="Seleccione sus especialidades"
+                                                    noOptionsMessage={() => "No hay opciones disponibles"}
+                                                />
+                                            ) : (
+                                                asesor.asesor_especialidad.map(AseEsp => (
+                                                    <li key={AseEsp.id}>
+                                                        {AseEsp.especialidad.nombre_especialidad}
+                                                    </li>
+                                                ))
+                                            )}
+
                                         </ul>
                                     </td>
                                     <td>

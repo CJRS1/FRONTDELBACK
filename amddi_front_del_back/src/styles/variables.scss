@@ -156,7 +156,12 @@ input {
     width: 100%;
     height: 40px;
     border-radius: 6px;
+    text-align: center;
 
+}
+
+.button_pdf{
+    margin: 5px 0 5px 0;
 }
 
 .regisasesor_container_a{
@@ -378,7 +383,6 @@ input {
     padding-left: 70px;
     height: 135vh;
     min-width: 2000px;
-    // width: 5000px !important;
     background: white;
     display: flex;
     flex-direction: column;
@@ -390,7 +394,7 @@ input {
 .tabla_usuario_container {
     margin-top: 20px;
     // padding-left: 200px;
-    // width: 100%;
+    // width: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -612,6 +616,10 @@ th {
 
 .select_serv{
     width: 100px;
+    margin-bottom: 20px;
+    border: 3px solid #00d799;
+    border-radius: 5px;
+    height: 30px;
 }
 
 .input_asignar_servicio {
@@ -683,4 +691,20 @@ table{
     margin-bottom: 10px;
     width: 400px;
     padding-left: 10px;
+}
+
+.ase_eli{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 5px;
+}
+
+.xdd{
+    padding-top: 3px;
+    padding-left: 1.5px;
+    width: 159px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
 }
