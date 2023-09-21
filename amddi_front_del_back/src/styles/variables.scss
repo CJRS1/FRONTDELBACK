@@ -1,6 +1,7 @@
 body {
     background: white;
     min-height: 100vh !important;
+
 }
 
 ul {
@@ -148,7 +149,11 @@ li {
     display: block !important;
 }
 
-
+.input_subir_t{
+    padding-top: 2px;
+    padding-left: 5px;
+    width: 360px;
+}
 
 input {
     border: 3px solid #00d799;
@@ -160,8 +165,39 @@ input {
 
 }
 
+
 .button_pdf{
     margin: 5px 0 5px 0;
+}
+
+.confirm-dialog{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    width: 300px;
+    margin-left: 0;
+}
+
+.btn_confirm_container{
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn_confirmacion{
+    background: #00d799;
+    border-radius: 3px;
+    padding: 5px 10px 5px 10px;
+}
+
+.btn_negacion{
+    background: red;
+    border-radius: 3px;
+    padding: 5px 10px 5px 10px;
+}
+
+.asignar_container_btn{
+    width: 300px;
 }
 
 .regisasesor_container_a{
@@ -411,8 +447,12 @@ input {
     justify-content: space-around !important;
 }
 
+.filtro_usuarios{
+    width: 600px !important;
+}
+
 .input_filtro {
-    width: 800px;
+    width: 300px;
     margin-bottom: 0;
     padding-left: 10px;
 }
@@ -708,3 +748,86 @@ table{
     justify-content: center;
     margin-bottom: 0;
 }
+
+.asesorado_container{
+    height: 100vh;
+    padding-left: 100px;
+    width: calc(100vw - 100px) !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    .franja_ancho{
+        width: calc(100vw - 100px);
+        margin-left: 100px;
+        height: 100px;
+    }
+
+    .slider_container_asesorado{
+        margin-left: 70px;
+    }
+    
+    .asesorado_card{
+        margin-top: 50px;
+        width: 100% !important;
+        display: flex !important;
+        // flex-direction: column;
+        justify-content: center;
+        align-content: center;
+    }
+    .slick-list{
+        width: 1200px !important;
+        padding: 0 0 0 50px !important;
+        // margin-left: 100px;
+    }
+    .slick-slide{
+        width: 500px;
+        min-height: 550px;
+        display: flex;
+
+    }
+    .info_asesorado_card{
+        width: 350px;
+        // height: 50px;
+        // background: green;
+        border: 1px solid black ;
+        display: flex;
+        align-items: center;
+        h4{
+            font-size: 18px !important;
+            margin-bottom: 0 !important;
+        }
+    }
+    .info_asesorado_card_column{
+        flex-direction: column;
+    }
+    .form_asesorado{
+        width: 70%;
+        min-height: 30px;
+        padding-left: 20px;
+        display: flex;
+        align-items: center;
+    }
+    .form_asesorado1{
+        width: 30%;
+        min-height: 30px;
+        padding-left: 20px;
+        display: flex;
+        align-items: center;
+    }
+    .form_asesorado2{
+        width: 100%;
+        min-height: 30px;
+        padding-left: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .input_asesorado{
+        width: 163px;
+        padding-left: 4px;
+        padding-top: 3px;
+    }
+}
+

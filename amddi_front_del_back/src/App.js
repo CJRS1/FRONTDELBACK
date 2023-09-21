@@ -14,6 +14,9 @@ import ServicioEspecialidad from './components/ServicioYEspecialidad';
 import AsignarServicio from './components/AsignarServicio';
 import LoginA from './components/Login';
 import AuthGuard from './components/AuthGuard';
+import AsesoradoPrincipal from './components/AsesoradoPrincipal';
+import AsesoradoSecundario from './components/AsesoradoSecundario';
+import AsesoradoFinalizado from './components/AsesoradoFinalizado';
 
 import '../src/styles/variables.css';
 
@@ -38,6 +41,11 @@ function App() {
         <Route path="/servicio_especialidad" element={<ServicioEspecialidad />} />
         <Route path="/registrar_asesor" element={<RegistrarAsesor />} />
         <Route path="/subir_archivo" element={<SubirArchivo />} />
+
+        <Route path="/asesorado_principal" element={<AsesoradoPrincipal />} />
+        <Route path="/asesorado_secundario" element={<AsesoradoSecundario />} />
+        <Route path="/asesorado_finalizado" element={<AsesoradoFinalizado/>} />
+        
       </Routes>
       </AuthGuard>
 

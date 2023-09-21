@@ -11,22 +11,6 @@ export default function NavBarLat() {
         window.scrollTo(0, 0);
     }, [location]);
 
-    // const storedData = localStorage.getItem('data');
-    // const parsedData = storedData ? JSON.parse(storedData) : null;
-
-
-    // const primeraLetraN = parsedData?.nombre?.charAt(0) || '';
-    // const primeraLetraA = parsedData?.apePat?.charAt(0) || '';
-    // const email = parsedData?.email || '';
-
-    // const [navClass, setNavClass] = useState('navbar_header_container');
-    // const [opcionesClass, setOpcionesClass] = useState('opciones_backend');
-    // const [imgClass, setImgClass] = useState('img_navlat');
-    // const [imgClass1, setImgClass1] = useState('img_navlat1');
-    // const [nameClass, setNameClass] = useState('name_text');
-    // const [imgNext, setImgNext] = useState('btn_left_right hidden');
-    // const [imgPrev, setImgPrev] = useState('btn_left_right ');
-    // const [linkClass, setLinkClass] = useState('Link_anc');
     const [navClass, setNavClass] = useState('navbar_header_container minimized');
     const [opcionesClass, setOpcionesClass] = useState('opciones_backend hidden');
     const [imgClass, setImgClass] = useState('img_navlat hidden');
@@ -39,14 +23,6 @@ export default function NavBarLat() {
     // Función para manejar el clic en el botón de minimizar/mostrar
     const handleToggleNav = () => {
         if (navClass === 'navbar_header_container minimized') {
-            // setNavClass('navbar_header_container minimized');
-            // setOpcionesClass('opciones_backend hidden');
-            // setImgClass('img_navlat hidden');
-            // setImgClass1('img_navlat block');
-            // setNameClass('name_text block');
-            // setImgPrev('btn_left_right hidden');
-            // setImgNext('btn_left_right block');
-            // setLinkClass('Link_anc center');
             setNavClass('navbar_header_container');
             setOpcionesClass('opciones_backend');
             setImgClass('img_navlat');
@@ -56,14 +32,6 @@ export default function NavBarLat() {
             setImgNext('btn_left_right hidden');
             setLinkClass('Link_anc');
         } else {
-            // setNavClass('navbar_header_container');
-            // setOpcionesClass('opciones_backend');
-            // setImgClass('img_navlat');
-            // setImgClass1('img_navlat1');
-            // setNameClass('name_text');
-            // setImgPrev('btn_left_right')
-            // setImgNext('btn_left_right hidden');
-            // setLinkClass('Link_anc');
             setNavClass('navbar_header_container minimized');
             setOpcionesClass('opciones_backend hidden');
             setImgClass('img_navlat hidden');
@@ -76,18 +44,18 @@ export default function NavBarLat() {
     };
 
     const handleLogout = async () => {
-        try{
+        try {
             const res = await axios.post('http://localhost:5000/logoutA');
             console.log(res.data);
             localStorage.removeItem('data');
             localStorage.removeItem('token');
             navigate("/login_a")
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
     }
 
-    const [userData, setUserData] = useState(null); 
+    const [userData, setUserData] = useState(null);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -103,13 +71,13 @@ export default function NavBarLat() {
                     Authorization: `Bearer ${token}`
                 }
             })
-            .then(response => {
-                console.log(response.data.content);
-                setUserData(response.data.content); // Almacena los datos del usuario en el estado
-            })
-            .catch(error => {
-                console.log(error);
-            });
+                .then(response => {
+                    console.log(response.data.content);
+                    setUserData(response.data.content); // Almacena los datos del usuario en el estado
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }, [location]);
 
@@ -147,14 +115,14 @@ export default function NavBarLat() {
             <hr />
             <nav className="navlat_container">
                 <ul className="navlat_list">
-                    <li>
+                    {/* <li>
                         <Link to="" className={linkClass}>
                             <svg className="icon bi bi-house-door-fill" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z" />
                             </svg>
                             <h5 className={opcionesClass} >Inicio</h5>
                         </Link>
-                    </li>
+                    </li> */}
                     <li>
                         <Link to="/registrar_asesor" className={linkClass}>
                             <svg className="icon bi bi-person-fill-add" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
@@ -217,6 +185,31 @@ export default function NavBarLat() {
                         </Link>
                     </li>
                     <li>
+                        <Link to="/asesorado_principal" className={linkClass}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-hearts" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11.5 1.246c.832-.855 2.913.642 0 2.566-2.913-1.924-.832-3.421 0-2.566ZM9 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-9 8c0 1 1 1 1 1h10s1 0 1-1-1-4-6-4-6 3-6 4Zm13.5-8.09c1.387-1.425 4.855 1.07 0 4.277-4.854-3.207-1.387-5.702 0-4.276ZM15 2.165c.555-.57 1.942.428 0 1.711-1.942-1.283-.555-2.281 0-1.71Z" />
+                            </svg>
+                            <h5 className={opcionesClass} >Asesorados Principales</h5>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/asesorado_secundario" className={linkClass}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-heart" viewBox="0 0 16 16">
+                                <path d="M9 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-9 8c0 1 1 1 1 1h10s1 0 1-1-1-4-6-4-6 3-6 4Zm13.5-8.09c1.387-1.425 4.855 1.07 0 4.277-4.854-3.207-1.387-5.702 0-4.276Z" />
+                            </svg>
+                            <h5 className={opcionesClass} >Asesorados Secundarios</h5>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/asesorado_finalizado" className={linkClass}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-arms-up" viewBox="0 0 16 16">
+                                <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
+                                <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.81 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.492 1.492 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.72.72 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.72.72 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z" />
+                            </svg>
+                            <h5 className={opcionesClass} >Asesorados Finalizados</h5>
+                        </Link>
+                    </li>
+                    {/* <li>
                         <Link to="/mi_info" className={linkClass}>
                             <svg className="icon bi bi-info-circle" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -224,7 +217,7 @@ export default function NavBarLat() {
                             </svg>
                             <h5 className={opcionesClass} >Mi información</h5>
                         </Link>
-                    </li>
+                    </li> */}
                     <li>
                         <Link className={linkClass} onClick={handleLogout}>
                             <svg className="icon bi bi-door-open-fill" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">

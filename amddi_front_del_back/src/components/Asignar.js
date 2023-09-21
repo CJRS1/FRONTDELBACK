@@ -44,7 +44,7 @@ export default function Asignar() {
                     /* SE ORDENA POR ID */
                     console.log('Los asesores con usuarios son:', res.data.content);
                     setAsesorConUsuario(sortedAsesores);
-                    
+
                 }
             } catch (error) {
                 console.error('Error fetching usuarios con servicios:', error);
@@ -66,6 +66,8 @@ export default function Asignar() {
                 try {
                     const resp = await axios.get(`http://localhost:5000/asesor/${res.data.content.carrera}`);
                     console.log("Asesor encontrado:", resp.data);
+
+
 
                     if (resp.data.content && resp.data.content.length > 0) {
                         console.log("Asesores encontrados:", resp.data.content);
@@ -92,26 +94,49 @@ export default function Asignar() {
 
 
     async function asignarUsuarioAsesor(id_usuarios, id_asesor) {
-        console.log(id_asesor, id_usuarios);
-        try {
-            const res = await axios.post(`http://localhost:5000/asignaciones/${id_asesor}/${id_usuarios}`);
-            console.log("Asignación exitosa:", res.data);
-        } catch (error) {
-            console.error("Error al asignar:", error);
+        // console.log(id_asesor, id_usuarios);
+
+        const userConfirmed = window.confirm('¿Estás seguro de realizar esta acción?');
+
+        if (userConfirmed) {
+            // El usuario eligió "Sí", realiza la acción correspondiente aquí
+            try {
+                await axios.post(`http://localhost:5000/asignaciones/${id_asesor}/${id_usuarios}`);
+                // console.log("Asignación exitosa:", res.data);
+                alert("La asignación fue exitosa");
+                // alert(res.data.msg);
+                window.location.reload();
+            } catch (error) {
+                console.error("Error al asignar:", error);
+            }
+        } else {
+            // El usuario eligió "No" o cerró la ventana emergente
+            // Realiza alguna acción en caso de cancelación si es necesario
         }
+
 
     }
 
     async function asignarUsuarioAsesorSec(id_usuarios, id_asesor) {
-        console.log(id_usuarios);
-        try {
-            const res = await axios.post(`http://localhost:5000/asignaciones_sec/${id_asesor}/${id_usuarios}`);
-            console.log("Asignación exitosa:", res.data);
-        } catch (error) {
-            console.error("Error al asignar:", error);
+        const userConfirmed = window.confirm('¿Estás seguro de realizar esta acción?');
+
+        // console.log(id_usuarios);
+        if (userConfirmed) {
+            try {
+                await axios.post(`http://localhost:5000/asignaciones_sec/${id_asesor}/${id_usuarios}`);
+                // console.log("Asignación exitosa:", res.data.msg);
+                alert("La asignación fue exitosa");
+                window.location.reload();
+            } catch (error) {
+                console.error("Error al asignar:", error);
+            }
+        } else {
+            // El usuario eligió "No" o cerró la ventana emergente
+            // Realiza alguna acción en caso de cancelación si es necesario
         }
 
     }
+
 
 
     return (
@@ -124,15 +149,15 @@ export default function Asignar() {
                     <h3>Coloque el DNI del usuario:</h3>
                     <div className="asesor_c">
 
-                    <input
-                        type="text"
-                        className="input_dni_usuario"
-                        value={dniInput}
-                        onChange={(e) => setDniInput(e.target.value)}
-                        placeholder="DNI"
-                    />
-                    <button className="button_backend_filtro" onClick={() => buscarUsuarioPorDNI(dniInput)}>Buscar</button>
-                    <button className="button_backend_filtro" onClick={() => setusuarioporDNI([])}>Limpiar</button>
+                        <input
+                            type="text"
+                            className="input_dni_usuario"
+                            value={dniInput}
+                            onChange={(e) => setDniInput(e.target.value)}
+                            placeholder="DNI"
+                        />
+                        <button className="button_backend_filtro" onClick={() => buscarUsuarioPorDNI(dniInput)}>Buscar</button>
+                        <button className="button_backend_filtro" onClick={() => setusuarioporDNI([])}>Limpiar</button>
                     </div>
                 </div>
                 <h3>Usuario Encontrado</h3>
@@ -141,7 +166,7 @@ export default function Asignar() {
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Apellido Paterno</th>
+                            <th>Apellidos</th>
                             <th>DNI</th>
                             <th>Celular</th>
                             <th>Carrera</th>
@@ -152,7 +177,11 @@ export default function Asignar() {
                             <tr key={usuario.id}>
                                 <td>{usuario.id}</td>
                                 <td>{usuario.nombre}</td>
-                                <td>{usuario.apePat}</td>
+                                <td>
+                                    {usuario.apePat}
+                                    <br />
+                                    {usuario.apeMat}
+                                </td>
                                 <td>{usuario.dni}</td>
                                 <td>{usuario.celular}</td>
                                 <td>{usuario.carrera}</td>
@@ -166,10 +195,9 @@ export default function Asignar() {
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Apellido Paterno</th>
+                            <th>Apellidos</th>
                             <th>Especialidad</th>
                             <th>Asesorados</th>
-                            <th>Escoger</th>
                             <th>Asignar</th>
                         </tr>
                     </thead>
@@ -179,7 +207,9 @@ export default function Asignar() {
                                 <tr key={`${outerIndex}-${asesor.id}`}>
                                     <td>{asesor.id}</td>
                                     <td>{asesor.nombre}</td>
-                                    <td>{asesor.apePat}</td>
+                                    <td>{asesor.apePat}
+                                        <br />
+                                        {asesor.apeMat}</td>
 
                                     <td>
                                         <ul>
@@ -190,27 +220,41 @@ export default function Asignar() {
                                             ))}
                                         </ul>
                                     </td>
-
+                                    {/* console.log("Asesor encontradoxx:", resp.data.content[1].asignacion[0].id_estado); */}
                                     <td>
-                                        <ul>
+                                        {/* <ul>
                                             {asesor.asignacion && asesor.asignacion.map(aseEsp => (
                                                 <li key={aseEsp.id}>
                                                     {aseEsp.usuario.nombre}
+                                                    <br />
+                                                    {aseEsp.usuario.apePat}
+                                                    {aseEsp.id_estado}
+
                                                 </li>
+                                            ))}
+                                        </ul> */}
+                                        <ul>
+                                            {asesor.asignacion.map(aseEsp => (
+                                                aseEsp.id_estado === 1 ? (
+                                                    <li key={aseEsp.id}>
+                                                        {aseEsp.usuario.nombre}
+                                                        <br />
+                                                        {aseEsp.usuario.apePat}
+                                                        {aseEsp.id_estado}
+                                                    </li>
+                                                ) : (
+                                                    <li key={aseEsp.id}></li>
+                                                )
                                             ))}
                                         </ul>
                                     </td>
 
                                     <td>
-                                        <input
-                                            type="checkbox"
-
-
-                                        />
-                                    </td>
-                                    <td>
                                         <button onClick={() => asignarUsuarioAsesor(usuarioporDNI[outerIndex].id, asesor.id)}>
-                                            Asignar
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" class="bi bi-award-fill" viewBox="0 0 16 16">
+                                                <path d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z" />
+                                                <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z" />
+                                            </svg>
                                         </button>
                                     </td>
                                 </tr>
@@ -227,8 +271,8 @@ export default function Asignar() {
                             <th>Nombre</th>
                             <th>Apellido Paterno</th>
                             <th>Especialidad</th>
-                            <th>Asesorados</th>
-                            <th>Escoger</th>
+                            <th>Asesorados como <br /> Principal</th>
+                            <th>Asesorados como <br /> Secundario</th>
                             <th>Asignar</th>
                         </tr>
                     </thead>
@@ -252,18 +296,29 @@ export default function Asignar() {
                                         {asesor.asignacion.map(AseUsu => (
                                             <li key={AseUsu.id}>
                                                 {AseUsu.usuario.nombre}
+                                                <br />
+                                                {AseUsu.usuario.apePat}
                                             </li>
                                         ))}
                                     </ul>
                                 </td>
                                 <td>
-                                    <input
-                                        type="checkbox"
-                                    />
+                                    <ul>
+                                        {asesor.asignacion_secundaria.map(AseUsu => (
+                                            <li key={AseUsu.id}>
+                                                {AseUsu.usuario.nombre}
+                                                <br />
+                                                {AseUsu.usuario.apePat}
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </td>
                                 <td>
                                     <button onClick={() => asignarUsuarioAsesorSec(usuarioporDNI[0].id, asesor.id)}>
-                                        Asignar
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" class="bi bi-award-fill" viewBox="0 0 16 16">
+                                            <path d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z" />
+                                            <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z" />
+                                        </svg>
                                     </button>
                                 </td>
                             </tr>

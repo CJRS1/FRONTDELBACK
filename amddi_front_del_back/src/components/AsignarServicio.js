@@ -69,6 +69,8 @@ export default function MiInformacion() {
             if (res.data.content) {
 
                 console.log(res.data.content);
+                alert("Se asignó el servicio correctamente");
+                window.location.reload();
             } else {
 
             }
