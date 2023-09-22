@@ -241,10 +241,11 @@ export default function TablaUsuarios() {
                 console.log(resP.data.message)
             }
 
-            if (selectedEstado !== "null"){
+            if (selectedEstado !== "null") {
                 const rep = await axios.put(`http://localhost:5000/asignacionesEstados/${id}`,
-                {estado : selectedEstado,
-                })
+                    {
+                        estado: selectedEstado,
+                    })
                 console.log("el estado", rep.data.message)
             }
 
@@ -336,13 +337,19 @@ export default function TablaUsuarios() {
 
     const handleEliminar = async (id) => {
         try {
-            const res = await axios.delete(`http://localhost:5000/asesores/${id}`);
-            console.log('Asesor eliminado:', res.data.message);
+            const userConfirmed = window.confirm('¿Estás seguro de eliminar a este asesor?');
+            if (userConfirmed) {
+                const res = await axios.delete(`http://localhost:5000/usuarios/${id}`);
+                console.log('Asesor eliminado:', res.data.message);
 
-            // Actualizar la lista de asesores después de eliminar uno
-            const updatedAsesores = usuariosConServicios.filter(asesor => asesor.id !== id);
-            setUsuariosConServicios(updatedAsesores);
-            setCurrentPage(1);
+                // Actualizar la lista de asesores después de eliminar uno
+                const updatedAsesores = usuariosConServicios.filter(asesor => asesor.id !== id);
+                setUsuariosConServicios(updatedAsesores);
+                setCurrentPage(1);
+            } else {
+                // El usuario eligió "No" o cerró la ventana emergente
+                // Realiza alguna acción en caso de cancelación si es necesario
+            }
         } catch (error) {
             console.error('Error al eliminar asesor:', error);
         }
@@ -406,16 +413,23 @@ export default function TablaUsuarios() {
                     <thead>
                         <tr className="fondo_header">
                             <th>ID</th>
+                            <th>Mes</th>
                             <th>Nombre</th>
                             <th>Apellidos</th>
+                            <th>País</th>
                             <th>Departamento</th>
-                            <th>Carrera</th>
+                            <th>Profesión</th>
+                            <th>Institución Educativa</th>
                             <th>Email</th>
                             <th>DNI</th>
                             <th>Celular</th>
                             <th>PDF_URL</th>
-                            <th>Monto Pagado</th>
-                            <th>Monto Total</th>
+                            <th>Precio de Contrato</th>
+                            <th>Pago 1era cuota</th>
+                            <th>Pago 2da cuota</th>
+                            <th>Pago 3ra cuota</th>
+                            <th>Pago 4ta cuota</th>
+                            <th>Pago Restante</th>
                             <th>Servicio</th>
                             <th>Tema</th>
                             <th>Asesor Principal</th>
@@ -530,55 +544,55 @@ export default function TablaUsuarios() {
                                 </td>
                                 <td>
 
-                                {editingUserId === filteredUser.id ? (
-                                            // <input
-                                            //     className="input_table_usuario"
-                                            //     type="text"
-                                            //     value={editedPDF_URL}
-                                            //     onChange={(e) => setEditedPDF_URL(e.target.value)}
-                                            // />
-                                            filteredUser.pdf_url.map((pdf, index) => (
-                                                <li key={index}>
-                                                    <input
-                                                        className="xdd"
-                                                        key={index}
-                                                        type="file"
-                                                        accept=".pdf"
-                                                        onChange={handlePdfChange}
-                                                    // Asegúrate de especificar el tipo de archivo permitido
-                                                    // onChange={(e) => handleFileUpload(index, e.target.files[0])}
-                                                    />
-                                                    <div className="button_pdf">
+                                    {editingUserId === filteredUser.id ? (
+                                        // <input
+                                        //     className="input_table_usuario"
+                                        //     type="text"
+                                        //     value={editedPDF_URL}
+                                        //     onChange={(e) => setEditedPDF_URL(e.target.value)}
+                                        // />
+                                        filteredUser.pdf_url.map((pdf, index) => (
+                                            <li key={index}>
+                                                <input
+                                                    className="xdd"
+                                                    key={index}
+                                                    type="file"
+                                                    accept=".pdf"
+                                                    onChange={handlePdfChange}
+                                                // Asegúrate de especificar el tipo de archivo permitido
+                                                // onChange={(e) => handleFileUpload(index, e.target.files[0])}
+                                                />
+                                                <div className="button_pdf">
 
-                                                        <button onClick={() => handleEditarPDF(pdf.id)}>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" class="bi bi-send-check" viewBox="0 0 16 16">
-                                                                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z" />
-                                                                <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />
-                                                            </svg>
-                                                        </button >
-                                                        <button onClick={() => handleEliminarPDF(pdf.id)}>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" className="bi bi-trash" viewBox="0 0 16 16">
-                                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                </li>
-                                            ))
-                                        ) : (
-                                            filteredUser.pdf_url.map((pdf, index) => (
-                                                <li key={index}>
-                                                    <a href={`http://localhost:5000${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
-                                                            <path fillRule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z" />
+                                                    <button onClick={() => handleEditarPDF(pdf.id)}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" class="bi bi-send-check" viewBox="0 0 16 16">
+                                                            <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z" />
+                                                            <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />
                                                         </svg>
-                                                    </a>
-                                                    <br />
-                                                    {pdf.fecha_pdf_url}
-                                                    <br />
-                                                </li>
-                                            ))
-                                        )}
+                                                    </button >
+                                                    <button onClick={() => handleEliminarPDF(pdf.id)}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" className="bi bi-trash" viewBox="0 0 16 16">
+                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </li>
+                                        ))
+                                    ) : (
+                                        filteredUser.pdf_url.map((pdf, index) => (
+                                            <li key={index}>
+                                                <a href={`http://localhost:5000${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
+                                                        <path fillRule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z" />
+                                                    </svg>
+                                                </a>
+                                                <br />
+                                                {pdf.fecha_pdf_url}
+                                                <br />
+                                            </li>
+                                        ))
+                                    )}
 
 
                                 </td>

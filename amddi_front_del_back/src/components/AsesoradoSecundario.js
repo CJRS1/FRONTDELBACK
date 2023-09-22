@@ -10,7 +10,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 
-export default function AsesoradoPrincipal() {
+export default function AsesoradoSecundario() {
     const location = useLocation();
 
     useEffect(() => {
@@ -26,35 +26,35 @@ export default function AsesoradoPrincipal() {
         // autoplaySpeed: 2000,
         dots: true,
         centerMode: true,
-        // responsive: [
-        //     {
-        //         breakpoint: 1024,
-        //         settings: {
-        //             slidesToShow: 3,
-        //             slidesToScroll: 1,
-        //         }
-        //     },
-        //     {
-        //         breakpoint: 800,
-        //         settings: {
-        //             slidesToShow: 2,
-        //             slidesToScroll: 2,
-        //             dots: true,
-        //             infinite: true,
-        //         }
-        //     },
-        //     {
-        //         breakpoint: 480,
-        //         settings: {
-        //             slidesToShow: 1,
-        //             slidesToScroll: 1,
-        //             dots: true,
-        //             infinite: true,
-        //             autoplay: true,
-        //             autoplaySpeed: 2000,
-        //         }
-        //     }
-        // ]
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 800,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    dots: true,
+                    infinite: true,
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: true,
+                    infinite: true,
+                    autoplay: true,
+                    autoplaySpeed: 2000,
+                }
+            }
+        ]
     };
 
     const [isLoading, setIsLoading] = useState(true);
@@ -91,9 +91,11 @@ export default function AsesoradoPrincipal() {
     return (
         <div className="asesorado_container">
             <div className="franja_verd franja_ancho">
-                <h1>Asesorados Principales</h1>
+                <h1>Asesorados Secundarios</h1>
             </div>
-            <Slider {...settings} className="slider_container_asesorado">
+            <Slider {...settings} 
+            className="slider_container_asesorado"
+            >
                 {isLoading ? (
                     <p>Loading...</p>
                 ) : (
@@ -105,10 +107,7 @@ export default function AsesoradoPrincipal() {
                                         <h4>Nombre:</h4>
                                     </div>
                                     <div className="form_asesorado">
-
-
                                         <h4>{item.usuario.nombre}</h4>
-
                                     </div>
                                 </div>
                                 <div className="info_asesorado_card">
@@ -190,11 +189,8 @@ export default function AsesoradoPrincipal() {
 
                         </div>
                     ))
+                    
                 )}
-
-
-
-
             </Slider>
         </div>
     );

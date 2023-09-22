@@ -727,7 +727,7 @@ table {
 }
 .asesorado_container .slick-slide {
   width: 500px;
-  min-height: 550px;
+  min-height: 400px;
   display: flex;
 }
 .asesorado_container .info_asesorado_card {

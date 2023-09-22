@@ -164,13 +164,19 @@ export default function TablaAsesores() {
 
     const handleEliminar = async (id) => {
         try {
+            const userConfirmed = window.confirm('¿Estás seguro de eliminar a este asesor?');
+            
+            if (userConfirmed) {
             const res = await axios.delete(`http://localhost:5000/asesores/${id}`);
             console.log('Asesor eliminado:', res.data.message);
-
             // Actualizar la lista de asesores después de eliminar uno
-            const updatedAsesores = AsesorConUsuario.filter(asesor => asesor.id !== id);
-            setAsesorConUsuario(updatedAsesores);
-            setCurrentPage(1);
+                const updatedAsesores = AsesorConUsuario.filter(asesor => asesor.id !== id);
+                setAsesorConUsuario(updatedAsesores);
+                setCurrentPage(1);
+            } else {
+                // El usuario eligió "No" o cerró la ventana emergente
+                // Realiza alguna acción en caso de cancelación si es necesario
+            }
         } catch (error) {
             console.error('Error al eliminar asesor:', error);
         }
@@ -286,56 +292,56 @@ export default function TablaAsesores() {
                                     filteredAsesor.dni
                                 )}</td>
                                 <td>
-                                        <ul>
-                                            {editingAsesorId === filteredAsesor.id ? (
-                                                <Select
-                                                    isMulti={true}
-                                                    options={especialidades.content ? especialidades.content.map(especialidad => ({
-                                                        value: especialidad.id,
-                                                        label: especialidad.nombre_especialidad
-                                                    })) : []}
-                                                    // value={asesor.asesor_especialidad ? asesor.asesor_especialidad.map(AseEsp => ({
-                                                    //     value: AseEsp.especialidad.id,
-                                                    //     label: AseEsp.especialidad.nombre_especialidad
-                                                    // })) : []}
-                                                    value={selectedEspecialidades}
-                                                    onChange={handleEditarEspecialidades}
-                                                    className="custom-select"
-                                                    placeholder="Seleccione sus especialidades"
-                                                    noOptionsMessage={() => "No hay opciones disponibles"}
-                                                />
-                                            ) : (
-                                                filteredAsesor.asesor_especialidad.map(AseEsp => (
-                                                    <li key={AseEsp.id}>
-                                                        {AseEsp.especialidad.nombre_especialidad}
-                                                    </li>
-                                                ))
-                                            )}
+                                    <ul>
+                                        {editingAsesorId === filteredAsesor.id ? (
+                                            <Select
+                                                isMulti={true}
+                                                options={especialidades.content ? especialidades.content.map(especialidad => ({
+                                                    value: especialidad.id,
+                                                    label: especialidad.nombre_especialidad
+                                                })) : []}
+                                                // value={asesor.asesor_especialidad ? asesor.asesor_especialidad.map(AseEsp => ({
+                                                //     value: AseEsp.especialidad.id,
+                                                //     label: AseEsp.especialidad.nombre_especialidad
+                                                // })) : []}
+                                                value={selectedEspecialidades}
+                                                onChange={handleEditarEspecialidades}
+                                                className="custom-select"
+                                                placeholder="Seleccione sus especialidades"
+                                                noOptionsMessage={() => "No hay opciones disponibles"}
+                                            />
+                                        ) : (
+                                            filteredAsesor.asesor_especialidad.map(AseEsp => (
+                                                <li key={AseEsp.id}>
+                                                    {AseEsp.especialidad.nombre_especialidad}
+                                                </li>
+                                            ))
+                                        )}
 
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <ul>
-                                            {filteredAsesor.asignacion.map(AseUsu => (
-                                                <li key={AseUsu.id}>
-                                                    {AseUsu.usuario.nombre}
-                                                    <br />
-                                                    {AseUsu.usuario.apePat}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <ul>
-                                            {filteredAsesor.asignacion_secundaria.map(AseUsu => (
-                                                <li key={AseUsu.id}>
-                                                    {AseUsu.usuario.nombre}
-                                                    <br />
-                                                    {AseUsu.usuario.apePat}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </td>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        {filteredAsesor.asignacion.map(AseUsu => (
+                                            <li key={AseUsu.id}>
+                                                {AseUsu.usuario.nombre}
+                                                <br />
+                                                {AseUsu.usuario.apePat}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        {filteredAsesor.asignacion_secundaria.map(AseUsu => (
+                                            <li key={AseUsu.id}>
+                                                {AseUsu.usuario.nombre}
+                                                <br />
+                                                {AseUsu.usuario.apePat}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </td>
                                 <td>
                                     {editingAsesorId === filteredAsesor.id ? (
                                         <>
