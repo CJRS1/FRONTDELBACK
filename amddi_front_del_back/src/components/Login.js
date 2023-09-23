@@ -20,14 +20,15 @@ export default function Inicio({ setIsLoggedIn}) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        console.log(email);
+        console.log(password);
         try {
             // Realiza una solicitud de inicio de sesión al servidor
             const response = await axios.post("http://localhost:5000/loginA", {
                 email,
                 password, // Aquí enviamos el email y la contraseña en el cuerpo de la solicitud
             });
-
+            
             if (response.status === 200) {
                 // Inicio de sesión exitoso
                 const data = response.data; // No es necesario usar await ni .json()
@@ -41,7 +42,8 @@ export default function Inicio({ setIsLoggedIn}) {
                 setIsLoggedIn(true);
                 // Redirige a la página correspondiente según el rol
                 if (decodedToken.rol === "admin") {
-                    // navigate("/admin"); 
+                    navigate("/registrar_asesor");
+                    window.location.reload();
                     console.log(decodedToken.rol);
                 } else if (decodedToken.rol === "asesor") {
                     console.log("Este es un", decodedToken.rol);
@@ -61,7 +63,8 @@ export default function Inicio({ setIsLoggedIn}) {
                     } catch (e) {
                         console.error(e);
                     }
-                    navigate("/");
+                    navigate("/asesorado_principal");
+                    window.location.reload();
                 }
             } else {
                 // Error en el inicio de sesión

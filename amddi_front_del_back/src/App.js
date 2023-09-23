@@ -41,13 +41,16 @@ function App() {
   useEffect(() => {
     // Primera capa de autenticación (variable en localStorage)
     const storedIsLoggedIn = localStorage.getItem('isLoggedIn');
+    
     if (storedIsLoggedIn === 'true') {
       // Segunda capa de autenticación (verificar el token JWT)
       const token = localStorage.getItem('token');
+      console.log(token);
       if (token) {
         // Decodifica el token para verificar su validez
         try {
           const decodedToken = jwt_decode(token);
+          console.log("elrol",decodedToken.rol);
           if (decodedToken.rol === "asesor") {
             setIsAsesor(true);
           }
@@ -68,7 +71,7 @@ function App() {
 
   return (
     <Router>
-      {isLoggedIn && <Header setIsLoggedIn={setIsLoggedIn} isAdmin={isAdmin} isAsesor={isAsesor} />}
+      {isLoggedIn && <Header setIsLoggedIn={setIsLoggedIn} isAdmin={isAdmin} isAsesor={isAsesor} setIsAdmin={setIsAdmin} setIsAsesor={setIsAsesor} />}
       <AuthGuard>
 
         <Routes>

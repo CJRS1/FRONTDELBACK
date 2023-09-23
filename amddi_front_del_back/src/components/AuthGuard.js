@@ -8,7 +8,7 @@ export default function AuthGuard({ children }) {
     useEffect(() => {
         // Comprueba si hay un token en el almacenamiento local
         const token = localStorage.getItem('token');
-
+        console.log('auth',token);
         if (!token) {
             // Si no hay token, redirige al usuario a la página de inicio de sesión
             navigate('/login_a');
@@ -21,7 +21,8 @@ export default function AuthGuard({ children }) {
                 // Comprueba la firma y la caducidad del token
                 if (decodedToken.exp < currentTime) {
                     navigate('/login_a');
-                } else if (decodedToken.rol !== 'asesor') {
+                    console.log("elrolesxd",decodedToken.rol);
+                } else if (decodedToken.rol !== 'asesor' && decodedToken.rol !== 'admin') {
                     navigate('/acceso_no_autorizado'); // Cambia esto a la página deseada
                 }
             } catch (error) {

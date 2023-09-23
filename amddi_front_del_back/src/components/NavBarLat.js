@@ -4,7 +4,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/variables.css';
 
-export default function NavBarLat({ setIsLoggedIn, isAdmin, isAsesor }) {
+export default function NavBarLat({ setIsLoggedIn, isAdmin, isAsesor, setIsAdmin, setIsAsesor }) {
     const location = useLocation();
     const navigate = useNavigate();
     useEffect(() => {
@@ -49,6 +49,8 @@ export default function NavBarLat({ setIsLoggedIn, isAdmin, isAsesor }) {
             console.log(res.data);
             localStorage.removeItem('data');
             localStorage.removeItem('token');
+            setIsAdmin(false);
+            setIsAsesor(false);
             setIsLoggedIn(false);
             navigate("/login_a")
         } catch (e) {
