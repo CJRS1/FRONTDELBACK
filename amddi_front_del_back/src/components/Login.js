@@ -5,7 +5,7 @@ import jwt_decode from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/variables.css';
 
-export default function Inicio() {
+export default function Inicio({ setIsLoggedIn}) {
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -34,11 +34,11 @@ export default function Inicio() {
 
                 // Almacena el token en el almacenamiento local o en una cookie
                 localStorage.setItem("token", data.token);
-
+                localStorage.setItem('isLoggedIn', true);
                 // Decodifica el token para obtener el rol
                 const decodedToken = jwt_decode(data.token);
                 console.log("Rol del usuario:", decodedToken.rol);
-
+                setIsLoggedIn(true);
                 // Redirige a la página correspondiente según el rol
                 if (decodedToken.rol === "admin") {
                     // navigate("/admin"); 
@@ -69,6 +69,9 @@ export default function Inicio() {
             }
         } catch (error) {
             console.error("Error en la solicitud:", error);
+            // alert("La contraseña o el correo es incorrecto");
+
+            setIsLoggedIn(false);
         }
     };
 
