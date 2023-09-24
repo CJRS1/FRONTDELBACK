@@ -45,12 +45,12 @@ function App() {
     if (storedIsLoggedIn === 'true') {
       // Segunda capa de autenticación (verificar el token JWT)
       const token = localStorage.getItem('token');
-      console.log(token);
+      // console.log(token);
       if (token) {
         // Decodifica el token para verificar su validez
         try {
           const decodedToken = jwt_decode(token);
-          console.log("elrol",decodedToken.rol);
+          // console.log("elrol",decodedToken.rol);
           if (decodedToken.rol === "asesor") {
             setIsAsesor(true);
           }

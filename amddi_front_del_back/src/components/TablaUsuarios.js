@@ -32,6 +32,10 @@ export default function TablaUsuarios() {
 
     const [editedCareer, setEditedCareer] = useState("");
 
+    const [editedIdAmddi, setEditedIdAmddi] = useState("");
+    const [editedPais, setEditedPais] = useState("");
+    const [editedInstitucionEducativa, setEditedInstitucionEducativa] = useState("");
+
     const [editedDNI, setEditedDNI] = useState("");
     const [editedPhone, setEditedPhone] = useState("");
     const [editedTema, setEditedTema] = useState("");
@@ -120,6 +124,9 @@ export default function TablaUsuarios() {
             setEditedPhone(userToEdit.celular);
             setEditedEmail(userToEdit.email);
             setEditedTema(userToEdit.tema);
+            setEditedIdAmddi(userToEdit.id_amddi);
+            setEditedPais(userToEdit.pais);
+            setEditedInstitucionEducativa(userToEdit.institucion_educativa);
             // setEditedPDF_URL(userToEdit.pdf_url);
             setEditedDDate(userToEdit.fecha_estimada);
             // setEditedMontoPagado(userToEdit.monto_pagado);
@@ -146,10 +153,13 @@ export default function TablaUsuarios() {
         setEditedEmail("");
         setEditedDNI("");
         setEditedPhone("");
+        setEditedIdAmddi("");
+        setEditedPais("");
         // setEditedPDF_URL("");
         // setEditedMontoPagado(0.0);
         setEditedMontoTotal(0.0);
         setEditedDDate("");
+        setEditedInstitucionEducativa("");
 
         // Limpiamos el servicio seleccionado al cancelar
         setSelectedService(null);
@@ -184,6 +194,9 @@ export default function TablaUsuarios() {
                 email: editedEmail,
                 celular: editedPhone,
                 tema: editedTema,
+                pais: editedPais,
+                institucion_educativa: editedInstitucionEducativa,
+                id_amddi: editedIdAmddi,
                 fecha_estimada: editedDDate,
                 // pdf_url: editedPDF_URL,
                 // monto_pagado: editedMontoPagado,
@@ -240,14 +253,14 @@ export default function TablaUsuarios() {
                     dataS)
                 console.log(resP.data.message)
             }
-
-            if (selectedEstado !== "null") {
-                const rep = await axios.put(`http://localhost:5000/asignacionesEstados/${id}`,
-                    {
-                        estado: selectedEstado,
-                    })
-                console.log("el estado", rep.data.message)
-            }
+            //comentadoooo
+            // if (selectedEstado !== "null") {
+            //     const rep = await axios.put(`http://localhost:5000/asignacionesEstados/${id}`,
+            //         {
+            //             estado: selectedEstado,
+            //         })
+            //     console.log("el estado", rep.data.message)
+            // }
 
             setEditingUserId(null);
             window.location.reload();
@@ -262,7 +275,6 @@ export default function TablaUsuarios() {
             try {
                 // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/usuarios_con_servicio');
                 const res = await axios.get('http://localhost:5000/usuarios_con_servicio');
-                console.log(res.data.message);
                 // console.log('Response from server:', res.data);
                 if (res.data.content && Array.isArray(res.data.content)) {
                     console.log('Usuarios con servicios recibidos:', res.data.content);
@@ -275,6 +287,8 @@ export default function TablaUsuarios() {
 
         fetchUsuariosConServicios();
     }, []);
+
+    console.log("usuario", usuariosConServicios);
 
     const [asesores, setAsesores] = useState([]); // Utiliza useState para inicializar asesores como un arreglo vacío
     console.log(asesores);
@@ -412,8 +426,9 @@ export default function TablaUsuarios() {
                 <table className="table">
                     <thead>
                         <tr className="fondo_header">
-                            <th>ID</th>
+                            <th>Nº</th>
                             <th>Mes</th>
+                            <th>Id Usuario</th>
                             <th>Nombre</th>
                             <th>Apellidos</th>
                             <th>País</th>
@@ -775,7 +790,7 @@ export default function TablaUsuarios() {
                                         </ul>
                                     )}
                                 </td>
-                                <td>
+                                {/* <td>
                                     {editingUserId === filteredUser.id ? (
                                         <select
                                             className="select_serv"
@@ -797,7 +812,7 @@ export default function TablaUsuarios() {
                                             ))}
                                         </ul>
                                     )}
-                                </td>
+                                </td> */}
                                 <td>
                                     {editingUserId === filteredUser.id ? (
                                         <input
@@ -848,6 +863,21 @@ export default function TablaUsuarios() {
                                 <tr key={usuario.id}>
                                     <td>{usuario.id}</td>
                                     <td>
+                                        {usuario.monto_pagado && usuario.monto_pagado.length > 0
+                                            ? usuario.monto_pagado[0].fecha_pago
+                                            : '-'}
+                                    </td>
+                                    <td>{editingUserId === usuario.id ? (
+                                        <input
+                                            className="input_table_usuario"
+                                            type="text"
+                                            value={editedIdAmddi}
+                                            onChange={(e) => setEditedIdAmddi(e.target.value)}
+                                        />
+                                    ) : (
+                                        usuario.id_amddi ? usuario.id_amddi : '-'
+                                    )} </td>
+                                    <td>
                                         {editingUserId === usuario.id ? (
                                             <input
                                                 className="input_table_usuario"
@@ -889,6 +919,18 @@ export default function TablaUsuarios() {
                                             <input
                                                 className="input_table_usuario"
                                                 type="text"
+                                                value={editedPais}
+                                                onChange={(e) => setEditedPais(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.pais ? usuario.pais : '-'
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
                                                 value={editedDepartment}
                                                 onChange={(e) => setEditedDepartment(e.target.value)}
                                             />
@@ -896,6 +938,7 @@ export default function TablaUsuarios() {
                                             usuario.departamento
                                         )}
                                     </td>
+
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <select
@@ -911,6 +954,19 @@ export default function TablaUsuarios() {
                                             </select>
                                         ) : (
                                             usuario.carrera
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedInstitucionEducativa}
+                                                onChange={(e) => setEditedInstitucionEducativa(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.institucion_educativa ? usuario.institucion_educativa : '-'
                                         )}
                                     </td>
                                     <td>
@@ -1001,6 +1057,61 @@ export default function TablaUsuarios() {
                                         )}
                                     </td>
                                     <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedMontoTotal}
+                                                onChange={(e) => setEditedMontoTotal(e.target.value)}
+                                            />
+                                        ) : (
+                                            usuario.monto_total
+                                        )}
+                                    </td>
+                                    <td>
+                                        {usuario.monto_pagado && usuario.monto_pagado.length > 0 ? (
+                                            <>
+                                                {usuario.monto_pagado[0].monto_pagado} <br />
+                                                {usuario.monto_pagado[0].fecha_pago}
+                                            </>
+                                        ) : (
+                                            '-'
+                                        )}
+                                    </td>
+                                    <td>
+                                        {usuario.monto_pagado && usuario.monto_pagado.length > 1 ? (
+                                            <>
+                                                {usuario.monto_pagado[1].monto_pagado} <br />
+                                                {usuario.monto_pagado[1].fecha_pago}
+                                            </>
+                                        ) : (
+                                            '-'
+                                        )}
+                                    </td>
+                                    <td>
+                                        {usuario.monto_pagado && usuario.monto_pagado.length > 2 ? (
+                                            <>
+                                                {usuario.monto_pagado[2].monto_pagado} <br />
+                                                {usuario.monto_pagado[2].fecha_pago}
+                                            </>
+                                        ) : (
+                                            '-'
+                                        )}
+                                    </td>
+                                    <td>
+                                        {usuario.monto_pagado && usuario.monto_pagado.length > 3 ? (
+                                            <>
+                                                {usuario.monto_pagado[3].monto_pagado} <br />
+                                                {usuario.monto_pagado[3].fecha_pago}
+                                            </>
+                                        ) : (
+                                            '-'
+                                        )}
+                                    </td>
+
+
+                                    {/* 
+                                    <td>
                                         {usuario.monto_pagado.map((monto, index) => (
                                             <div key={index}>
                                                 {editingUserId === usuario.id ? (
@@ -1044,20 +1155,9 @@ export default function TablaUsuarios() {
                                             </div>
                                         ))}
 
-                                    </td>
+                                    </td> */}
 
-                                    <td>
-                                        {editingUserId === usuario.id ? (
-                                            <input
-                                                className="input_table_usuario"
-                                                type="text"
-                                                value={editedMontoTotal}
-                                                onChange={(e) => setEditedMontoTotal(e.target.value)}
-                                            />
-                                        ) : (
-                                            usuario.monto_total
-                                        )}
-                                    </td>
+                                    <td>{usuario.monto_restante} </td>
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <select
@@ -1182,7 +1282,7 @@ export default function TablaUsuarios() {
                                         )}
                                     </td>
 
-
+                                    {/* 
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <select
@@ -1205,7 +1305,8 @@ export default function TablaUsuarios() {
                                                 ))}
                                             </ul>
                                         )}
-                                    </td>
+                                    </td> */}
+                                    <td></td>
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input

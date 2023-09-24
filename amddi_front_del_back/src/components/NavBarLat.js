@@ -84,6 +84,30 @@ export default function NavBarLat({ setIsLoggedIn, isAdmin, isAsesor, setIsAdmin
         }
     }, [location]);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+
+        // Obtener el token del localStorage
+        const token = localStorage.getItem('token');
+
+        // Verificar si el token existe
+        if (token) {
+            // Si el token existe, realiza una solicitud al servidor para obtener los datos del usuario
+            axios.get('http://localhost:5000/admin', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(response => {
+                    console.log(response.data.content);
+                    setUserData(response.data.content); // Almacena los datos del usuario en el estado
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }, [location]);
+
     // console.log(userData.asesor_especialidad[1].especialidad.nombre_especialidad);
     const storedData = localStorage.getItem('data');
     const parsedData = storedData ? JSON.parse(storedData) : null;

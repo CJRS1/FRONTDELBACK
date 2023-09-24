@@ -16,12 +16,11 @@ export default function Inicio({ setIsLoggedIn}) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    // const [data, setData] = useState([]);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(email);
-        console.log(password);
+
         try {
             // Realiza una solicitud de inicio de sesión al servidor
             const response = await axios.post("http://localhost:5000/loginA", {
@@ -38,13 +37,13 @@ export default function Inicio({ setIsLoggedIn}) {
                 localStorage.setItem('isLoggedIn', true);
                 // Decodifica el token para obtener el rol
                 const decodedToken = jwt_decode(data.token);
-                console.log("Rol del usuario:", decodedToken.rol);
+                // console.log("Rol del usuario:", decodedToken.rol);
                 setIsLoggedIn(true);
                 // Redirige a la página correspondiente según el rol
                 if (decodedToken.rol === "admin") {
                     navigate("/registrar_asesor");
                     window.location.reload();
-                    console.log(decodedToken.rol);
+                    // console.log(decodedToken.rol);
                 } else if (decodedToken.rol === "asesor") {
                     console.log("Este es un", decodedToken.rol);
                     try {
