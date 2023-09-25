@@ -19,6 +19,8 @@ export default function MiInformacion() {
         monto_pagado: "",
     });
 
+    const [servicioMonto, setServicioMonto] = useState("");
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location]);
@@ -63,27 +65,42 @@ export default function MiInformacion() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // console.log("holaa");
         console.log(formData);
         try {
             const res = await axios.post("http://localhost:5000/monto_pagado", formData);
-            if (res.data.content) {
-
-                console.log(res.data.content);
-                alert("Se asignó el servicio correctamente");
+            console.log("larespuesta",res);
+            if (res.status === 200) {
+                console.log("Solicitud exitosa con código de estado 200");
+                alert("Se realizó el proceso correctamente");
                 window.location.reload();
+            } else if (res.status === 400) {
+
+                console.log("Solicitud exitosa con código de estado 400", res.data.msg);
+                // Puedes manejar otros códigos de estado aquí si es necesario
+                console.log("entroaqui")
+                alert(res.data.msg);
             } else {
-
+                console.log("Solicitud no exitosa. Código de estado:", res.status);
+                
             }
-        } catch (err) {
-            console.log(err);
+            console.log(res.status);
+        } catch (error) {
+            if (error.response) {
+                console.log("Datos del error:", error.response.data);
+                console.log("Mensaje de error:", error.response.data.msg);
+                alert(error.response.data.msg);
+            } else {
+                console.error("Error sin respuesta:", error);
+            }
         }
-
     }
+
 
     return (
         <div className="miinfo_container">
             <div className="franja_verd">
-                <h1>Asignar Servicio al Usuario</h1>
+                <h1>Asignar Servicio al Usuario y Monto</h1>
             </div>
             <div className="asignar_s_u">
 
@@ -111,6 +128,14 @@ export default function MiInformacion() {
                             <th>DNI</th>
                             <th>Celular</th>
                             <th>Carrera</th>
+                            <th>Precio de Contrato</th>
+                            <th>Pago 1era cuota</th>
+                            <th>Pago 2da cuota</th>
+                            <th>Pago 3ra cuota</th>
+                            <th>Pago 4ta cuota</th>
+                            <th>Pago Restante</th>
+                            <th>Servicio</th>
+                            <th>Tema</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,60 +147,138 @@ export default function MiInformacion() {
                                 <td>{usuario.dni}</td>
                                 <td>{usuario.celular}</td>
                                 <td>{usuario.carrera}</td>
+                                <td>{usuario.monto_total}</td>
+                                <td>
+                                    {usuario.monto_pagado && usuario.monto_pagado.length > 0 ? (
+                                        <>
+                                            {usuario.monto_pagado[0].monto_pagado} <br />
+                                            {usuario.monto_pagado[0].fecha_pago}
+                                        </>
+                                    ) : (
+                                        '-'
+                                    )}
+                                </td>
+                                <td>
+                                    {usuario.monto_pagado && usuario.monto_pagado.length > 1 ? (
+                                        <>
+                                            {usuario.monto_pagado[1].monto_pagado} <br />
+                                            {usuario.monto_pagado[1].fecha_pago}
+                                        </>
+                                    ) : (
+                                        '-'
+                                    )}
+                                </td>
+                                <td>
+                                    {usuario.monto_pagado && usuario.monto_pagado.length > 2 ? (
+                                        <>
+                                            {usuario.monto_pagado[2].monto_pagado} <br />
+                                            {usuario.monto_pagado[2].fecha_pago}
+                                        </>
+                                    ) : (
+                                        '-'
+                                    )}
+                                </td>
+                                <td>
+                                    {usuario.monto_pagado && usuario.monto_pagado.length > 3 ? (
+                                        <>
+                                            {usuario.monto_pagado[3].monto_pagado} <br />
+                                            {usuario.monto_pagado[3].fecha_pago}
+                                        </>
+                                    ) : (
+                                        '-'
+                                    )}
+                                </td>
+                                <td>{usuario.monto_restante}</td>
+                                <td>{usuario.usuario_servicio[0].servicio.nombre_servicio}</td>
+                                <td>{usuario.tema}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
                 <form className="form_submit" onSubmit={handleSubmit}>
-                    <div className="input_asignar_servicio">
-                        <h4>Monto Pagado:</h4>
-                        <input type="text"
-                            name="especialidad"
-                            className="input_soe"
-                            placeholder="Ingrese el monto pagado"
-                            onChange={(e) => setFormData({ ...formData, monto_pagado: e.target.value })}
-                            value={formData.monto_pagado}
-                        />
-                    </div>
-                    <div className="input_asignar_servicio">
-                        <h4>Monto Total:</h4>
-                        <input type="text"
-                            name="especialidad"
-                            className="input_soe"
-                            placeholder="Ingrese el monto total"
-                            onChange={(e) => setFormData({ ...formData, monto_total: e.target.value })}
-                            value={formData.monto_total}
-                        />
-                    </div>
-                    <div className="input_asignar_servicio">
-                        <h4>Servicio:</h4>
+                    <div className="serviciomonto_eleccion">
+                        <h3>Elija su acción:</h3>
                         <select
                             className="input_asignar_servicio_select"
-                            id="especialidad"
-                            name="carrera"
-                            onChange={(e) => setFormData({ ...formData, id_servicio: e.target.value })}
-                            value={formData.id_servicio}
+                            id="servicioMonto"
+                            name="servicioMonto"
+                            onChange={(e) => setServicioMonto(e.target.value)}
+                            value={servicioMonto}
                         >
-                            <option value="">Selecciona una Servicio</option>
-                            {servicios.map((servicio) => (
-                                <option key={servicio.id} value={servicio.id}>
-                                    {servicio.nombre_servicio}
-                                </option>
-                            ))}
+                            <option value="">Escoja una opción</option>
+                            <option value="ServicioMonto">Añadir servicio y monto</option>
+                            <option value="MontoCuota">Añadir monto de cuota</option>
                         </select>
+                    </div>
+                    {servicioMonto === "ServicioMonto" && (
+                        <>
+                            <div className="input_asignar_servicio">
+                                <h4>Monto Pagado:</h4>
+                                <input type="text"
+                                    name="especialidad"
+                                    className="input_soe"
+                                    placeholder="Ingrese el monto pagado"
+                                    onChange={(e) => setFormData({ ...formData, monto_pagado: e.target.value })}
+                                    value={formData.monto_pagado}
+                                />
+                            </div>
+                            <div className="input_asignar_servicio">
+                                <h4>Monto Total:</h4>
+                                <input type="text"
+                                    name="especialidad"
+                                    className="input_soe"
+                                    placeholder="Ingrese el monto total"
+                                    onChange={(e) => setFormData({ ...formData, monto_total: e.target.value })}
+                                    value={formData.monto_total}
+                                />
+                            </div>
+                            <div className="input_asignar_servicio">
+                                <h4>Servicio:</h4>
+                                <select
+                                    className="input_asignar_servicio_select"
+                                    id="especialidad"
+                                    name="carrera"
+                                    onChange={(e) => setFormData({ ...formData, id_servicio: e.target.value })}
+                                    value={formData.id_servicio}
+                                >
+                                    <option value="">Selecciona una Servicio</option>
+                                    {servicios.map((servicio) => (
+                                        <option key={servicio.id} value={servicio.id}>
+                                            {servicio.nombre_servicio}
+                                        </option>
+                                    ))}
+                                </select>
 
-                    </div>
-                    <div className="input_asignar_servicio">
-                        <h4>Tema del Proyecto:</h4>
-                        <input type="text"
-                            name="especialidad"
-                            className="input_soe"
-                            placeholder="Nombre del Proyecto"
-                            onChange={(e) => setFormData({ ...formData, tema: e.target.value })}
-                            value={formData.tema}
-                        />
-                    </div>
-                    <button type="submit" className="button_agregar_soe">Asignar Servicio</button>
+                            </div>
+                            <div className="input_asignar_servicio">
+                                <h4>Tema del Proyecto:</h4>
+                                <input type="text"
+                                    name="especialidad"
+                                    className="input_soe"
+                                    placeholder="Nombre del Proyecto"
+                                    onChange={(e) => setFormData({ ...formData, tema: e.target.value })}
+                                    value={formData.tema}
+                                />
+                            </div>
+                            <button type="submit" className="button_agregar_soe">Asignar Servicio</button>
+                        </>
+                    )}
+                    {servicioMonto === "MontoCuota" && (
+                        <>
+                            <div className="input_asignar_servicio">
+                                <h4>Monto Pagado:</h4>
+                                <input type="text"
+                                    name="especialidad"
+                                    className="input_soe"
+                                    placeholder="Ingrese el monto pagado"
+                                    onChange={(e) => setFormData({ ...formData, monto_pagado: e.target.value })}
+                                    value={formData.monto_pagado}
+                                />
+                            </div>
+                            <button type="submit" className="button_agregar_soe">Asignar Servicio</button>
+                        </>
+                    )}
+
                 </form>
             </div>
         </div>

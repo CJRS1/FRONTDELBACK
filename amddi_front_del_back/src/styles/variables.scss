@@ -338,7 +338,7 @@ input {
 }
 
 .asignar_s_u{
-    width: 800px;
+    width: 1200px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -739,6 +739,10 @@ table{
     margin-bottom: 5px;
 }
 
+.serviciomonto_eleccion{
+    margin-bottom: 10px;
+}
+
 .xdd{
     padding-top: 3px;
     padding-left: 1.5px;
@@ -832,3 +836,8 @@ table{
     
 }
 
+.texto_asesor_principal {
+    color: red;
+    font-size: 25px;
+    font-weight: 600;
+}

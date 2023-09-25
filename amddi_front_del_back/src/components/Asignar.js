@@ -15,7 +15,7 @@ export default function Asignar() {
     const [AsesorConUsuario, setAsesorConUsuario] = useState([]);;
     const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(1);
-
+    const [tieneAsesorPrincipal, setTieneAsesorPrincipal] = useState(false)
 
     const itemsCount = AsesorConUsuario.length;
 
@@ -55,12 +55,17 @@ export default function Asignar() {
     }, []);
 
     async function buscarUsuarioPorDNI(dni) {
+        setTieneAsesorPrincipal(false);
         try {
             const res = await axios.get(`http://localhost:5000/usuarios/${dni}`);
             console.log("Usuario encontrado:", res.data);
 
             if (res.data.content) {
-                console.log(res.data.content.carrera);
+                console.log("xddd", res.data.content);
+                console.log("xddd", res.data.content.asignacion[0]);
+                if(res.data.content.asignacion[0]){
+                    setTieneAsesorPrincipal(true);
+                }
                 setusuarioporDNI([res.data.content]);
 
                 try {
@@ -190,78 +195,86 @@ export default function Asignar() {
                     </tbody>
                 </table>
                 <h3>Asignar Asesor Principal</h3>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
-                            <th>Especialidad</th>
-                            <th>Asesorados</th>
-                            <th>Asignar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {asesorPorEspecialidad.map((innerArray, outerIndex) => (
-                            innerArray.map((asesor) => (
-                                <tr key={`${outerIndex}-${asesor.id}`}>
-                                    <td>{asesor.id}</td>
-                                    <td>{asesor.nombre}</td>
-                                    <td>{asesor.apePat}
-                                        <br />
-                                        {asesor.apeMat}</td>
 
-                                    <td>
-                                        <ul>
-                                            {asesor.asesor_especialidad && asesor.asesor_especialidad.map(aseEsp => (
-                                                <li key={aseEsp.id}>
-                                                    {aseEsp.especialidad.nombre_especialidad}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </td>
-                                    {/* console.log("Asesor encontradoxx:", resp.data.content[1].asignacion[0].id_estado); */}
-                                    <td>
-                                        {/* <ul>
+                {tieneAsesorPrincipal === true ? (
+                    <div>
+                        <p className="texto_asesor_principal">
+                            El usuario ya tiene un asesor principal: {usuarioporDNI[0].asignacion[0].asesor.nombre} {usuarioporDNI[0].asignacion[0].asesor.apePat}
+                        </p>
+                    </div>
+                ) : (
+
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Apellidos</th>
+                                    <th>Especialidad</th>
+                                    <th>Asesorados</th>
+                                    <th>Asignar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {asesorPorEspecialidad.map((innerArray, outerIndex) => (
+                                    innerArray.map((asesor) => (
+                                        <tr key={`${outerIndex}-${asesor.id}`}>
+                                            <td>{asesor.id}</td>
+                                            <td>{asesor.nombre}</td>
+                                            <td>{asesor.apePat}
+                                                <br />
+                                                {asesor.apeMat}</td>
+                                            <td>
+                                                <ul>
+                                                    {asesor.asesor_especialidad && asesor.asesor_especialidad.map(aseEsp => (
+                                                        <li key={aseEsp.id}>
+                                                            {aseEsp.especialidad.nombre_especialidad}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </td>
+                                            {/* console.log("Asesor encontradoxx:", resp.data.content[1].asignacion[0].id_estado); */}
+                                            <td>
+                                                {/* <ul>
                                             {asesor.asignacion && asesor.asignacion.map(aseEsp => (
                                                 <li key={aseEsp.id}>
                                                     {aseEsp.usuario.nombre}
                                                     <br />
                                                     {aseEsp.usuario.apePat}
                                                     {aseEsp.id_estado}
-
                                                 </li>
                                             ))}
                                         </ul> */}
-                                        <ul>
-                                            {asesor.asignacion.map(aseEsp => (
-                                                aseEsp.id_estado === 1 ? (
-                                                    <li key={aseEsp.id}>
-                                                        {aseEsp.usuario.nombre}
-                                                        <br />
-                                                        {aseEsp.usuario.apePat}
-                                                        {aseEsp.id_estado}
-                                                    </li>
-                                                ) : (
-                                                    <li key={aseEsp.id}></li>
-                                                )
-                                            ))}
-                                        </ul>
-                                    </td>
+                                                <ul>
+                                                    {asesor.asignacion.map(aseEsp => (
+                                                        aseEsp.id_estado === 1 ? (
+                                                            <li key={aseEsp.id}>
+                                                                {aseEsp.usuario.nombre}
+                                                                <br />
+                                                                {aseEsp.usuario.apePat}
+                                                                {aseEsp.id_estado}
+                                                            </li>
+                                                        ) : (
+                                                            <li key={aseEsp.id}></li>
+                                                        )
+                                                    ))}
+                                                </ul>
+                                            </td>
+                                            <td>
+                                                <button onClick={() => asignarUsuarioAsesor(usuarioporDNI[outerIndex].id, asesor.id)}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" class="bi bi-award-fill" viewBox="0 0 16 16">
+                                                        <path d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z" />
+                                                        <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z" />
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ))}
+                            </tbody>
+                        </table>
 
-                                    <td>
-                                        <button onClick={() => asignarUsuarioAsesor(usuarioporDNI[outerIndex].id, asesor.id)}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" class="bi bi-award-fill" viewBox="0 0 16 16">
-                                                <path d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z" />
-                                                <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z" />
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        ))}
-                    </tbody>
-                </table>
+                )}
 
                 <h3>Asignar Asesor Secundario</h3>
                 <table className="table">
