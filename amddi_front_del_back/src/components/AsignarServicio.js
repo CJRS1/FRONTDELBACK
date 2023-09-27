@@ -26,8 +26,11 @@ export default function MiInformacion() {
     }, [location]);
 
     async function buscarUsuarioPorDNI(dni) {
+        console.log("DNI antes de limpiar:", dni);
+        const cleanedDNI = dni.replace(/\s/g, '');
+        console.log("DNI limpio:", cleanedDNI);
         try {
-            const res = await axios.get(`http://localhost:5000/usuarios/${dni}`);
+            const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
 
             if (res.data.content) {
                 console.log(res.data.content.carrera);
@@ -73,7 +76,11 @@ export default function MiInformacion() {
             if (res.status === 200) {
                 console.log("Solicitud exitosa con código de estado 200");
                 alert("Se realizó el proceso correctamente");
-                window.location.reload();
+
+                await axios.put(`http://localhost:5000/usuario_servicio_estado/${formData.id_usuarios}/${formData.id_servicio}`)
+
+                console.log("Se añadió un estado")
+
             } else if (res.status === 400) {
 
                 console.log("Solicitud exitosa con código de estado 400", res.data.msg);
@@ -84,6 +91,7 @@ export default function MiInformacion() {
                 console.log("Solicitud no exitosa. Código de estado:", res.status);
                 
             }
+            window.location.reload();
             console.log(res.status);
         } catch (error) {
             if (error.response) {

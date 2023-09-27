@@ -18,7 +18,13 @@ export default function TablaUsuarios() {
 
     const [editingService, setEditingService] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
+
     const [selectedEstado, setSelectedEstado] = useState(null);
+    // const [estados, setEstados] = useState([]);
+
+
+    const [listaEstadosTesis, setListaEstadosTesis] = useState([]);
+    const [listaEstadosObservacion, setListaEstadosObservacion] = useState([]);
 
     const [servicios, setServicios] = useState([]);
     const [especialidades, setEspecialidades] = useState([]);
@@ -41,13 +47,21 @@ export default function TablaUsuarios() {
     const [editedTema, setEditedTema] = useState("");
     const [editedEmail, setEditedEmail] = useState("");
 
+    const [editedMontoPagado, setEditedMontoPagado] = useState("");
+    const [editedFechaPago, setEditedFechaPago] = useState("");
+    const [editedMontoPagado1, setEditedMontoPagado1] = useState("");
+    const [editedFechaPago1, setEditedFechaPago1] = useState("");
+    const [editedMontoPagado2, setEditedMontoPagado2] = useState("");
+    const [editedFechaPago2, setEditedFechaPago2] = useState("");
+    const [editedMontoPagado3, setEditedMontoPagado3] = useState("");
+    const [editedFechaPago3, setEditedFechaPago3] = useState("");
+
     const [editedMontoTotal, setEditedMontoTotal] = useState(0.0);
 
     const [editedDDate, setEditedDDate] = useState("");
 
     const [montoEditado, setMontoEditado] = useState([]);
 
-    const [estados, setEstados] = useState([]);
 
 
     useEffect(() => {
@@ -91,23 +105,43 @@ export default function TablaUsuarios() {
     }, []);
 
     useEffect(() => {
-        async function fetchEstado() {
+        async function fetchTesis() {
             try {
-                // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/especialidades');
-                const res = await axios.get('http://localhost:5000/estado');
+                // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/Tesis');
+                const res = await axios.get('http://localhost:5000/estado_tesis');
                 // console.log(res.data.message);
-                // console.log('Response from server:', res.data);
+                console.log('Response from server t:', res.data);
 
                 if (res.data.content && Array.isArray(res.data.content)) {
-                    console.log('Los estados son:', res.data.content);
-                    setEstados(res.data.content);
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosTesis(res.data.content);
                 }
             } catch (error) {
-                console.error('Error fetching servicios:', error);
+                console.error('Error fetching estados:', error);
             }
         }
 
-        fetchEstado();
+        fetchTesis();
+    }, []);
+
+    useEffect(() => {
+        async function fetchObservacion() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/Observacion');
+                const res = await axios.get('http://localhost:5000/estado_observacion');
+                // console.log(res.data.message);
+                console.log('Response from server o:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosObservacion(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchObservacion();
     }, []);
 
 
@@ -127,7 +161,32 @@ export default function TablaUsuarios() {
             setEditedIdAmddi(userToEdit.id_amddi);
             setEditedPais(userToEdit.pais);
             setEditedInstitucionEducativa(userToEdit.institucion_educativa);
-            // setEditedPDF_URL(userToEdit.pdf_url);
+
+            setSelectedEstado(userToEdit.estado);
+
+            setEditedMontoPagado(userToEdit.monto_pagado[0].monto_pagado || '');
+            setEditedFechaPago(userToEdit.monto_pagado[0].fecha_pago || '');
+
+            if (userToEdit.monto_pagado.length > 1) {
+
+                setEditedMontoPagado1(userToEdit.monto_pagado[1].monto_pagado || '');
+                setEditedFechaPago1(userToEdit.monto_pagado[1].fecha_pago || '');
+            }
+
+            if (userToEdit.monto_pagado.length > 2) {
+
+                setEditedMontoPagado2(userToEdit.monto_pagado[2].monto_pagado || '');
+                setEditedFechaPago2(userToEdit.monto_pagado[2].fecha_pago || '');
+            }
+
+
+            if (userToEdit.monto_pagado.length > 3) {
+                setEditedMontoPagado3(userToEdit.monto_pagado[3].monto_pagado || '');
+                setEditedFechaPago3(userToEdit.monto_pagado[3].fecha_pago || '');
+
+            }
+
+
             setEditedDDate(userToEdit.fecha_estimada);
             // setEditedMontoPagado(userToEdit.monto_pagado);
             setEditedMontoTotal(userToEdit.monto_total);
@@ -164,7 +223,18 @@ export default function TablaUsuarios() {
         // Limpiamos el servicio seleccionado al cancelar
         setSelectedService(null);
         setSelectedEstado(null);
-        // setSelectedEspecialidad(null);
+
+        setSelectedEstado("");
+
+        setEditedFechaPago("");
+        setEditedFechaPago1("");
+        setEditedFechaPago2("");
+        setEditedFechaPago3("");
+
+        setEditedMontoPagado("");
+        setEditedMontoPagado1("");
+        setEditedMontoPagado2("");
+        setEditedMontoPagado3("");
 
         // Desactivamos la edición del servicio
         setEditingService(false);
@@ -198,8 +268,7 @@ export default function TablaUsuarios() {
                 institucion_educativa: editedInstitucionEducativa,
                 id_amddi: editedIdAmddi,
                 fecha_estimada: editedDDate,
-                // pdf_url: editedPDF_URL,
-                // monto_pagado: editedMontoPagado,
+                estado: selectedEstado,
                 monto_total: editedMontoTotal,
             };
 
@@ -217,20 +286,6 @@ export default function TablaUsuarios() {
                 console.log('Servicio actualizado:', servicioRes.data.message);
             }
 
-            if (montoEditado !== null) {
-                const monto_pagado = montoEditado.map((montoEditadoObj, index) => ({
-                    // index, 
-                    monto: montoEditadoObj.monto_pagado,
-                    fecha: montoEditadoObj.fecha_pago,
-                }));
-                // console.log("holaaaa", monto_pagado)
-
-                const res = await axios.put(`http://localhost:5000/monto_pagado/${id}`, {
-                    monto_pagado: monto_pagado,
-                });
-                console.log("Monto pago", res.data.message);
-            }
-            // console.log("elasesorp", asesorPrincipal);
             if (asesorPrincipal !== "") {
                 const data = {
                     id_usuario: id,
@@ -253,19 +308,38 @@ export default function TablaUsuarios() {
                     dataS)
                 console.log(resP.data.message)
             }
-            //comentadoooo
-            // if (selectedEstado !== "null") {
-            //     const rep = await axios.put(`http://localhost:5000/asignacionesEstados/${id}`,
-            //         {
-            //             estado: selectedEstado,
-            //         })
-            //     console.log("el estado", rep.data.message)
-            // }
+
+            const monto_pagado = [];
+
+            function agregarMontoPagado(position, monto, fecha) {
+                if (monto !== "" || fecha !== "") {
+                    monto_pagado.push({
+                        position,
+                        monto_pagado: monto !== "" ? parseFloat(monto) : null,
+                        fecha_pago: fecha !== "" ? fecha : null,
+                    });
+                }
+            }
+
+            agregarMontoPagado(0, editedMontoPagado, editedFechaPago);
+            agregarMontoPagado(1, editedMontoPagado1, editedFechaPago1);
+            agregarMontoPagado(2, editedMontoPagado2, editedFechaPago2);
+            agregarMontoPagado(3, editedMontoPagado3, editedFechaPago3);
+
+            if (monto_pagado.length > 0) {
+                await axios.put(`http://localhost:5000/monto_pagado/${id}`, {
+                    monto_pagado,
+                });
+                // alert("Monto pagado actualizado");
+                // console.log("hoal", monto_pagado);
+            }
 
             setEditingUserId(null);
             window.location.reload();
         } catch (error) {
-            console.error('Error al actualizar usuario o servicio:', error);
+            const errorMessage = error.response.data.message;
+            console.error('Error al actualizar usuario o servicio:', errorMessage);
+            alert('Error al actualizar usuario o servicio: ' + errorMessage);
         }
     };
 
@@ -316,19 +390,38 @@ export default function TablaUsuarios() {
     }, []);
 
 
+    // const handleSearch = () => {
+    //     console.log("el search es", searchTerm);
+    //     console.log("ingreso aquì en el search");
+    //     console.log(usuariosConServicios);
+    //     const foundUser = usuariosConServicios.find(usuario => (
+    //         usuario.nombre.includes(searchTerm) ||
+    //         usuario.dni.includes(searchTerm) ||
+    //         usuario.email.includes(searchTerm)
+    //     ));
+    //     console.log("el usuario encontrado", foundUser)
+    //     console.log("el usuario encontrado", filteredUser)
+    //     setFilteredUser(foundUser);
+    // };
+
     const handleSearch = () => {
         console.log("el search es", searchTerm);
-        console.log("ingreso aquì en el search");
+        console.log("ingreso aquí en el search");
         console.log(usuariosConServicios);
+        
+        // Elimina los espacios en blanco del valor del input
+        const cleanedSearchTerm = searchTerm.replace(/\s/g, "");
+    
         const foundUser = usuariosConServicios.find(usuario => (
-            usuario.nombre.includes(searchTerm) ||
-            usuario.dni.includes(searchTerm) ||
-            usuario.email.includes(searchTerm)
+            usuario.nombre.includes(cleanedSearchTerm) ||
+            usuario.dni.includes(cleanedSearchTerm) ||
+            usuario.email.includes(cleanedSearchTerm)
         ));
-        console.log("el usuario encontrado", foundUser)
-        console.log("el usuario encontrado", filteredUser)
+        
+        console.log("el usuario encontrado", foundUser);
         setFilteredUser(foundUser);
     };
+    
 
     const clearSearch = () => {
         setSearchTerm("");
@@ -387,8 +480,8 @@ export default function TablaUsuarios() {
         const formData = new FormData();
         formData.append("pdf", pdf);
         try {
-            const res = await axios.put(`http://localhost:5000/actualizar-pdf/${id}`, formData);
-            alert(res.data.msg);
+            await axios.put(`http://localhost:5000/actualizar-pdf/${id}`, formData);
+            // alert(res.data.msg);
             // console.log(res.data.msg);
         } catch (error) {
             console.error('Error al editar pdf:', error);
@@ -405,6 +498,33 @@ export default function TablaUsuarios() {
     };
 
 
+    const getColor = (fechaEstimada) => {
+        // Convertimos las fechas a objetos Date
+        const fechaActual = new Date();
+
+        // Separar la fecha estimada en día, mes y año
+        const partesFechaEstimada = fechaEstimada.split('/');
+        const diaEstimado = parseInt(partesFechaEstimada[0], 10);
+        const mesEstimado = parseInt(partesFechaEstimada[1], 10) - 1; // Restar 1 al mes, ya que en JavaScript los meses van de 0 a 11
+        const añoEstimado = parseInt(partesFechaEstimada[2], 10);
+
+        const fechaEstimadaDate = new Date(añoEstimado, mesEstimado, diaEstimado);
+
+        // Calculamos la diferencia entre las dos fechas
+        const diferencia = fechaEstimadaDate - fechaActual;
+
+        // Convertimos la diferencia a días
+        const diferenciaDias = diferencia / (1000 * 60 * 60 * 24);
+
+        // Determinamos el color
+        if (diferenciaDias > 10) {
+            return "#00d799";
+        } else if (diferenciaDias > 7) {
+            return "#ffd700";
+        } else {
+            return "red";
+        }
+    };
 
     return (
         <div className="tabla_usuarios">
@@ -580,13 +700,13 @@ export default function TablaUsuarios() {
                                                 <div className="button_pdf">
 
                                                     <button onClick={() => handleEditarPDF(pdf.id)}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" class="bi bi-send-check" viewBox="0 0 16 16">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-send-check" viewBox="0 0 16 16">
                                                             <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z" />
                                                             <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />
                                                         </svg>
                                                     </button >
                                                     <button onClick={() => handleEliminarPDF(pdf.id)}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" className="bi bi-trash" viewBox="0 0 16 16">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-trash" viewBox="0 0 16 16">
                                                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
                                                             <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
                                                         </svg>
@@ -598,7 +718,7 @@ export default function TablaUsuarios() {
                                         filteredUser.pdf_url.map((pdf, index) => (
                                             <li key={index}>
                                                 <a href={`http://localhost:5000${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fillRule="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
                                                         <path fillRule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z" />
                                                     </svg>
                                                 </a>
@@ -748,7 +868,7 @@ export default function TablaUsuarios() {
                                                         {usuAseSec.asesor.apePat}
                                                         <br />
                                                         <button onClick={() => handleEliminar2(usuAseSec.id)}>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" className="bi bi-trash" viewBox="0 0 16 16">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-trash" viewBox="0 0 16 16">
                                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
                                                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
                                                             </svg>
@@ -830,20 +950,20 @@ export default function TablaUsuarios() {
                                     {editingUserId === filteredUser.id ? (
                                         <>
                                             <button onClick={() => handleOk(filteredUser.id)}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" className="bi bi-check-circle" viewBox="0 0 16 16">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-check-circle" viewBox="0 0 16 16">
                                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                                     <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
                                                 </svg>
                                             </button>
                                             <button onClick={handleCancelar}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" className="bi bi-x-circle" viewBox="0 0 16 16">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-x-circle" viewBox="0 0 16 16">
                                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                                                 </svg>
                                             </button>
                                         </>
                                     ) : (
-                                        <button onClick={() => handleEditar(filteredUser.id)}><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" className="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <button onClick={() => handleEditar(filteredUser.id)}><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                             <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                         </svg>
@@ -852,7 +972,7 @@ export default function TablaUsuarios() {
                                 </td>
 
                                 <td><button onClick={() => handleEliminar(filteredUser.id)}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" className="bi bi-trash" viewBox="0 0 16 16">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-trash" viewBox="0 0 16 16">
                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
                                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
                                     </svg>
@@ -1027,13 +1147,13 @@ export default function TablaUsuarios() {
                                                     <div className="button_pdf">
 
                                                         <button onClick={() => handleEditarPDF(pdf.id)}>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" className="bi bi-send-check" viewBox="0 0 16 16">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-send-check" viewBox="0 0 16 16">
                                                                 <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z" />
                                                                 <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />
                                                             </svg>
                                                         </button >
                                                         <button onClick={() => handleEliminarPDF(pdf.id)}>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" className="bi bi-trash" viewBox="0 0 16 16">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-trash" viewBox="0 0 16 16">
                                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
                                                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
                                                             </svg>
@@ -1045,7 +1165,7 @@ export default function TablaUsuarios() {
                                             usuario.pdf_url.map((pdf, index) => (
                                                 <li key={index}>
                                                     <a href={`http://localhost:5000${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fillRule="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
                                                             <path fillRule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z" />
                                                         </svg>
                                                     </a>
@@ -1070,9 +1190,27 @@ export default function TablaUsuarios() {
                                     </td>
                                     <td>
                                         {usuario.monto_pagado && usuario.monto_pagado.length > 0 ? (
-                                            <>
-                                                {usuario.monto_pagado[0].monto_pagado} <br />
-                                                {usuario.monto_pagado[0].fecha_pago}
+                                            <>                                        {editingUserId === usuario.id ? (
+                                                <input
+                                                    className="input_table_usuario"
+                                                    type="text"
+                                                    value={editedMontoPagado}
+                                                    onChange={(e) => setEditedMontoPagado(e.target.value)}
+                                                />
+                                            ) : (
+                                                usuario.monto_pagado[0].monto_pagado
+                                            )}
+                                                <br />
+                                                {editingUserId === usuario.id ? (
+                                                    <input
+                                                        className="input_table_usuario"
+                                                        type="text"
+                                                        value={editedFechaPago}
+                                                        onChange={(e) => setEditedFechaPago(e.target.value)}
+                                                    />
+                                                ) : (
+                                                    usuario.monto_pagado[0].fecha_pago
+                                                )}
                                             </>
                                         ) : (
                                             '-'
@@ -1080,9 +1218,27 @@ export default function TablaUsuarios() {
                                     </td>
                                     <td>
                                         {usuario.monto_pagado && usuario.monto_pagado.length > 1 ? (
-                                            <>
-                                                {usuario.monto_pagado[1].monto_pagado} <br />
-                                                {usuario.monto_pagado[1].fecha_pago}
+                                            <>                                        {editingUserId === usuario.id ? (
+                                                <input
+                                                    className="input_table_usuario"
+                                                    type="text"
+                                                    value={editedMontoPagado1}
+                                                    onChange={(e) => setEditedMontoPagado1(e.target.value)}
+                                                />
+                                            ) : (
+                                                usuario.monto_pagado[1].monto_pagado
+                                            )}
+                                                <br />
+                                                {editingUserId === usuario.id ? (
+                                                    <input
+                                                        className="input_table_usuario"
+                                                        type="text"
+                                                        value={editedFechaPago1}
+                                                        onChange={(e) => setEditedFechaPago1(e.target.value)}
+                                                    />
+                                                ) : (
+                                                    usuario.monto_pagado[1].fecha_pago
+                                                )}
                                             </>
                                         ) : (
                                             '-'
@@ -1090,9 +1246,27 @@ export default function TablaUsuarios() {
                                     </td>
                                     <td>
                                         {usuario.monto_pagado && usuario.monto_pagado.length > 2 ? (
-                                            <>
-                                                {usuario.monto_pagado[2].monto_pagado} <br />
-                                                {usuario.monto_pagado[2].fecha_pago}
+                                            <>                                        {editingUserId === usuario.id ? (
+                                                <input
+                                                    className="input_table_usuario"
+                                                    type="text"
+                                                    value={editedMontoPagado2}
+                                                    onChange={(e) => setEditedMontoPagado2(e.target.value)}
+                                                />
+                                            ) : (
+                                                usuario.monto_pagado[2].monto_pagado
+                                            )}
+                                                <br />
+                                                {editingUserId === usuario.id ? (
+                                                    <input
+                                                        className="input_table_usuario"
+                                                        type="text"
+                                                        value={editedFechaPago2}
+                                                        onChange={(e) => setEditedFechaPago2(e.target.value)}
+                                                    />
+                                                ) : (
+                                                    usuario.monto_pagado[2].fecha_pago
+                                                )}
                                             </>
                                         ) : (
                                             '-'
@@ -1100,9 +1274,27 @@ export default function TablaUsuarios() {
                                     </td>
                                     <td>
                                         {usuario.monto_pagado && usuario.monto_pagado.length > 3 ? (
-                                            <>
-                                                {usuario.monto_pagado[3].monto_pagado} <br />
-                                                {usuario.monto_pagado[3].fecha_pago}
+                                            <>                                        {editingUserId === usuario.id ? (
+                                                <input
+                                                    className="input_table_usuario"
+                                                    type="text"
+                                                    value={editedMontoPagado3}
+                                                    onChange={(e) => setEditedMontoPagado3(e.target.value)}
+                                                />
+                                            ) : (
+                                                usuario.monto_pagado[3].monto_pagado
+                                            )}
+                                                <br />
+                                                {editingUserId === usuario.id ? (
+                                                    <input
+                                                        className="input_table_usuario"
+                                                        type="text"
+                                                        value={editedFechaPago3}
+                                                        onChange={(e) => setEditedFechaPago3(e.target.value)}
+                                                    />
+                                                ) : (
+                                                    usuario.monto_pagado[3].fecha_pago
+                                                )}
                                             </>
                                         ) : (
                                             '-'
@@ -1173,7 +1365,7 @@ export default function TablaUsuarios() {
                                                 ))}
                                             </select>
                                         ) : (
-                                            usuario.usuario_servicio[0]?.servicio.nombre_servicio || ""
+                                            usuario.usuario_servicio[0]?.servicio.nombre_servicio || "-"
                                         )}
                                     </td>
                                     {/* TEMAAAAAAAAAAAAA */}
@@ -1239,7 +1431,7 @@ export default function TablaUsuarios() {
                                                             {usuAseSec.asesor.apePat}
                                                             <br />
                                                             <button onClick={() => handleEliminar2(usuAseSec.id)}>
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" className="bi bi-trash" viewBox="0 0 16 16">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-trash" viewBox="0 0 16 16">
                                                                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
                                                                     <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
                                                                 </svg>
@@ -1282,7 +1474,7 @@ export default function TablaUsuarios() {
                                         )}
                                     </td>
 
-                                    {/* 
+
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <select
@@ -1290,24 +1482,31 @@ export default function TablaUsuarios() {
                                                 value={selectedEstado}
                                                 onChange={(e) => setSelectedEstado(e.target.value)}
                                             >
-                                                {estados.map(estado => (
-                                                    <option key={estado.id} value={estado.id}>
-                                                        {estado.estado}
-                                                    </option>
-                                                ))}
+                                                {usuario.usuario_servicio[0].servicio.id === 1 || usuario.usuario_servicio[0].servicio.id === 2 || usuario.usuario_servicio[0].servicio.id === 3 ? (
+                                                    listaEstadosTesis.map(estado => (
+                                                        <option key={estado.id} value={estado.estado}>
+                                                            {estado.estado}
+                                                        </option>
+                                                    ))
+                                                ) : usuario.usuario_servicio[0].servicio.id === 4 || usuario.usuario_servicio[0].servicio.id === 5 ? (
+                                                    listaEstadosObservacion.map(estado => (
+                                                        <option key={estado.id} value={estado.estado}>
+                                                            {estado.estado}
+                                                        </option>
+                                                    ))
+                                                ) : (
+                                                    <option value="">Falta asignar servicio</option>
+                                                )}
                                             </select>
                                         ) : (
                                             <ul>
-                                                {usuario.asignacion.map(usuAse => (
-                                                    <li key={usuAse.id}>
-                                                        {usuAse.estado.estado}
-                                                    </li>
-                                                ))}
+                                                {usuario.estado}
                                             </ul>
                                         )}
-                                    </td> */}
-                                    <td></td>
-                                    <td>
+                                    </td>
+
+
+                                    <td style={{ color: usuario.fecha_estimada ? getColor(usuario.fecha_estimada) : 'black' }}>
                                         {editingUserId === usuario.id ? (
                                             <input
                                                 className="input_table_usuario"
@@ -1316,7 +1515,7 @@ export default function TablaUsuarios() {
                                                 onChange={(e) => setEditedDDate(e.target.value)}
                                             />
                                         ) : (
-                                            usuario.fecha_estimada
+                                            <strong>{usuario.fecha_estimada} </strong>
                                         )}
                                     </td>
                                     <td>
@@ -1324,20 +1523,20 @@ export default function TablaUsuarios() {
                                         {editingUserId === usuario.id ? (
                                             <>
                                                 <button onClick={() => handleOk(usuario.id)}>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" className="bi bi-check-circle" viewBox="0 0 16 16">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-check-circle" viewBox="0 0 16 16">
                                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                                         <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
                                                     </svg>
                                                 </button>
                                                 <button onClick={handleCancelar}>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" className="bi bi-x-circle" viewBox="0 0 16 16">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-x-circle" viewBox="0 0 16 16">
                                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                                         <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                                                     </svg>
                                                 </button>
                                             </>
                                         ) : (
-                                            <button onClick={() => handleEditar(usuario.id)}><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#00d799" className="bi bi-pencil-square" viewBox="0 0 16 16">
+                                            <button onClick={() => handleEditar(usuario.id)}><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                                 <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                             </svg>
@@ -1346,7 +1545,7 @@ export default function TablaUsuarios() {
                                     </td>
 
                                     <td><button onClick={() => handleEliminar(usuario.id)}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="red" className="bi bi-trash" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-trash" viewBox="0 0 16 16">
                                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
                                             <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
                                         </svg>

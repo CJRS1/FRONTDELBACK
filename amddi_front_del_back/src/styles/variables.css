@@ -464,11 +464,11 @@ input {
 .tabla_asesores {
   margin-left: 100px;
   width: calc(100% - 100px);
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .subarchivo_container {
@@ -779,4 +779,9 @@ table {
   color: red;
   font-size: 25px;
   font-weight: 600;
+}
+
+/* Asegúrate de que el z-index del menú desplegable del Select sea mayor */
+.pagination {
+  z-index: -10000;
 }/*# sourceMappingURL=variables.css.map */
