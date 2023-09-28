@@ -91,48 +91,48 @@ export default function AsesoradoFinalizado() {
         }
     }, [location]);
 
-    const [pdf, setPdf] = useState(null);
+    // const [pdf, setPdf] = useState(null);
 
-    const handleEditarPDF = async (id) => {
-        // Crea un objeto FormData para enviar el archivo PDF
+    // const handleEditarPDF = async (id) => {
+    //     // Crea un objeto FormData para enviar el archivo PDF
 
-        const formData = new FormData();
-        formData.append("pdf", pdf);
-        console.log(id);
-        try {
-            const res = await axios.put(`http://localhost:5000/actualizar-pdf/${id}`, formData);
-            alert(res.data.msg);
-            // console.log(res.data.msg);
-        } catch (error) {
-            console.error('Error al editar pdf:', error);
-        }
-    }
+    //     const formData = new FormData();
+    //     formData.append("pdf", pdf);
+    //     console.log(id);
+    //     try {
+    //         const res = await axios.put(`http://localhost:5000/actualizar-pdf/${id}`, formData);
+    //         alert(res.data.msg);
+    //         // console.log(res.data.msg);
+    //     } catch (error) {
+    //         console.error('Error al editar pdf:', error);
+    //     }
+    // }
 
-    const handlePdfChange = (e) => {
-        // Actualiza el estado con el archivo PDF seleccionado
-        setPdf(e.target.files[0]);
-    };
+    // const handlePdfChange = (e) => {
+    //     // Actualiza el estado con el archivo PDF seleccionado
+    //     setPdf(e.target.files[0]);
+    // };
 
-    const handleSubmit = async (id) => {
-        // e.preventDefault();
+    // const handleSubmit = async (id) => {
+    //     // e.preventDefault();
 
-        // Crea un objeto FormData para enviar el archivo PDF
-        const formData = new FormData();
-        formData.append("pdf", pdf);
+    //     // Crea un objeto FormData para enviar el archivo PDF
+    //     const formData = new FormData();
+    //     formData.append("pdf", pdf);
 
-        try {
-            // Realiza una solicitud POST para subir el archivo PDF
-            console.log(`http://localhost:5000/subir-pdf/${id}`)
-            const response = await axios.post(`http://localhost:5000/subir-pdf/${id}`, formData);
+    //     try {
+    //         // Realiza una solicitud POST para subir el archivo PDF
+    //         console.log(`http://localhost:5000/subir-pdf/${id}`)
+    //         const response = await axios.post(`http://localhost:5000/subir-pdf/${id}`, formData);
 
-            // Muestra la respuesta del servidor
-            alert(response.data.msg);
-            // window.location.reload();
-            // console.log("Respuesta del servidor:", response.data);
-        } catch (error) {
-            console.error("Error al subir el PDF:", error);
-        }
-    };
+    //         // Muestra la respuesta del servidor
+    //         alert(response.data.msg);
+    //         // window.location.reload();
+    //         // console.log("Respuesta del servidor:", response.data);
+    //     } catch (error) {
+    //         console.error("Error al subir el PDF:", error);
+    //     }
+    // };
 
     const getColor = (fechaEstimada) => {
         // Convertimos las fechas a objetos Date
@@ -177,7 +177,7 @@ export default function AsesoradoFinalizado() {
                     userData.asignacion.map((item, index) => (
                         item.usuario.estado === "Finalizado" && (
                             <div className="asesorado_card" key={index} >
-                                <div className="info_asesorado_container" style={{ borderColor: item.usuario.fecha_estimada ? getColor(item.usuario.fecha_estimada) : 'black' }}>
+                                <div className="info_asesorado_container" style={{ borderColor: 'black' }}>
                                     <div className="info_asesorado_card">
                                         <div className="form_asesorado1">
                                             <h4>Id Amddi:</h4>
@@ -220,7 +220,7 @@ export default function AsesoradoFinalizado() {
                                             <h4>Los PDFs que fueron adjuntados:</h4>
                                         </div>
                                         {item.usuario.pdf_url.map((pdf) => (
-                                            <div className="form_asesorado2" key={pdf.id}>
+                                            <div className="form_asesorado2  form_pdf" key={pdf.id}>
 
                                                 <a key={pdf.id} href={`http://localhost:5000${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fillRule="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
@@ -228,7 +228,7 @@ export default function AsesoradoFinalizado() {
                                                     </svg>
                                                 </a>
                                                 <h4>{pdf.fecha_pdf_url} </h4>
-                                                <input
+                                                {/* <input
                                                     className="xdd"
                                                     key={pdf.usuarioId}
                                                     type="file"
@@ -242,12 +242,12 @@ export default function AsesoradoFinalizado() {
                                                         <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z" />
                                                         <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />
                                                     </svg>
-                                                </button >
+                                                </button > */}
 
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="info_asesorado_card info_asesorado_card_column">
+                                    {/* <div className="info_asesorado_card info_asesorado_card_column">
                                         <div className="form_asesorado2">
                                             <h4>Adjuntar PDF nuevo:</h4>
                                         </div>
@@ -265,7 +265,7 @@ export default function AsesoradoFinalizado() {
                                                 </button>
                                             </form>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="info_asesorado_card info_asesorado_card_column">
                                         <div className="form_asesorado2">
                                             <h4>Fecha de Entrega:</h4>
@@ -326,7 +326,7 @@ export default function AsesoradoFinalizado() {
                                             <h4>Los PDFs que fueron adjuntados:</h4>
                                         </div>
                                         {item.usuario.pdf_url.map((pdf) => (
-                                            <div className="form_asesorado2" key={pdf.id}>
+                                            <div className="form_asesorado2 form_pdf" key={pdf.id}>
 
                                                 <a key={pdf.id} href={`http://localhost:5000${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fillRule="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
@@ -334,7 +334,7 @@ export default function AsesoradoFinalizado() {
                                                     </svg>
                                                 </a>
                                                 <h4>{pdf.fecha_pdf_url} </h4>
-                                                <input
+                                                {/* <input
                                                     className="xdd"
                                                     key={pdf.usuarioId}
                                                     type="file"
@@ -348,7 +348,7 @@ export default function AsesoradoFinalizado() {
                                                         <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z" />
                                                         <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />
                                                     </svg>
-                                                </button >
+                                                </button > */}
 
                                             </div>
                                         ))}
@@ -357,7 +357,7 @@ export default function AsesoradoFinalizado() {
                                         <div className="form_asesorado2">
                                             <h4>Adjuntar PDF nuevo:</h4>
                                         </div>
-                                        <div className="form_asesorado2">
+                                        {/* <div className="form_asesorado2">
                                             <form
                                                 onSubmit={() => handleSubmit(item.usuario.id)}
                                                 encType="multipart/form-data">
@@ -370,7 +370,7 @@ export default function AsesoradoFinalizado() {
                                                     </svg>
                                                 </button>
                                             </form>
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div className="info_asesorado_card info_asesorado_card_column">
                                         <div className="form_asesorado2">

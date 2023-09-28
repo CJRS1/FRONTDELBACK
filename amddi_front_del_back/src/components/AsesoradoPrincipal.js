@@ -14,7 +14,9 @@ export default function AsesoradoSecundario() {
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(true);
     const [userData, setUserData] = useState(null);
+    const [estados, setEstados] = useState([]);
 
+    console.log(estados);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -78,7 +80,8 @@ export default function AsesoradoSecundario() {
                 }
             })
                 .then(response => {
-                    setUserData(response.data.content);
+                    setUserData(response.data.content.asesor);
+                    setEstados(response.data.content.estados);
                 })
                 .catch(error => {
                     console.log(error);
@@ -190,6 +193,14 @@ export default function AsesoradoSecundario() {
                                     </div>
                                     <div className="form_asesorado">
                                         <h4>{item.usuario.tema}</h4>
+                                    </div>
+                                </div>
+                                <div className="info_asesorado_card">
+                                    <div className="form_asesorado1">
+                                        <h4>Servicio:</h4>
+                                    </div>
+                                    <div className="form_asesorado">
+                                        <h4>{item.usuario.usuario_servicio[0].servicio.nombre_servicio}</h4>
                                     </div>
                                 </div>
                                 <div className="info_asesorado_card">
