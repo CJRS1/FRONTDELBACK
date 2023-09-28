@@ -692,8 +692,8 @@ table {
 }
 
 .xdd {
-  padding-top: 3px;
-  padding-left: 1.5px;
+  padding-top: 1.5px;
+  padding-left: 0.8px;
   width: 159px;
   display: flex;
   align-items: center;
@@ -702,13 +702,13 @@ table {
 }
 
 .asesorado_container {
-  height: 100vh;
   padding-left: 100px;
   width: calc(100vw - 100px) !important;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  padding-bottom: 50px;
 }
 .asesorado_container .franja_ancho {
   width: calc(100vw - 100px);
@@ -736,7 +736,6 @@ table {
 }
 .asesorado_container .info_asesorado_card {
   width: 350px;
-  border: 1px solid black;
   display: flex;
   align-items: center;
 }
@@ -765,14 +764,20 @@ table {
   width: 100%;
   min-height: 30px;
   padding-left: 20px;
+  margin-bottom: 10px;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 }
 .asesorado_container .input_asesorado {
   width: 163px;
-  padding-left: 4px;
-  padding-top: 3px;
+  padding-left: 3px;
+  padding-top: 2px;
+}
+.asesorado_container .info_asesorado_container {
+  padding: 20px 20px 20px;
+  border: 5px solid #00d799;
+  border-radius: 10px;
 }
 
 .texto_asesor_principal {
@@ -784,4 +789,32 @@ table {
 /* Asegúrate de que el z-index del menú desplegable del Select sea mayor */
 .pagination {
   z-index: -10000;
+}
+
+.bi-send-check {
+  fill: #00d799 !important;
+}
+
+.bi-cloud-plus-fill {
+  fill: #00d799 !important;
+}
+
+.bi-filetype-pdf {
+  fill: #00d799 !important;
+}
+
+.bi-check-circle {
+  fill: #00d799 !important;
+}
+
+.bi-x-circle {
+  fill: red !important;
+}
+
+.bi-trash {
+  fill: red !important;
+}
+
+.bi-pencil-square {
+  fill: #00d799 !important;
 }/*# sourceMappingURL=variables.css.map */
