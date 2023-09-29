@@ -47,10 +47,10 @@ export default function TablaAsesores() {
 
     const handleEditar = (id) => {
         setEditingAsesorId(id);
-        console.log('el id es', id);
+        // console.log('el id es', id);
         const asesorToEdit = AsesorConUsuario.find(aseUsu => aseUsu.id === id);
         const espe = especialidades;
-        console.log("lasespeeeeee", espe);
+        // console.log("lasespeeeeee", espe);
         if (asesorToEdit) {
             setEditedAsesorName(asesorToEdit.nombre);
             setEditedLastName(asesorToEdit.apePat);
@@ -63,7 +63,7 @@ export default function TablaAsesores() {
         //     value: especialidad.id_especialidad,
         //     label: espe.content[especialidad.id_especialidad].nombre_especialidad
         // }));
-        console.log(asesorToEdit);
+        // console.log(asesorToEdit);
         const especialidadesSeleccionadas = asesorToEdit.asesor_especialidad.map(especialidad => {
             const especialidadEncontrada = espe.content.find(espe => espe.id === especialidad.id_especialidad);
             return {
@@ -71,7 +71,7 @@ export default function TablaAsesores() {
                 label: especialidadEncontrada ? especialidadEncontrada.nombre_especialidad : 'Especialidad no encontrada'
             };
         });
-        console.log("laespe", especialidadesSeleccionadas);
+        // console.log("laespe", especialidadesSeleccionadas);
 
         // Actualizar selectedEspecialidades con las especialidades del asesor
         setSelectedEspecialidades(especialidadesSeleccionadas);
@@ -98,10 +98,9 @@ export default function TablaAsesores() {
                 email: editedEmail,
             };
 
-            console.log("hola", usuarioData);
+            // console.log("hola", usuarioData);
 
-            const usuarioRes = await axios.put(`http://localhost:5000/asesores/${id}`, usuarioData);
-            console.log('Usuario actualizado:', usuarioRes.data.message);
+            await axios.put(`http://localhost:5000/asesores/${id}`, usuarioData);
             // Actualiza el servicio si se ha seleccionado uno nuevo
 
             if (selectedEspecialidades.length > 0) {
@@ -110,7 +109,7 @@ export default function TablaAsesores() {
                     id_asesor: id,
                     especialidades: selectedEspecialidades.map((value) => value.value)
                 };
-                console.log("elasese", aseEspe)
+                // console.log("elasese", aseEspe)
                 await axios.put(`http://localhost:5000/asesor_especialidad`, aseEspe)
             }
 
@@ -141,7 +140,7 @@ export default function TablaAsesores() {
             try {
                 // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/asesores_usuarios');
                 const res = await axios.get('http://localhost:5000/asesores_usuarios');
-                console.log(res.data.content);
+                // console.log(res.data.content);
                 // console.log('Response from server:', res.data);
 
                 if (res.data.content && Array.isArray(res.data.content)) {
@@ -167,8 +166,7 @@ export default function TablaAsesores() {
             const userConfirmed = window.confirm('¿Estás seguro de eliminar a este asesor?');
 
             if (userConfirmed) {
-                const res = await axios.delete(`http://localhost:5000/asesores/${id}`);
-                console.log('Asesor eliminado:', res.data.message);
+                await axios.delete(`http://localhost:5000/asesores/${id}`);
                 // Actualizar la lista de asesores después de eliminar uno
                 const updatedAsesores = AsesorConUsuario.filter(asesor => asesor.id !== id);
                 setAsesorConUsuario(updatedAsesores);
@@ -196,7 +194,7 @@ export default function TablaAsesores() {
 
     const handleEditarEspecialidades = (selectedOptions) => {
         // Crear una nueva lista de especialidades seleccionadas
-        console.log("edit", selectedOptions);
+        // console.log("edit", selectedOptions);
         setSelectedEspecialidades(selectedOptions);
     };
 
@@ -324,22 +322,26 @@ export default function TablaAsesores() {
                                 <td>
                                     <ul>
                                         {filteredAsesor.asignacion.map(AseUsu => (
-                                            <li key={AseUsu.id}>
-                                                {AseUsu.usuario.nombre}
-                                                <br />
-                                                {AseUsu.usuario.apePat}
-                                            </li>
+                                            (AseUsu.usuario.estado !== "Finalizado") && (
+                                                <li key={AseUsu.id}>
+                                                    {AseUsu.usuario.nombre}
+                                                    <br />
+                                                    {AseUsu.usuario.apePat}
+                                                </li>
+                                            )
                                         ))}
                                     </ul>
                                 </td>
                                 <td>
                                     <ul>
                                         {filteredAsesor.asignacion_secundaria.map(AseUsu => (
-                                            <li key={AseUsu.id}>
-                                                {AseUsu.usuario.nombre}
-                                                <br />
-                                                {AseUsu.usuario.apePat}
-                                            </li>
+                                            (AseUsu.usuario.estado !== "Finalizado") && (
+                                                <li key={AseUsu.id}>
+                                                    {AseUsu.usuario.nombre}
+                                                    <br />
+                                                    {AseUsu.usuario.apePat}
+                                                </li>
+                                            )
                                         ))}
                                     </ul>
                                 </td>
@@ -464,22 +466,26 @@ export default function TablaAsesores() {
                                     <td>
                                         <ul>
                                             {asesor.asignacion.map(AseUsu => (
-                                                <li key={AseUsu.id}>
-                                                    {AseUsu.usuario.nombre}
-                                                    <br />
-                                                    {AseUsu.usuario.apePat}
-                                                </li>
+                                                (AseUsu.usuario.estado !== "Finalizado") && (
+                                                    <li key={AseUsu.id}>
+                                                        {AseUsu.usuario.nombre}
+                                                        <br />
+                                                        {AseUsu.usuario.apePat}
+                                                    </li>
+                                                )
                                             ))}
                                         </ul>
                                     </td>
                                     <td>
                                         <ul>
                                             {asesor.asignacion_secundaria.map(AseUsu => (
-                                                <li key={AseUsu.id}>
-                                                    {AseUsu.usuario.nombre}
-                                                    <br />
-                                                    {AseUsu.usuario.apePat}
-                                                </li>
+                                                (AseUsu.usuario.estado !== "Finalizado") && (
+                                                    <li key={AseUsu.id}>
+                                                        {AseUsu.usuario.nombre}
+                                                        <br />
+                                                        {AseUsu.usuario.apePat}
+                                                    </li>
+                                                )
                                             ))}
                                         </ul>
                                     </td>

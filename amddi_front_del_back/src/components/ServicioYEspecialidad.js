@@ -51,13 +51,13 @@ export default function ServicioYEspecialidad() {
     };
 
     const handleOk = async (id) => {
-        console.log(editedServiceName);
+        // console.log(editedServiceName);
         try {
             // Realiza la actualización del nombre del servicio
-            const res = await axios.put(`http://localhost:5000/servicios/${id}`, {
+            await axios.put(`http://localhost:5000/servicios/${id}`, {
                 nombre_servicio: editedServiceName,
             });
-            console.log('Servicio actualizado:', res.data.message);
+            // console.log('Servicio actualizado:', res.data.message);
 
             // Termina el modo de edición
             setEditingServiceId(null);
@@ -74,13 +74,13 @@ export default function ServicioYEspecialidad() {
     };
 
     const handleOk2 = async (id) => {
-        console.log(editedEspecialidadName);
+        // console.log(editedEspecialidadName);
         try {
             // Realiza la actualización del nombre del servicio
-            const res = await axios.put(`http://localhost:5000/especialidades/${id}`, {
+            await axios.put(`http://localhost:5000/especialidades/${id}`, {
                 nombre_especialidad: editedEspecialidadName,
             });
-            console.log('Servicio actualizado:', res.data.message);
+            // console.log('Servicio actualizado:', res.data.message);
 
             // Termina el modo de edición
             setEditingEspecialidadId(null);
@@ -98,15 +98,15 @@ export default function ServicioYEspecialidad() {
     useEffect(() => {
         async function fetchservicio() {
             try {
-                console.log('Haciendo llamada a la API a:', 'http://localhost:5000/servicios');
+                // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/servicios');
                 const res = await axios.get('http://localhost:5000/servicios');
-                console.log(res.data.message);
-                console.log('Response from server:', res.data);
+                // console.log(res.data.message);
+                // console.log('Response from server:', res.data);
 
                 if (res.data.content && Array.isArray(res.data.content)) {
                     const sortedServicio = res.data.content.sort((a, b) => a.id - b.id);
                     /* SE ORDENA POR ID */
-                    console.log('Servicio con usuarios:', res.data.content);
+                    // console.log('Servicio con usuarios:', res.data.content);
                     setservicio(sortedServicio);
                 }
             } catch (error) {
@@ -115,15 +115,15 @@ export default function ServicioYEspecialidad() {
         }
         async function fetchespecialidad() {
             try {
-                console.log('Haciendo llamada a la API a:', 'http://localhost:5000/especialidades');
+                // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/especialidades');
                 const res = await axios.get('http://localhost:5000/especialidades');
-                console.log(res.data.message);
-                console.log('Response from server:', res.data);
+                // console.log(res.data.message);
+                // console.log('Response from server:', res.data);
 
                 if (res.data.content && Array.isArray(res.data.content)) {
                     const sortedEspecialidad = res.data.content.sort((a, b) => a.id - b.id);
                     /* SE ORDENA POR ID */
-                    console.log('Especialidad con usuarios:', res.data.content);
+                    // console.log('Especialidad con usuarios:', res.data.content);
                     setespecialidad(sortedEspecialidad);
                 }
             } catch (error) {

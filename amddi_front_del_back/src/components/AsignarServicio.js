@@ -26,16 +26,16 @@ export default function MiInformacion() {
     }, [location]);
 
     async function buscarUsuarioPorDNI(dni) {
-        console.log("DNI antes de limpiar:", dni);
+        // console.log("DNI antes de limpiar:", dni);
         const cleanedDNI = dni.replace(/\s/g, '');
-        console.log("DNI limpio:", cleanedDNI);
+        // console.log("DNI limpio:", cleanedDNI);
         try {
             const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
 
             if (res.data.content) {
-                console.log(res.data.content.carrera);
+                // console.log(res.data.content.carrera);
                 const IdUsuario = res.data.content.id;
-                console.log(IdUsuario);
+                // console.log(IdUsuario);
                 setusuarioporDNI([res.data.content]);
                 setFormData({ ...formData, id_usuarios: IdUsuario });
             } else {
@@ -54,7 +54,7 @@ export default function MiInformacion() {
             try {
                 const response = await fetch("http://localhost:5000/servicios");
                 const data = await response.json();
-                console.log(data);
+                // console.log(data);
 
                 // Accede a la propiedad 'content' para obtener el array de Servicios
                 setServicios(data.content);
@@ -72,27 +72,29 @@ export default function MiInformacion() {
         console.log(formData);
         try {
             const res = await axios.post("http://localhost:5000/monto_pagado", formData);
-            console.log("larespuesta",res);
+            // console.log("larespuesta",res);
             if (res.status === 200) {
-                console.log("Solicitud exitosa con código de estado 200");
+                // console.log("Solicitud exitosa con código de estado 200");
                 alert("Se realizó el proceso correctamente");
+                if (formData.id_servicio) {
 
-                await axios.put(`http://localhost:5000/usuario_servicio_estado/${formData.id_usuarios}/${formData.id_servicio}`)
+                    console.log("Se añadió un estado")
+                    await axios.put(`http://localhost:5000/usuario_servicio_estado/${formData.id_usuarios}/${formData.id_servicio}`)
+                }
 
-                console.log("Se añadió un estado")
 
             } else if (res.status === 400) {
 
-                console.log("Solicitud exitosa con código de estado 400", res.data.msg);
+                // console.log("Solicitud exitosa con código de estado 400", res.data.msg);
                 // Puedes manejar otros códigos de estado aquí si es necesario
-                console.log("entroaqui")
+                // console.log("entroaqui")
                 alert(res.data.msg);
             } else {
                 console.log("Solicitud no exitosa. Código de estado:", res.status);
-                
+
             }
             window.location.reload();
-            console.log(res.status);
+            // console.log(res.status);
         } catch (error) {
             if (error.response) {
                 console.log("Datos del error:", error.response.data);
@@ -197,7 +199,7 @@ export default function MiInformacion() {
                                     )}
                                 </td>
                                 <td>{usuario.monto_restante}</td>
-                                <td>{usuario.usuario_servicio[0].servicio.nombre_servicio}</td>
+                                <td>{usuario.usuario_servicio[0] ? usuario.usuario_servicio[0].servicio.nombre_servicio : ''}</td>
                                 <td>{usuario.tema}</td>
                             </tr>
                         ))}
@@ -283,7 +285,7 @@ export default function MiInformacion() {
                                     value={formData.monto_pagado}
                                 />
                             </div>
-                            <button type="submit" className="button_agregar_soe">Asignar Servicio</button>
+                            <button type="submit" className="button_agregar_soe">Añadir Monto Pagado</button>
                         </>
                     )}
 

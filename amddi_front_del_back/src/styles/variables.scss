@@ -417,15 +417,19 @@ input {
 
 .tabla_usuarios {
     padding-left: 70px;
-    height: 135vh;
+    // height: 135vh;
     min-width: 2800px;
     background: white;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    padding-bottom: 30px;
+    // margin-bottom: 50px;
     // overflow-x: auto;
 }
+
+
 
 .tabla_usuario_container {
     margin-top: 20px;
@@ -438,6 +442,9 @@ input {
     margin-left: 40px;
     // margin-right: 40px;
     // overflow-x: auto;
+    ul{
+        z-index: 1000000;
+    }
 }
 
 .filtro_container {
@@ -448,7 +455,11 @@ input {
 }
 
 .filtro_usuarios {
-    width: 600px !important;
+    width: 800px !important;
+}
+
+.input_usuario_filtro{
+    width: 500px !important;
 }
 
 .input_filtro {

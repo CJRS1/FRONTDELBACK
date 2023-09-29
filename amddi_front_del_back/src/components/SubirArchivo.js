@@ -14,13 +14,13 @@ export default function SubirArchivo() {
     }, [location]);
 
     async function buscarUsuarioPorDNI(dni) {
-        console.log("DNI antes de limpiar:", dni);
+        // console.log("DNI antes de limpiar:", dni);
         const cleanedDNI = dni.replace(/\s/g, '');
-        console.log("DNI limpio:", cleanedDNI);
+        // console.log("DNI limpio:", cleanedDNI);
         try {
             const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
             if (res.data.content) {
-                console.log(res.data.content);
+                // console.log(res.data.content);
                 setusuarioporDNI([res.data.content]);
             } else {
                 setusuarioporDNI([]); // No se encontró ningún usuario, establecer el estado como un array vacío
@@ -46,13 +46,13 @@ export default function SubirArchivo() {
 
         try {
             // Realiza una solicitud POST para subir el archivo PDF
-            console.log(`http://localhost:5000/subir-pdf/${usuarioporDNI[0].id}`)
+            // console.log(`http://localhost:5000/subir-pdf/${usuarioporDNI[0].id}`)
             const response = await axios.post(`http://localhost:5000/subir-pdf/${usuarioporDNI[0].id}`, formData);
 
             // Muestra la respuesta del servidor
             alert(response.data.msg);
             window.location.reload();
-            console.log("Respuesta del servidor:", response.data);
+            // console.log("Respuesta del servidor:", response.data);
         } catch (error) {
             console.error("Error al subir el PDF:", error);
         }

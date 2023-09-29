@@ -34,15 +34,15 @@ export default function Asignar() {
     useEffect(() => {
         async function fetchAsesorConUsuario() {
             try {
-                console.log('Haciendo llamada a la API a:', 'http://localhost:5000/asesores_usuarios');
+                // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/asesores_usuarios');
                 const res = await axios.get('http://localhost:5000/asesores_usuarios');
-                console.log(res.data.message);
-                console.log('Response from server:', res.data);
+                // console.log(res.data.message);
+                // console.log('Response from server:', res.data);
 
                 if (res.data.content && Array.isArray(res.data.content)) {
                     const sortedAsesores = res.data.content.sort((a, b) => a.id - b.id);
                     /* SE ORDENA POR ID */
-                    console.log('Los asesores con usuarios son:', res.data.content);
+                    // console.log('Los asesores con usuarios son:', res.data.content);
                     setAsesorConUsuario(sortedAsesores);
 
                 }
@@ -56,17 +56,17 @@ export default function Asignar() {
 
     async function buscarUsuarioPorDNI(dni) {
         setTieneAsesorPrincipal(false);
-        console.log("DNI antes de limpiar:", dni);
+        // console.log("DNI antes de limpiar:", dni);
         const cleanedDNI = dni.replace(/\s/g, '');
-        console.log("DNI limpio:", cleanedDNI);
+        // console.log("DNI limpio:", cleanedDNI);
 
         try {
             const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
-            console.log("Usuario encontrado:", res.data);
+            // console.log("Usuario encontrado:", res.data);
 
             if (res.data.content) {
-                console.log("xddd", res.data.content);
-                console.log("xddd", res.data.content.asignacion[0]);
+                // console.log("xddd", res.data.content);
+                // console.log("xddd", res.data.content.asignacion[0]);
                 if (res.data.content.asignacion[0]) {
                     setTieneAsesorPrincipal(true);
                 }
@@ -74,13 +74,13 @@ export default function Asignar() {
 
                 try {
                     const resp = await axios.get(`http://localhost:5000/asesor/${res.data.content.carrera}`);
-                    console.log("Asesor encontrado:", resp.data);
+                    // console.log("Asesor encontrado:", resp.data);
 
                     if (resp.data.content && resp.data.content.length > 0) {
-                        console.log("Asesores encontrados:", resp.data.content);
+                        // console.log("Asesores encontrados:", resp.data.content);
 
                         setasesorPorEspecialidad([resp.data.content]);
-                        console.log("hola", asesorPorEspecialidad)
+                        // console.log("hola", asesorPorEspecialidad)
                     } else {
                         setasesorPorEspecialidad([]); // 
                     }
