@@ -70,7 +70,7 @@ export default function Inicio({ setIsLoggedIn}) {
                 console.error("Error en el inicio de sesión");
             }
         } catch (error) {
-            console.error("Error en la solicitud:", error);
+            alert("Error al ingresar correo o contraseña");
             // alert("La contraseña o el correo es incorrecto");
 
             setIsLoggedIn(false);

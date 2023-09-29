@@ -73,7 +73,7 @@ export default function AsesoradoSecundario() {
                 }
             })
                 .then(response => {
-                    setUserData(response.data.content);
+                    setUserData(response.data.content.asesor);
                 })
                 .catch(error => {
                     console.log(error);

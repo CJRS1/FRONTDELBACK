@@ -75,11 +75,15 @@ export default function NavBarLat({ setIsLoggedIn, isAdmin, isAsesor, setIsAdmin
                 }
             })
                 .then(response => {
-                    console.log(response.data.content);
-                    setUserData(response.data.content); // Almacena los datos del usuario en el estado
+                    // console.log(response.data.content);
+                    setUserData(response.data.content.asesor); // Almacena los datos del usuario en el estado
                 })
                 .catch(error => {
-                    console.log(error);
+                    if (error.response && error.response.status === 401) {
+                        // Error de Unauthorized, pero no mostramos esto como un error en la consola
+                    } else {
+                        console.log(error);
+                    }
                 });
         }
     }, [location]);
@@ -99,11 +103,16 @@ export default function NavBarLat({ setIsLoggedIn, isAdmin, isAsesor, setIsAdmin
                 }
             })
                 .then(response => {
-                    console.log(response.data.content);
+                    // console.log(response.data.content);
                     setUserData(response.data.content); // Almacena los datos del usuario en el estado
                 })
                 .catch(error => {
-                    console.log(error);
+                    if (error.response && error.response.status === 401) {
+                        // Error de Unauthorized, pero no mostramos esto como un error en la consola
+                    } else {
+                        console.log("hola")
+                        console.log(error);
+                    }
                 });
         }
     }, [location]);
@@ -115,6 +124,22 @@ export default function NavBarLat({ setIsLoggedIn, isAdmin, isAsesor, setIsAdmin
     const primeraLetraN = userData?.nombre?.charAt(0) || parsedData?.nombre?.charAt(0) || '';
     const primeraLetraA = userData?.apePat?.charAt(0) || parsedData?.apePat?.charAt(0) || '';
     const email = userData?.email || parsedData?.email || '';
+
+    useEffect(() => {
+        if (isAsesor && location.pathname !== '/asesorado_principal' && location.pathname !== '/asesorado_secundario' && location.pathname !== '/asesorado_finalizado') {
+            // Redirige al asesor a /asesorado_principal si no está en uno de los enlaces permitidos
+            navigate('/asesorado_principal');
+        }
+    }, [isAsesor, location, navigate]);
+
+    useEffect(() => {
+        if (isAdmin && location.pathname !== '/registrar_asesor' && location.pathname !== '/tabla_usuarios' && location.pathname !== '/tabla_asesores'&& location.pathname !== '/subir_archivo'&& location.pathname !== '/asignar_usuario'&& location.pathname !== '/asignar_servicio'&& location.pathname !== '/servicio_especialidad') {
+            // Redirige al asesor a /asesorado_principal si no está en uno de los enlaces permitidos
+            navigate('/registrar_asesor');
+        }
+    }, [isAdmin, location, navigate]);
+
+
 
     return (
 

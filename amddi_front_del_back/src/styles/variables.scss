@@ -847,11 +847,11 @@ table {
         padding-top: 2px;
     }
 
-    .info_asesorado_container{
-        padding: 20px 20px 20px ;
+    .info_asesorado_container {
+        padding: 20px 20px 20px;
         border: 5px solid #00d799;
         border-radius: 10px;
-        
+
     }
 
 
@@ -892,13 +892,34 @@ table {
     fill: red !important;
 }
 
-.bi-pencil-square{
+.bi-pencil-square {
     fill: #00d799 !important;
 }
 
-.form_pdf{
+.form_pdf {
     display: flex !important;
     width: 150px !important;
     justify-content: space-around !important;
     align-items: center !important;
+}
+
+.select_estado_principal {
+    width: 100px;
+    border: 3px solid #00d799;
+    border-radius: 5px;
+    height: 30px;
+    padding-bottom: 3px;
+}
+
+.form_estado {
+    width: 70%;
+    min-height: 30px;
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    button {
+        padding: 0;
+    }
 }

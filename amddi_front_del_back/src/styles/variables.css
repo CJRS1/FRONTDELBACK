@@ -824,4 +824,24 @@ table {
   width: 150px !important;
   justify-content: space-around !important;
   align-items: center !important;
+}
+
+.select_estado_principal {
+  width: 100px;
+  border: 3px solid #00d799;
+  border-radius: 5px;
+  height: 30px;
+  padding-bottom: 3px;
+}
+
+.form_estado {
+  width: 70%;
+  min-height: 30px;
+  padding-left: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.form_estado button {
+  padding: 0;
 }/*# sourceMappingURL=variables.css.map */
