@@ -46,6 +46,7 @@ export default function TablaUsuarios() {
     const [editedPhone, setEditedPhone] = useState("");
     const [editedTema, setEditedTema] = useState("");
     const [editedEmail, setEditedEmail] = useState("");
+    const [editedAsesorVentas, setEditedAsesorVentas] = useState("");
 
     const [editedMontoPagado, setEditedMontoPagado] = useState("");
     const [editedFechaPago, setEditedFechaPago] = useState("");
@@ -187,6 +188,7 @@ export default function TablaUsuarios() {
             setEditedDNI(userToEdit.dni);
             setEditedPhone(userToEdit.celular);
             setEditedEmail(userToEdit.email);
+            setEditedAsesorVentas(userToEdit.asesor_ventas);
             setEditedTema(userToEdit.tema);
             setEditedIdAmddi(userToEdit.id_amddi);
             setEditedPais(userToEdit.pais);
@@ -240,6 +242,7 @@ export default function TablaUsuarios() {
         setEditedCareer("");
         setEditedTema("");
         setEditedEmail("");
+        setEditedAsesorVentas("");
         setEditedDNI("");
         setEditedPhone("");
         setEditedIdAmddi("");
@@ -304,6 +307,7 @@ export default function TablaUsuarios() {
                 dni: editedDNI,
                 email: editedEmail,
                 celular: editedPhone,
+                asesor_ventas: editedAsesorVentas,
                 tema: editedTema,
                 pais: editedPais,
                 institucion_educativa: editedInstitucionEducativa,
@@ -313,7 +317,7 @@ export default function TablaUsuarios() {
                 monto_total: editedMontoTotal,
             };
 
-            // console.log("hola", usuarioData);
+            console.log("hola", usuarioData);
 
             await axios.put(`http://localhost:5000/usuarios/${id}`, usuarioData);
             // console.log('Usuario actualizado:', usuarioRes.data.message);
@@ -432,21 +436,56 @@ export default function TablaUsuarios() {
 
 
     const handleSearch = () => {
-        // console.log("el search es", searchTerm);
-        // console.log("ingreso aquí en el search");
-        // console.log(usuariosConServicios);
+        // const cleanedSearchTerm = searchTerm.replace(/\s/g, "");
+        // const foundUser = usuariosConServicios.filter(usuario => (
+        //     usuario.nombre.includes(cleanedSearchTerm) ||
+        //     usuario.dni.includes(cleanedSearchTerm) ||
+        //     usuario.email.includes(cleanedSearchTerm) ||
+        //     (usuario.id_amddi && usuario.id_amddi.toString().includes(cleanedSearchTerm))
+        // ));
+        // setFilteredUser(foundUser);
+        const searchTerms1 = searchTerm.trim().replace(/\s+/g, ' ');
+        let cleanedSearchTerm = searchTerm.replace(/\s/g, "");
+        
+        console.log(searchTerms1);
+        const foundUser = usuariosConServicios.map(usuario => {
+            const urgencia = usuario.fecha_estimada ? getColor(usuario.fecha_estimada) : null;
+            const mes = usuario.monto_pagado[0]?.fecha_pago ? obtenerNombreMes(usuario.monto_pagado[0].fecha_pago) : null;
+            if (cleanedSearchTerm === '1') {
+                cleanedSearchTerm = 'red'
+            }
+            if (cleanedSearchTerm === '2') {
+                cleanedSearchTerm = '#ffd700'
+            }
+            if (cleanedSearchTerm === '3') {
+                cleanedSearchTerm = '#00d799'
+            }
+            if (cleanedSearchTerm === 'Finalizado') {
+                cleanedSearchTerm = 'black'
+            }
+            const idAmddiMatches = usuario.id_amddi && usuario.id_amddi.startsWith(cleanedSearchTerm);
+            
+            return {
+                ...usuario,
+                urgencia,
+                mes,
+                idAmddiMatches 
+            };
 
-        // Elimina los espacios en blanco del valor del input
-        const cleanedSearchTerm = searchTerm.replace(/\s/g, "");
-
-        const foundUser = usuariosConServicios.filter(usuario => (
-            usuario.nombre.includes(cleanedSearchTerm) ||
-            usuario.dni.includes(cleanedSearchTerm) ||
-            usuario.email.includes(cleanedSearchTerm) ||
-            (usuario.id_amddi && usuario.id_amddi.toString().includes(cleanedSearchTerm))
-        ));
-
-        // console.log("el usuario encontrado", foundUser);
+        }).filter(usuario => {
+            return (
+                usuario.urgencia.includes(cleanedSearchTerm) ||
+                usuario.mes.includes(cleanedSearchTerm) ||
+                usuario.departamento.includes(cleanedSearchTerm) ||
+                (usuario.asesor_ventas && usuario.asesor_ventas.includes(searchTerms1)) ||
+                usuario.pais.includes(cleanedSearchTerm) ||
+                // usuario.nombre.includes(cleanedSearchTerm) ||
+                usuario.dni.includes(cleanedSearchTerm) ||
+                usuario.email.includes(cleanedSearchTerm) ||
+                (usuario.id_amddi && usuario.id_amddi.toString().includes(cleanedSearchTerm)) || usuario.idAmddiMatches
+            );
+        });
+        console.log(foundUser);
         setFilteredUser(foundUser);
     };
 
@@ -550,10 +589,14 @@ export default function TablaUsuarios() {
             return "#00d799";
         } else if (diferenciaDias > 7) {
             return "#ffd700";
+        } else if (diferenciaDias <= 0 ){
+            return "black";
         } else {
             return "red";
         }
     };
+
+
 
     function obtenerNombreMes(fecha) {
         const meses = [
@@ -585,7 +628,7 @@ export default function TablaUsuarios() {
                     <input
                         type="text"
                         className="input_filtro input_usuario_filtro"
-                        placeholder="Filtrar por Nombre, DNI, Mes, Email o Urgencia(1,2,3)"
+                        placeholder="Filtrar por Nombre, Id Usuario, DNI, Mes, Email o Urgencia(1,2,3)"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -618,6 +661,7 @@ export default function TablaUsuarios() {
                             <th>Tema</th>
                             <th>Asesor Principal</th>
                             <th>Asesor Secundario</th>
+                            <th>Asesor de Ventas</th>
                             <th>Estado</th>
                             <th>Fecha de Entrega</th>
                             <th></th>
@@ -637,10 +681,10 @@ export default function TablaUsuarios() {
                                     <td>{editingUserId === filteredUser.id ? (
                                         <input
                                             className="input_table_usuario"
-                                            type="number"
+                                            type="text"
                                             value={editedIdAmddi}
                                             onChange={(e) => setEditedIdAmddi(
-                                                e.target.value.replace(/[^0-9]/g, '')
+                                                e.target.value
                                             )}
                                         />
                                     ) : (
@@ -1144,6 +1188,18 @@ export default function TablaUsuarios() {
                                 </td> */}
                                     <td>
                                         {editingUserId === filteredUser.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedAsesorVentas}
+                                                onChange={(e) => setEditedAsesorVentas(e.target.value.replace(/[^a-zA-Z ]/g, ''))}
+                                            />
+                                        ) : (
+                                            filteredUser.asesor_ventas ? filteredUser.asesor_ventas : '-'
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
                                             <select
                                                 className="select_serv"
                                                 value={selectedEstado}
@@ -1230,9 +1286,9 @@ export default function TablaUsuarios() {
                                     <td>{editingUserId === usuario.id ? (
                                         <input
                                             className="input_table_usuario"
-                                            type="number"
+                                            type="text"
                                             value={editedIdAmddi}
-                                            onChange={(e) => setEditedIdAmddi(e.target.value.replace(/[^0-9]/g, ''))}
+                                            onChange={(e) => setEditedIdAmddi(e.target.value)}
                                         />
                                     ) : (
                                         usuario.id_amddi ? usuario.id_amddi : '-'
@@ -1719,7 +1775,18 @@ export default function TablaUsuarios() {
                                         )}
                                     </td>
 
-
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedAsesorVentas}
+                                                onChange={(e) => setEditedAsesorVentas(e.target.value.replace(/[^a-zA-Z ]/g, ''))}
+                                            />
+                                        ) : (
+                                            usuario.asesor_ventas ? usuario.asesor_ventas : '-'
+                                        )}
+                                    </td>
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <select
