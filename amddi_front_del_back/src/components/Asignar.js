@@ -59,41 +59,79 @@ export default function Asignar() {
         // console.log("DNI antes de limpiar:", dni);
         const cleanedDNI = dni.replace(/\s/g, '');
         // console.log("DNI limpio:", cleanedDNI);
-
-        try {
-            const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
-            // console.log("Usuario encontrado:", res.data);
-
-            if (res.data.content) {
-                // console.log("xddd", res.data.content);
-                // console.log("xddd", res.data.content.asignacion[0]);
-                if (res.data.content.asignacion[0]) {
-                    setTieneAsesorPrincipal(true);
-                }
-                setusuarioporDNI([res.data.content]);
-
-                try {
-                    const resp = await axios.get(`http://localhost:5000/asesor/${res.data.content.carrera}`);
-                    // console.log("Asesor encontrado:", resp.data);
-
-                    if (resp.data.content && resp.data.content.length > 0) {
-                        // console.log("Asesores encontrados:", resp.data.content);
-
-                        setasesorPorEspecialidad([resp.data.content]);
-                        // console.log("hola", asesorPorEspecialidad)
-                    } else {
-                        setasesorPorEspecialidad([]); // 
+        if (cleanedDNI === 8){
+            try {
+                const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
+                // console.log("Usuario encontrado:", res.data);
+    
+                if (res.data.content) {
+                    // console.log("xddd", res.data.content);
+                    // console.log("xddd", res.data.content.asignacion[0]);
+                    if (res.data.content.asignacion[0]) {
+                        setTieneAsesorPrincipal(true);
                     }
-
-                } catch (error) {
-                    console.error("Error buscando asesor por especialidad:", error);
+                    setusuarioporDNI([res.data.content]);
+    
+                    try {
+                        const resp = await axios.get(`http://localhost:5000/asesor/${res.data.content.carrera}`);
+                        // console.log("Asesor encontrado:", resp.data);
+    
+                        if (resp.data.content && resp.data.content.length > 0) {
+                            // console.log("Asesores encontrados:", resp.data.content);
+    
+                            setasesorPorEspecialidad([resp.data.content]);
+                            // console.log("hola", asesorPorEspecialidad)
+                        } else {
+                            setasesorPorEspecialidad([]); // 
+                        }
+    
+                    } catch (error) {
+                        console.error("Error buscando asesor por especialidad:", error);
+                    }
+                } else {
+                    setusuarioporDNI([]); // No se encontró ningún usuario, establecer el estado como un array vacío
                 }
-            } else {
-                setusuarioporDNI([]); // No se encontró ningún usuario, establecer el estado como un array vacío
+    
+            } catch (error) {
+                console.error("Error buscando usuario por DNI:", error);
             }
-
-        } catch (error) {
-            console.error("Error buscando usuario por DNI:", error);
+        }
+        if (cleanedDNI !== 8){
+            try {
+                const res = await axios.get(`http://localhost:5000/usuariosa/${cleanedDNI}`);
+                // console.log("Usuario encontrado:", res.data);
+    
+                if (res.data.content) {
+                    // console.log("xddd", res.data.content);
+                    // console.log("xddd", res.data.content.asignacion[0]);
+                    if (res.data.content.asignacion[0]) {
+                        setTieneAsesorPrincipal(true);
+                    }
+                    setusuarioporDNI([res.data.content]);
+    
+                    try {
+                        const resp = await axios.get(`http://localhost:5000/asesor/${res.data.content.carrera}`);
+                        // console.log("Asesor encontrado:", resp.data);
+    
+                        if (resp.data.content && resp.data.content.length > 0) {
+                            // console.log("Asesores encontrados:", resp.data.content);
+    
+                            setasesorPorEspecialidad([resp.data.content]);
+                            // console.log("hola", asesorPorEspecialidad)
+                        } else {
+                            setasesorPorEspecialidad([]); // 
+                        }
+    
+                    } catch (error) {
+                        console.error("Error buscando asesor por especialidad:", error);
+                    }
+                } else {
+                    setusuarioporDNI([]); // No se encontró ningún usuario, establecer el estado como un array vacío
+                }
+    
+            } catch (error) {
+                console.error("Error buscando usuario por DNI:", error);
+            }
         }
     }
 
@@ -143,6 +181,14 @@ export default function Asignar() {
 
     }
 
+    const limpiarTodo = () => {
+        // Limpiar el input estableciendo su valor a una cadena vacía
+        setDniInput('');
+
+        // Limpiar los datos de usuarioporDNI estableciendo el array vacío
+        setusuarioporDNI([]);
+    };
+
     return (
         <div className="asignar_container">
             <div className="franja_verd">
@@ -154,14 +200,14 @@ export default function Asignar() {
                     <div className="asesor_c">
 
                         <input
-                            type="text"
+                            type="number"
                             className="input_dni_usuario"
                             value={dniInput}
-                            onChange={(e) => setDniInput(e.target.value)}
-                            placeholder="DNI"
+                            onChange={(e) => setDniInput(e.target.value.replace(/[^0-9]/g, ''))}
+                            placeholder="Ingrese el Id Usuario o el DNI"
                         />
                         <button className="button_backend_filtro" onClick={() => buscarUsuarioPorDNI(dniInput)}>Buscar</button>
-                        <button className="button_backend_filtro" onClick={() => setusuarioporDNI([])}>Limpiar</button>
+                        <button className="button_backend_filtro" onClick={limpiarTodo}>Limpiar</button>
                     </div>
                 </div>
                 <h3>Usuario Encontrado</h3>
@@ -169,6 +215,7 @@ export default function Asignar() {
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Id Usuario</th>
                             <th>Nombre</th>
                             <th>Apellidos</th>
                             <th>DNI</th>
@@ -180,6 +227,7 @@ export default function Asignar() {
                         {usuarioporDNI.map((usuario) => (
                             <tr key={usuario.id}>
                                 <td>{usuario.id}</td>
+                                <td>{usuario.id_amddi}</td>
                                 <td>{usuario.nombre}</td>
                                 <td>
                                     {usuario.apePat}

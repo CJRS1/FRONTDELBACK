@@ -17,16 +17,32 @@ export default function SubirArchivo() {
         // console.log("DNI antes de limpiar:", dni);
         const cleanedDNI = dni.replace(/\s/g, '');
         // console.log("DNI limpio:", cleanedDNI);
-        try {
-            const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
-            if (res.data.content) {
-                // console.log(res.data.content);
-                setusuarioporDNI([res.data.content]);
-            } else {
-                setusuarioporDNI([]); // No se encontró ningún usuario, establecer el estado como un array vacío
+        if (cleanedDNI.length === 8) {
+            try {
+                const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
+                if (res.data.content) {
+                    console.log(res.data.content);
+                    setusuarioporDNI([res.data.content]);
+                } else {
+                    setusuarioporDNI([]); // No se encontró ningún usuario, establecer el estado como un array vacío
+                }
+            } catch (error) {
+                console.error("Error buscando usuario por DNI:", error);
             }
-        } catch (error) {
-            console.error("Error buscando usuario por DNI:", error);
+        }
+        if (cleanedDNI.length !== 8) {
+
+            try {
+                const res = await axios.get(`http://localhost:5000/usuariosa/${cleanedDNI}`);
+                if (res.data.content) {
+                    console.log(res.data.content);
+                    setusuarioporDNI([res.data.content]);
+                } else {
+                    setusuarioporDNI([]); // No se encontró ningún usuario, establecer el estado como un array vacío
+                }
+            } catch (error) {
+                console.error("Error buscando usuario por DNI:", error);
+            }
         }
     }
 
@@ -58,6 +74,14 @@ export default function SubirArchivo() {
         }
     };
 
+    const limpiarTodo = () => {
+        // Limpiar el input estableciendo su valor a una cadena vacía
+        setDniInput('');
+
+        // Limpiar los datos de usuarioporDNI estableciendo el array vacío
+        setusuarioporDNI([]);
+    };
+
     return (
         <div className="subarchivo_container">
             <div className="franja_verd">
@@ -68,21 +92,22 @@ export default function SubirArchivo() {
                 <div className="subirarchivo_c">
 
                     <input
-                        type="text"
+                        type="number"
                         className="input_dni_usuario"
                         value={dniInput}
-                        onChange={(e) => setDniInput(e.target.value)}
-                        placeholder="DNI"
+                        onChange={(e) => setDniInput(e.target.value.replace(/[^0-9]/g, ''))}
+                        placeholder="Ingrese el Id Usuario o el DNI"
                     />
                     <button className="button_backend_filtro" onClick={() => buscarUsuarioPorDNI(dniInput)}>Buscar</button>
-                    <button className="button_backend_filtro" onClick={() => setusuarioporDNI([])}>Limpiar</button>
+                    <button className="button_backend_filtro" onClick={limpiarTodo}>Limpiar</button>
                 </div>
             </div>
             <div className="tabla_subir_archivo">
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Nº</th>
+                            <th>Id Usuario</th>
                             <th>Nombre</th>
                             <th>Apellidos</th>
                             <th>PDF_URL</th>
@@ -96,6 +121,7 @@ export default function SubirArchivo() {
                         {usuarioporDNI.map((usuario) => (
                             <tr key={usuario.id}>
                                 <td>{usuario.id}</td>
+                                <td>{usuario.id_amddi}</td>
                                 <td>{usuario.nombre}</td>
                                 <td>{usuario.apePat}
                                     <br />
@@ -123,7 +149,7 @@ export default function SubirArchivo() {
                                 <td>{usuario.tema}</td>
                                 <td>
                                     <form onSubmit={handleSubmit} encType="multipart/form-data">
-                                        <input type="file" accept=".pdf" onChange={handlePdfChange} className="input_subir_t"/>
+                                        <input type="file" accept=".pdf" onChange={handlePdfChange} className="input_subir_t" />
                                         <button type="submit">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-cloud-plus-fill" viewBox="0 0 16 16">
                                                 <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm.5 4v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0z" />

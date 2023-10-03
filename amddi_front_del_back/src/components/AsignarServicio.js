@@ -28,26 +28,50 @@ export default function MiInformacion() {
     async function buscarUsuarioPorDNI(dni) {
         // console.log("DNI antes de limpiar:", dni);
         const cleanedDNI = dni.replace(/\s/g, '');
+        setHayUsuario(false);
         // console.log("DNI limpio:", cleanedDNI);
-        try {
-            const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
+        if (cleanedDNI.length === 8) {
+            try {
+                const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
+                if (res.data.content) {
+                    console.log(res.data.content);
 
-            if (res.data.content) {
-                // console.log(res.data.content.carrera);
-                const IdUsuario = res.data.content.id;
-                // console.log(IdUsuario);
-                setusuarioporDNI([res.data.content]);
-                setFormData({ ...formData, id_usuarios: IdUsuario });
-            } else {
-                setusuarioporDNI([]); // No se encontró ningún usuario, establecer el estado como un array vacío
+                    setusuarioporDNI([res.data.content]);
+                } else {
+                    setusuarioporDNI([]); // No se encontró ningún usuario, establecer el estado como un array vacío
+                }
+            } catch (error) {
+                console.error("Error buscando usuario por DNI:", error);
             }
+        }
+        if (cleanedDNI.length !== 8) {
 
-        } catch (error) {
-            console.error("Error buscando usuario por DNI:", error);
+            try {
+                const res = await axios.get(`http://localhost:5000/usuariosa/${cleanedDNI}`);
+                if (res.data.content) {
+                    console.log(res.data.content);
+                    setusuarioporDNI([res.data.content]);
+                } else {
+                    setusuarioporDNI([]); // No se encontró ningún usuario, establecer el estado como un array vacío
+                }
+            } catch (error) {
+                console.error("Error buscando usuario por DNI:", error);
+            }
         }
 
 
     }
+
+    const [hayUsuario,setHayUsuario] = useState(false);
+
+    useEffect(() => {
+        // Verifica si usuarioporDNI tiene al menos un elemento antes de acceder a él
+        if ((usuarioporDNI.length > 0) && hayUsuario === false) {
+            // Accede a usuarioporDNI[0].id y actualiza el estado de formData
+            setFormData({ ...formData, id_usuarios: usuarioporDNI[0].id });
+            setHayUsuario(true);
+        }
+    }, [hayUsuario,formData, usuarioporDNI]);
 
     useEffect(() => {
         const obtenerServicios = async () => {
@@ -68,7 +92,7 @@ export default function MiInformacion() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log("holaa");
+
         console.log(formData);
         try {
             const res = await axios.post("http://localhost:5000/monto_pagado", formData);
@@ -106,6 +130,13 @@ export default function MiInformacion() {
         }
     }
 
+    const limpiarTodo = () => {
+        // Limpiar el input estableciendo su valor a una cadena vacía
+        setDniInput('');
+
+        // Limpiar los datos de usuarioporDNI estableciendo el array vacío
+        setusuarioporDNI([]);
+    };
 
     return (
         <div className="miinfo_container">
@@ -118,14 +149,14 @@ export default function MiInformacion() {
                     <h3>Coloque el DNI del usuario:</h3>
                     <div className="search_u">
                         <input
-                            type="text"
+                            type="number"
                             className="input_dni_usuario"
                             value={dniInput}
-                            onChange={(e) => setDniInput(e.target.value)}
-                            placeholder="DNI"
+                            onChange={(e) => setDniInput(e.target.value.replace(/[^0-9]/g, ''))}
+                            placeholder="Ingrese el Id Usuario o el DNI"
                         />
                         <button className="button_backend_filtro" onClick={() => buscarUsuarioPorDNI(dniInput)}>Buscar</button>
-                        <button className="button_backend_filtro" onClick={() => setusuarioporDNI([])}>Limpiar</button>
+                        <button className="button_backend_filtro" onClick={limpiarTodo}>Limpiar</button>
                     </div>
                 </div>
                 <h3>Usuario Encontrado</h3>

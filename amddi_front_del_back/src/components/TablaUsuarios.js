@@ -110,7 +110,7 @@ export default function TablaUsuarios() {
                 // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/Tesis');
                 const res = await axios.get('http://localhost:5000/estado_tesis');
                 // console.log(res.data.message);
-                console.log('Response from server t:', res.data);
+                // console.log('Response from server t:', res.data);
 
                 if (res.data.content && Array.isArray(res.data.content)) {
                     // console.log('Los servicios son:', res.data.content);
@@ -130,7 +130,7 @@ export default function TablaUsuarios() {
                 // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/Observacion');
                 const res = await axios.get('http://localhost:5000/estado_observacion');
                 // console.log(res.data.message);
-                console.log('Response from server o:', res.data);
+                // console.log('Response from server o:', res.data);
 
                 if (res.data.content && Array.isArray(res.data.content)) {
                     // console.log('Los servicios son:', res.data.content);
@@ -144,6 +144,36 @@ export default function TablaUsuarios() {
         fetchObservacion();
     }, []);
 
+    const handleInputChange = (e) => {
+        const inputValue = e.target.value;
+
+        // Validar el formato y eliminar caracteres no permitidos
+        const cleanedValue = inputValue.replace(/[^0-9/]/g, '');
+
+        // Dividir la entrada en partes (día, mes, año) utilizando las barras diagonales
+        const parts = cleanedValue.split('/');
+
+        // Obtener los valores numéricos de día, mes y año
+        const day = parseInt(parts[0]) || '';
+        const month = parseInt(parts[1]) || '';
+        const year = parseInt(parts[2]) || '';
+
+        // Verificar si el primer dígito de día y mes es cero y corregirlo
+        if (day.toString().length > 1 && day.toString()[0] === '0') {
+            // Eliminar el cero al inicio
+            parts[0] = day.toString().substring(1);
+        }
+        if (month.toString().length > 1 && month.toString()[0] === '0') {
+            // Eliminar el cero al inicio
+            parts[1] = month.toString().substring(1);
+        }
+
+        // Formatear la fecha en el formato deseado (día/mes/año)
+        const formattedDate = `${parts[0]}/${parts[1]}/${year}`;
+
+        // Actualizar el estado con la fecha formateada
+        setEditedDDate(formattedDate);
+    };
 
     const handleEditar = (id) => {
         setEditingUserId(id);
@@ -252,6 +282,17 @@ export default function TablaUsuarios() {
     }
 
     const handleOk = async (id) => {
+        // Utilizamos una expresión regular para verificar el formato "día/mes/año"
+        const dateFormat = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/\d{4}$/;
+
+
+
+        if (!dateFormat.test(editedDDate)) {
+            // Si el formato no es válido, mostrar una alerta
+            window.alert('Formato de fecha incorrecto. El formato debe ser día/mes/año sin ceros adelante de los días y meses.');
+            return;
+        }
+
         try {
             // Actualiza el usuario
             const usuarioData = {
@@ -272,18 +313,18 @@ export default function TablaUsuarios() {
                 monto_total: editedMontoTotal,
             };
 
-            console.log("hola", usuarioData);
+            // console.log("hola", usuarioData);
 
-            const usuarioRes = await axios.put(`http://localhost:5000/usuarios/${id}`, usuarioData);
-            console.log('Usuario actualizado:', usuarioRes.data.message);
+            await axios.put(`http://localhost:5000/usuarios/${id}`, usuarioData);
+            // console.log('Usuario actualizado:', usuarioRes.data.message);
             // window.location.reload();
             // Actualiza el servicio si se ha seleccionado uno nuevo
             if (selectedService !== null) {
                 const servicioData = {
                     id_servicio: selectedService,
                 };
-                const servicioRes = await axios.put(`http://localhost:5000/usuario_servicio/${id}/${selectedService}`, servicioData);
-                console.log('Servicio actualizado:', servicioRes.data.message);
+                await axios.put(`http://localhost:5000/usuario_servicio/${id}/${selectedService}`, servicioData);
+                // console.log('Servicio actualizado:', servicioRes.data.message);
             }
 
             if (asesorPrincipal !== "") {
@@ -291,11 +332,11 @@ export default function TablaUsuarios() {
                     id_usuario: id,
                     id_asesor: asesorPrincipal
                 }
-                console.log(data);
-                const res = await axios.put(`http://localhost:5000/asignaciones`,
+                // console.log(data);
+                await axios.put(`http://localhost:5000/asignaciones`,
                     data
                 );
-                console.log("la data", res.data.message)
+                // console.log("la data", res.data.message)
             }
 
             if (Object.keys(asesorSecundario).length > 0) {
@@ -303,10 +344,10 @@ export default function TablaUsuarios() {
                     id_usuario: id,
                     id_asesor: asesorSecundario
                 }
-                console.log("latadasec", dataS);
-                const resP = await axios.put(`http://localhost:5000/asignacionesSec`,
+                // console.log("latadasec", dataS);
+                await axios.put(`http://localhost:5000/asignacionesSec`,
                     dataS)
-                console.log(resP.data.message)
+                // console.log(resP.data.message)
             }
 
             const monto_pagado = [];
@@ -351,7 +392,7 @@ export default function TablaUsuarios() {
                 const res = await axios.get('http://localhost:5000/usuarios_con_servicio');
                 // console.log('Response from server:', res.data);
                 if (res.data.content && Array.isArray(res.data.content)) {
-                    console.log('Usuarios con servicios recibidos:', res.data.content);
+                    // console.log('Usuarios con servicios recibidos:', res.data.content);
                     setUsuariosConServicios(res.data.content);
                 }
             } catch (error) {
@@ -362,21 +403,21 @@ export default function TablaUsuarios() {
         fetchUsuariosConServicios();
     }, []);
 
-    console.log("usuario", usuariosConServicios);
+    // console.log("usuario", usuariosConServicios);
 
     const [asesores, setAsesores] = useState([]); // Utiliza useState para inicializar asesores como un arreglo vacío
-    console.log(asesores);
+    // console.log(asesores);
     const [asesorPrincipal, setAsesorPrincipal] = useState(""); // Utiliza useState
     const [asesorSecundario, setAsesorSecundario] = useState({}); // Utiliza useState
 
-    console.log("los asesores secundarios", asesorSecundario);
-    console.log("len", Object.keys(asesorSecundario).length);
+    // console.log("los asesores secundarios", asesorSecundario);
+    // console.log("len", Object.keys(asesorSecundario).length);
 
     useEffect(() => {
         async function fetchAsesores() {
             try {
                 const res = await axios.get('http://localhost:5000/asesores');
-                console.log(res.data.message);
+                // console.log(res.data.message);
                 if (res.data.content && Array.isArray(res.data.content)) {
                     // console.log('Asesores:', res.data.content);
                     setAsesores(res.data.content);
@@ -391,9 +432,9 @@ export default function TablaUsuarios() {
 
 
     const handleSearch = () => {
-        console.log("el search es", searchTerm);
-        console.log("ingreso aquí en el search");
-        console.log(usuariosConServicios);
+        // console.log("el search es", searchTerm);
+        // console.log("ingreso aquí en el search");
+        // console.log(usuariosConServicios);
 
         // Elimina los espacios en blanco del valor del input
         const cleanedSearchTerm = searchTerm.replace(/\s/g, "");
@@ -405,7 +446,7 @@ export default function TablaUsuarios() {
             (usuario.id_amddi && usuario.id_amddi.toString().includes(cleanedSearchTerm))
         ));
 
-        console.log("el usuario encontrado", foundUser);
+        // console.log("el usuario encontrado", foundUser);
         setFilteredUser(foundUser);
     };
 
@@ -428,6 +469,7 @@ export default function TablaUsuarios() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const currentData = usuariosConServicios.slice(startIndex, endIndex);
+
 
     const handleEliminar = async (id) => {
         try {
@@ -585,212 +627,215 @@ export default function TablaUsuarios() {
                     <tbody>
                         {filteredUser ? (
                             filteredUser.map(filteredUser => (
-                            <tr key={filteredUser.id}>
-                                <td>{filteredUser.id}</td>
-                                <td>
-                                    {filteredUser.monto_pagado && filteredUser.monto_pagado.length > 0
-                                        ? obtenerNombreMes(filteredUser.monto_pagado[0].fecha_pago)
-                                        : '-'}
-                                </td>
-                                <td>{editingUserId === filteredUser.id ? (
-                                    <input
-                                        className="input_table_usuario"
-                                        type="text"
-                                        value={editedIdAmddi}
-                                        onChange={(e) => setEditedIdAmddi(e.target.value)}
-                                    />
-                                ) : (
-                                    filteredUser.id_amddi ? filteredUser.id_amddi : '-'
-                                )} </td>
-                                <td>
-                                    {editingUserId === filteredUser.id ? (
+                                <tr key={filteredUser.id}>
+                                    <td>{filteredUser.id}</td>
+                                    <td>
+                                        {filteredUser.monto_pagado && filteredUser.monto_pagado.length > 0
+                                            ? obtenerNombreMes(filteredUser.monto_pagado[0].fecha_pago)
+                                            : '-'}
+                                    </td>
+                                    <td>{editingUserId === filteredUser.id ? (
+                                        <input
+                                            className="input_table_usuario"
+                                            type="number"
+                                            value={editedIdAmddi}
+                                            onChange={(e) => setEditedIdAmddi(
+                                                e.target.value.replace(/[^0-9]/g, '')
+                                            )}
+                                        />
+                                    ) : (
+                                        filteredUser.id_amddi ? filteredUser.id_amddi : '-'
+                                    )} </td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedUserName}
+                                                onChange={(e) => setEditedUserName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
+                                            />
+                                        ) : (
+                                            filteredUser.nombre
+                                        )}
+                                    </td>
+                                    <td>{editingUserId === filteredUser.id ? (
                                         <input
                                             className="input_table_usuario"
                                             type="text"
-                                            value={editedUserName}
-                                            onChange={(e) => setEditedUserName(e.target.value)}
+                                            value={editedLastName}
+                                            onChange={(e) => setEditedLastName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
                                         />
                                     ) : (
-                                        filteredUser.nombre
+                                        filteredUser.apePat
+
                                     )}
-                                </td>
-                                <td>{editingUserId === filteredUser.id ? (
-                                    <input
-                                        className="input_table_usuario"
-                                        type="text"
-                                        value={editedLastName}
-                                        onChange={(e) => setEditedLastName(e.target.value)}
-                                    />
-                                ) : (
-                                    filteredUser.apePat
+                                        <br />
+                                        {editingUserId === filteredUser.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedSLastName}
+                                                onChange={(e) => setEditedSLastName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
+                                            />
+                                        ) : (
+                                            filteredUser.apeMat
 
-                                )}
-                                    <br />
-                                    {editingUserId === filteredUser.id ? (
+                                        )}</td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedPais}
+                                                onChange={(e) => setEditedPais(e.target.value.replace(/[^a-zA-Z]/g, ''))}
+                                            />
+                                        ) : (
+                                            filteredUser.pais ? filteredUser.pais : '-'
+                                        )}
+                                    </td>
+                                    <td>{editingUserId === filteredUser.id ? (
                                         <input
                                             className="input_table_usuario"
                                             type="text"
-                                            value={editedSLastName}
-                                            onChange={(e) => setEditedSLastName(e.target.value)}
+                                            value={editedDepartment}
+                                            onChange={(e) => setEditedDepartment(e.target.value.replace(/[^a-zA-Z]/g, ''))}
                                         />
                                     ) : (
-                                        filteredUser.apeMat
-
+                                        filteredUser.departamento
                                     )}</td>
-                                <td>
-                                    {editingUserId === filteredUser.id ? (
-                                        <input
-                                            className="input_table_usuario"
-                                            type="text"
-                                            value={editedPais}
-                                            onChange={(e) => setEditedPais(e.target.value)}
-                                        />
-                                    ) : (
-                                        filteredUser.pais ? filteredUser.pais : '-'
-                                    )}
-                                </td>
-                                <td>{editingUserId === filteredUser.id ? (
-                                    <input
-                                        className="input_table_usuario"
-                                        type="text"
-                                        value={editedDepartment}
-                                        onChange={(e) => setEditedDepartment(e.target.value)}
-                                    />
-                                ) : (
-                                    filteredUser.departamento
-                                )}</td>
-                                <td>
-                                    {editingUserId === filteredUser.id ? (
-                                        <select
-                                            className="select_serv"
-                                            value={editedCareer}
-                                            onChange={(e) => setEditedCareer(e.target.value)}
-                                        >
-                                            {especialidades.map(especialidad => (
-                                                <option key={especialidad.id} value={especialidad.nombre_especialidad}>
-                                                    {especialidad.nombre_especialidad}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    ) : (
-                                        filteredUser.carrera
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === filteredUser.id ? (
-                                        <input
-                                            className="input_table_usuario"
-                                            type="text"
-                                            value={editedInstitucionEducativa}
-                                            onChange={(e) => setEditedInstitucionEducativa(e.target.value)}
-                                        />
-                                    ) : (
-                                        filteredUser.institucion_educativa ? filteredUser.institucion_educativa : '-'
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === filteredUser.id ? (
-                                        <input
-                                            className="input_table_usuario"
-                                            type="text"
-                                            value={editedEmail}
-                                            onChange={(e) => setEditedEmail(e.target.value)}
-                                        />
-                                    ) : (
-                                        filteredUser.email
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === filteredUser.id ? (
-                                        <input
-                                            className="input_table_usuario"
-                                            type="text"
-                                            value={editedDNI}
-                                            onChange={(e) => setEditedDNI(e.target.value)}
-                                        />
-                                    ) : (
-                                        filteredUser.dni
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === filteredUser.id ? (
-                                        <input
-                                            className="input_table_usuario"
-                                            type="text"
-                                            value={editedPhone}
-                                            onChange={(e) => setEditedPhone(e.target.value)}
-                                        />
-                                    ) : (
-                                        filteredUser.celular
-                                    )}
-                                </td>
-                                <td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <select
+                                                className="select_serv"
+                                                value={editedCareer}
+                                                onChange={(e) => setEditedCareer(e.target.value)}
+                                            >
+                                                {especialidades.map(especialidad => (
+                                                    <option key={especialidad.id} value={especialidad.nombre_especialidad}>
+                                                        {especialidad.nombre_especialidad}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        ) : (
+                                            filteredUser.carrera
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedInstitucionEducativa}
+                                                onChange={(e) => setEditedInstitucionEducativa(e.target.value.replace(/[^a-zA-Z]/g, ''))}
+                                            />
+                                        ) : (
+                                            filteredUser.institucion_educativa ? filteredUser.institucion_educativa : '-'
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="email"
+                                                value={editedEmail}
+                                                onChange={(e) => setEditedEmail(e.target.value)}
+                                            />
+                                        ) : (
+                                            filteredUser.email
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedDNI}
+                                                onChange={(e) => setEditedDNI(e.target.value.replace(/[^0-9]/g, ''))}
+                                            />
+                                        ) : (
+                                            filteredUser.dni
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="number"
+                                                value={editedPhone}
+                                                onChange={(e) => setEditedPhone(e.target.value)}
+                                            />
+                                        ) : (
+                                            filteredUser.celular
+                                        )}
+                                    </td>
+                                    <td>
 
-                                    {editingUserId === filteredUser.id ? (
-                                        // <input
-                                        //     className="input_table_usuario"
-                                        //     type="text"
-                                        //     value={editedPDF_URL}
-                                        //     onChange={(e) => setEditedPDF_URL(e.target.value)}
-                                        // />
-                                        filteredUser.pdf_url.map((pdf, index) => (
-                                            <li key={index}>
-                                                <input
-                                                    className="xdd"
-                                                    key={index}
-                                                    type="file"
-                                                    accept=".pdf"
-                                                    onChange={handlePdfChange}
-                                                // Asegúrate de especificar el tipo de archivo permitido
-                                                // onChange={(e) => handleFileUpload(index, e.target.files[0])}
-                                                />
-                                                <div className="button_pdf">
+                                        {editingUserId === filteredUser.id ? (
+                                            // <input
+                                            //     className="input_table_usuario"
+                                            //     type="text"
+                                            //     value={editedPDF_URL}
+                                            //     onChange={(e) => setEditedPDF_URL(e.target.value)}
+                                            // />
+                                            filteredUser.pdf_url.map((pdf, index) => (
+                                                <li key={index}>
+                                                    <input
+                                                        className="xdd"
+                                                        key={index}
+                                                        type="file"
+                                                        accept=".pdf"
+                                                        onChange={handlePdfChange}
+                                                    // Asegúrate de especificar el tipo de archivo permitido
+                                                    // onChange={(e) => handleFileUpload(index, e.target.files[0])}
+                                                    />
+                                                    <div className="button_pdf">
 
-                                                    <button onClick={() => handleEditarPDF(pdf.id)}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-send-check" viewBox="0 0 16 16">
-                                                            <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z" />
-                                                            <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />
+                                                        <button onClick={() => handleEditarPDF(pdf.id)}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-send-check" viewBox="0 0 16 16">
+                                                                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z" />
+                                                                <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />
+                                                            </svg>
+                                                        </button >
+                                                        <button onClick={() => handleEliminarPDF(pdf.id)}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-trash" viewBox="0 0 16 16">
+                                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            ))
+                                        ) : (
+                                            filteredUser.pdf_url.map((pdf, index) => (
+                                                <li key={index}>
+                                                    <a href={`http://localhost:5000${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fillRule="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
+                                                            <path fillRule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z" />
                                                         </svg>
-                                                    </button >
-                                                    <button onClick={() => handleEliminarPDF(pdf.id)}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-trash" viewBox="0 0 16 16">
-                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </li>
-                                        ))
-                                    ) : (
-                                        filteredUser.pdf_url.map((pdf, index) => (
-                                            <li key={index}>
-                                                <a href={`http://localhost:5000${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fillRule="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
-                                                        <path fillRule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z" />
-                                                    </svg>
-                                                </a>
-                                                <br />
-                                                {pdf.fecha_pdf_url}
-                                                <br />
-                                            </li>
-                                        ))
-                                    )}
+                                                    </a>
+                                                    <br />
+                                                    {pdf.fecha_pdf_url}
+                                                    <br />
+                                                </li>
+                                            ))
+                                        )}
 
 
-                                </td>
-                                <td>
-                                    {editingUserId === filteredUser.id ? (
-                                        <input
-                                            className="input_table_usuario"
-                                            type="text"
-                                            value={editedMontoTotal}
-                                            onChange={(e) => setEditedMontoTotal(e.target.value)}
-                                        />
-                                    ) : (
-                                        filteredUser.monto_total
-                                    )}
-                                </td>
-                                {/* <td>
+                                    </td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="number"
+                                                step="0.1"
+                                                value={editedMontoTotal}
+                                                onChange={(e) => setEditedMontoTotal(e.target.value)}
+                                            />
+                                        ) : (
+                                            filteredUser.monto_total
+                                        )}
+                                    </td>
+                                    {/* <td>
                                     {filteredUser.monto_pagado.map((monto, index) => (
                                         <div key={index}>
                                             {editingUserId === filteredUser.id ? (
@@ -835,152 +880,181 @@ export default function TablaUsuarios() {
                                     ))}
 
                                 </td> */}
-                                <td>
-                                    {filteredUser.monto_pagado && filteredUser.monto_pagado.length > 0 ? (
-                                        <>                                        {editingUserId === filteredUser.id ? (
-                                            <input
-                                                className="input_table_usuario"
-                                                type="text"
-                                                value={editedMontoPagado}
-                                                onChange={(e) => setEditedMontoPagado(e.target.value)}
-                                            />
-                                        ) : (
-                                            filteredUser.monto_pagado[0].monto_pagado
-                                        )}
-                                            <br />
-                                            {editingUserId === filteredUser.id ? (
+                                    <td>
+                                        {filteredUser.monto_pagado && filteredUser.monto_pagado.length > 0 ? (
+                                            <>                                        {editingUserId === filteredUser.id ? (
                                                 <input
                                                     className="input_table_usuario"
-                                                    type="text"
-                                                    value={editedFechaPago}
-                                                    onChange={(e) => setEditedFechaPago(e.target.value)}
+                                                    type="number"
+                                                    step="0.1"
+                                                    value={editedMontoPagado}
+                                                    onChange={(e) => setEditedMontoPagado(e.target.value)}
                                                 />
                                             ) : (
-                                                filteredUser.monto_pagado[0].fecha_pago
+                                                filteredUser.monto_pagado[0].monto_pagado
                                             )}
-                                        </>
-                                    ) : (
-                                        '-'
-                                    )}
-                                </td>
-                                <td>
-                                    {filteredUser.monto_pagado && filteredUser.monto_pagado.length > 1 ? (
-                                        <>                                        {editingUserId === filteredUser.id ? (
-                                            <input
-                                                className="input_table_usuario"
-                                                type="text"
-                                                value={editedMontoPagado}
-                                                onChange={(e) => setEditedMontoPagado(e.target.value)}
-                                            />
+                                                <br />
+                                                {editingUserId === filteredUser.id ? (
+                                                    <input
+                                                        className="input_table_usuario"
+                                                        type="text"
+                                                        value={editedFechaPago}
+                                                        onChange={(e) => setEditedFechaPago(e.target.value)}
+                                                    />
+                                                ) : (
+                                                    filteredUser.monto_pagado[0].fecha_pago
+                                                )}
+                                            </>
                                         ) : (
-                                            filteredUser.monto_pagado[1].monto_pagado
+                                            '-'
                                         )}
-                                            <br />
-                                            {editingUserId === filteredUser.id ? (
+                                    </td>
+                                    <td>
+                                        {filteredUser.monto_pagado && filteredUser.monto_pagado.length > 1 ? (
+                                            <>                                        {editingUserId === filteredUser.id ? (
                                                 <input
                                                     className="input_table_usuario"
-                                                    type="text"
-                                                    value={editedFechaPago}
-                                                    onChange={(e) => setEditedFechaPago(e.target.value)}
+                                                    type="number"
+                                                    step="0.1"
+                                                    value={editedMontoPagado}
+                                                    onChange={(e) => setEditedMontoPagado(e.target.value)}
                                                 />
                                             ) : (
-                                                filteredUser.monto_pagado[1].fecha_pago
+                                                filteredUser.monto_pagado[1].monto_pagado
                                             )}
-                                        </>
-                                    ) : (
-                                        '-'
-                                    )}
-                                </td>
-                                <td>
-                                    {filteredUser.monto_pagado && filteredUser.monto_pagado.length > 2 ? (
-                                        <>                                        {editingUserId === filteredUser.id ? (
-                                            <input
-                                                className="input_table_usuario"
-                                                type="text"
-                                                value={editedMontoPagado}
-                                                onChange={(e) => setEditedMontoPagado(e.target.value)}
-                                            />
+                                                <br />
+                                                {editingUserId === filteredUser.id ? (
+                                                    <input
+                                                        className="input_table_usuario"
+                                                        type="text"
+                                                        value={editedFechaPago}
+                                                        onChange={(e) => setEditedFechaPago(e.target.value)}
+                                                    />
+                                                ) : (
+                                                    filteredUser.monto_pagado[1].fecha_pago
+                                                )}
+                                            </>
                                         ) : (
-                                            filteredUser.monto_pagado[2].monto_pagado
+                                            '-'
                                         )}
-                                            <br />
-                                            {editingUserId === filteredUser.id ? (
+                                    </td>
+                                    <td>
+                                        {filteredUser.monto_pagado && filteredUser.monto_pagado.length > 2 ? (
+                                            <>                                        {editingUserId === filteredUser.id ? (
                                                 <input
                                                     className="input_table_usuario"
-                                                    type="text"
-                                                    value={editedFechaPago}
-                                                    onChange={(e) => setEditedFechaPago(e.target.value)}
+                                                    type="number"
+                                                    step="0.1"
+                                                    value={editedMontoPagado}
+                                                    onChange={(e) => setEditedMontoPagado(e.target.value)}
                                                 />
                                             ) : (
-                                                filteredUser.monto_pagado[2].fecha_pago
+                                                filteredUser.monto_pagado[2].monto_pagado
                                             )}
-                                        </>
-                                    ) : (
-                                        '-'
-                                    )}
-                                </td>
-                                <td>
-                                    {filteredUser.monto_pagado && filteredUser.monto_pagado.length > 3 ? (
-                                        <>                                        {editingUserId === filteredUser.id ? (
-                                            <input
-                                                className="input_table_usuario"
-                                                type="text"
-                                                value={editedMontoPagado}
-                                                onChange={(e) => setEditedMontoPagado(e.target.value)}
-                                            />
+                                                <br />
+                                                {editingUserId === filteredUser.id ? (
+                                                    <input
+                                                        className="input_table_usuario"
+                                                        type="text"
+                                                        value={editedFechaPago}
+                                                        onChange={(e) => setEditedFechaPago(e.target.value)}
+                                                    />
+                                                ) : (
+                                                    filteredUser.monto_pagado[2].fecha_pago
+                                                )}
+                                            </>
                                         ) : (
-                                            filteredUser.monto_pagado[3].monto_pagado
+                                            '-'
                                         )}
-                                            <br />
-                                            {editingUserId === filteredUser.id ? (
+                                    </td>
+                                    <td>
+                                        {filteredUser.monto_pagado && filteredUser.monto_pagado.length > 3 ? (
+                                            <>                                        {editingUserId === filteredUser.id ? (
                                                 <input
                                                     className="input_table_usuario"
-                                                    type="text"
-                                                    value={editedFechaPago}
-                                                    onChange={(e) => setEditedFechaPago(e.target.value)}
+                                                    type="number"
+                                                    step="0.1"
+                                                    value={editedMontoPagado}
+                                                    onChange={(e) => setEditedMontoPagado(e.target.value)}
                                                 />
                                             ) : (
-                                                filteredUser.monto_pagado[3].fecha_pago
+                                                filteredUser.monto_pagado[3].monto_pagado
                                             )}
-                                        </>
-                                    ) : (
-                                        '-'
-                                    )}
-                                </td>
-                                <td>{filteredUser.monto_restante} </td>
-                                <td>
-                                    {editingUserId === filteredUser.id ? (
-                                        <select
-                                            className="select_serv"
-                                            value={selectedService}
-                                            onChange={(e) => setSelectedService(e.target.value)}
-                                        >
+                                                <br />
+                                                {editingUserId === filteredUser.id ? (
+                                                    <input
+                                                        className="input_table_usuario"
+                                                        type="text"
+                                                        value={editedFechaPago}
+                                                        onChange={(e) => setEditedFechaPago(e.target.value)}
+                                                    />
+                                                ) : (
+                                                    filteredUser.monto_pagado[3].fecha_pago
+                                                )}
+                                            </>
+                                        ) : (
+                                            '-'
+                                        )}
+                                    </td>
+                                    <td>{filteredUser.monto_restante} </td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <select
+                                                className="select_serv"
+                                                value={selectedService}
+                                                onChange={(e) => setSelectedService(e.target.value)}
+                                            >
 
-                                            {servicios.map(servicio => (
-                                                <option key={servicio.id} value={servicio.id}>
-                                                    {servicio.nombre_servicio}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    ) : (
-                                        filteredUser.usuario_servicio[0]?.servicio.nombre_servicio || ""
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === filteredUser.id ? (
-                                        <input
-                                            className="input_table_usuario"
-                                            type="text"
-                                            value={editedTema}
-                                            onChange={(e) => setEditedTema(e.target.value)}
-                                        />
-                                    ) : (
-                                        filteredUser.tema
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === filteredUser.id ? (
-                                        <>
+                                                {servicios.map(servicio => (
+                                                    <option key={servicio.id} value={servicio.id}>
+                                                        {servicio.nombre_servicio}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        ) : (
+                                            filteredUser.usuario_servicio[0]?.servicio.nombre_servicio || ""
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedTema}
+                                                onChange={(e) => setEditedTema(e.target.value.replace(/[^a-zA-Z]/g, ''))}
+                                            />
+                                        ) : (
+                                            filteredUser.tema
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <>
+                                                <ul>
+                                                    {filteredUser.asignacion.map(usuAse => (
+                                                        <li key={usuAse.id}>
+                                                            {usuAse.asesor.nombre}
+                                                            <br />
+                                                            {usuAse.asesor.apePat}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                                <select
+                                                    className="select_serv"
+                                                    value={asesorPrincipal}
+                                                    onChange={(e) => setAsesorPrincipal(e.target.value)}
+                                                >
+                                                    <option value="">Seleccione un asesor</option>
+                                                    {asesores.map(asesor => (
+                                                        <option key={asesor.id} value={asesor.id}>
+                                                            {asesor.nombre} {asesor.apePat}
+
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </>
+
+                                        ) : (
                                             <ul>
                                                 {filteredUser.asignacion.map(usuAse => (
                                                     <li key={usuAse.id}>
@@ -990,87 +1064,62 @@ export default function TablaUsuarios() {
                                                     </li>
                                                 ))}
                                             </ul>
-                                            <select
-                                                className="select_serv"
-                                                value={asesorPrincipal}
-                                                onChange={(e) => setAsesorPrincipal(e.target.value)}
-                                            >
-                                                <option value="">Seleccione un asesor</option>
-                                                {asesores.map(asesor => (
-                                                    <option key={asesor.id} value={asesor.id}>
-                                                        {asesor.nombre} {asesor.apePat}
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <ul>
+                                                {filteredUser.asignacion_secundaria.map((usuAseSec, i) => (
+                                                    <li key={usuAseSec.id} className="asesor_li">
+                                                        <div className="ase_eli">
+                                                            {usuAseSec.asesor.nombre}
+                                                            <br />
+                                                            {usuAseSec.asesor.apePat}
+                                                            <br />
+                                                            <button onClick={() => handleEliminar2(usuAseSec.id)}>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-trash" viewBox="0 0 16 16">
+                                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
 
-                                                    </option>
+                                                        <select
+                                                            className="select_serv"
+                                                            value={asesorSecundario[i] || ''}
+                                                            onChange={(e) => {
+                                                                const selectedAsesorId = e.target.value;
+                                                                setAsesorSecundario((prevAsesores) => ({
+                                                                    ...prevAsesores,
+                                                                    [i]: selectedAsesorId,
+                                                                }));
+                                                            }}
+                                                        >
+                                                            <option value="">Seleccione un asesor</option>
+                                                            {asesores.map((asesor) => (
+                                                                <option key={asesor.id} value={asesor.id}>
+                                                                    {asesor.nombre} {asesor.apePat}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+
+                                                    </li>
                                                 ))}
-                                            </select>
-                                        </>
-
-                                    ) : (
-                                        <ul>
-                                            {filteredUser.asignacion.map(usuAse => (
-                                                <li key={usuAse.id}>
-                                                    {usuAse.asesor.nombre}
-                                                    <br />
-                                                    {usuAse.asesor.apePat}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </td>
-                                <td>
-                                    {editingUserId === filteredUser.id ? (
-                                        <ul>
-                                            {filteredUser.asignacion_secundaria.map((usuAseSec, i) => (
-                                                <li key={usuAseSec.id} className="asesor_li">
-                                                    <div className="ase_eli">
+                                            </ul>
+                                        ) : (
+                                            <ul>
+                                                {filteredUser.asignacion_secundaria.map((usuAseSec) => (
+                                                    <li key={usuAseSec.id}>
                                                         {usuAseSec.asesor.nombre}
                                                         <br />
                                                         {usuAseSec.asesor.apePat}
                                                         <br />
-                                                        <button onClick={() => handleEliminar2(usuAseSec.id)}>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-trash" viewBox="0 0 16 16">
-                                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-
-                                                    <select
-                                                        className="select_serv"
-                                                        value={asesorSecundario[i] || ''}
-                                                        onChange={(e) => {
-                                                            const selectedAsesorId = e.target.value;
-                                                            setAsesorSecundario((prevAsesores) => ({
-                                                                ...prevAsesores,
-                                                                [i]: selectedAsesorId,
-                                                            }));
-                                                        }}
-                                                    >
-                                                        <option value="">Seleccione un asesor</option>
-                                                        {asesores.map((asesor) => (
-                                                            <option key={asesor.id} value={asesor.id}>
-                                                                {asesor.nombre} {asesor.apePat}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <ul>
-                                            {filteredUser.asignacion_secundaria.map((usuAseSec) => (
-                                                <li key={usuAseSec.id}>
-                                                    {usuAseSec.asesor.nombre}
-                                                    <br />
-                                                    {usuAseSec.asesor.apePat}
-                                                    <br />
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </td>
-                                {/* <td>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </td>
+                                    {/* <td>
                                     {editingUserId === filteredUser.id ? (
                                         <select
                                             className="select_serv"
@@ -1093,7 +1142,7 @@ export default function TablaUsuarios() {
                                         </ul>
                                     )}
                                 </td> */}
-                                <td>
+                                    <td>
                                         {editingUserId === filteredUser.id ? (
                                             <select
                                                 className="select_serv"
@@ -1128,45 +1177,45 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedDDate}
-                                                onChange={(e) => setEditedDDate(e.target.value)}
+                                                onChange={handleInputChange}
                                             />
                                         ) : (
                                             <strong>{filteredUser.fecha_estimada} </strong>
                                         )}
                                     </td>
-                                <td>
+                                    <td>
 
-                                    {editingUserId === filteredUser.id ? (
-                                        <>
-                                            <button onClick={() => handleOk(filteredUser.id)}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-check-circle" viewBox="0 0 16 16">
-                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
-                                                </svg>
+                                        {editingUserId === filteredUser.id ? (
+                                            <>
+                                                <button onClick={() => handleOk(filteredUser.id)}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-check-circle" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                    </svg>
+                                                </button>
+                                                <button onClick={handleCancelar}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-x-circle" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                                    </svg>
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <button onClick={() => handleEditar(filteredUser.id)}><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                            </svg>
                                             </button>
-                                            <button onClick={handleCancelar}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-x-circle" viewBox="0 0 16 16">
-                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                                                </svg>
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <button onClick={() => handleEditar(filteredUser.id)}><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-pencil-square" viewBox="0 0 16 16">
-                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                            <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                        )}
+                                    </td>
+
+                                    <td><button onClick={() => handleEliminar(filteredUser.id)}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
                                         </svg>
-                                        </button>
-                                    )}
-                                </td>
-
-                                <td><button onClick={() => handleEliminar(filteredUser.id)}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="red" className="bi bi-trash" viewBox="0 0 16 16">
-                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-                                    </svg>
-                                </button></td>
-                            </tr>
+                                    </button></td>
+                                </tr>
                             ))
                         ) : (
                             currentData.map(usuario => (
@@ -1181,9 +1230,9 @@ export default function TablaUsuarios() {
                                     <td>{editingUserId === usuario.id ? (
                                         <input
                                             className="input_table_usuario"
-                                            type="text"
+                                            type="number"
                                             value={editedIdAmddi}
-                                            onChange={(e) => setEditedIdAmddi(e.target.value)}
+                                            onChange={(e) => setEditedIdAmddi(e.target.value.replace(/[^0-9]/g, ''))}
                                         />
                                     ) : (
                                         usuario.id_amddi ? usuario.id_amddi : '-'
@@ -1194,7 +1243,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedUserName}
-                                                onChange={(e) => setEditedUserName(e.target.value)}
+                                                onChange={(e) => setEditedUserName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
                                             />
                                         ) : (
                                             usuario.nombre
@@ -1206,7 +1255,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedLastName}
-                                                onChange={(e) => setEditedLastName(e.target.value)}
+                                                onChange={(e) => setEditedLastName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
                                             />
                                         ) : (
                                             usuario.apePat
@@ -1218,7 +1267,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedSLastName}
-                                                onChange={(e) => setEditedSLastName(e.target.value)}
+                                                onChange={(e) => setEditedSLastName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
                                             />
                                         ) : (
                                             usuario.apeMat
@@ -1231,7 +1280,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedPais}
-                                                onChange={(e) => setEditedPais(e.target.value)}
+                                                onChange={(e) => setEditedPais(e.target.value.replace(/[^a-zA-Z]/g, ''))}
                                             />
                                         ) : (
                                             usuario.pais ? usuario.pais : '-'
@@ -1243,7 +1292,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedDepartment}
-                                                onChange={(e) => setEditedDepartment(e.target.value)}
+                                                onChange={(e) => setEditedDepartment(e.target.value.replace(/[^a-zA-Z]/g, '').replace(/[^a-zA-Z]/g, ''))}
                                             />
                                         ) : (
                                             usuario.departamento
@@ -1274,7 +1323,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedInstitucionEducativa}
-                                                onChange={(e) => setEditedInstitucionEducativa(e.target.value)}
+                                                onChange={(e) => setEditedInstitucionEducativa(e.target.value.replace(/[^a-zA-Z]/g, ''))}
                                             />
                                         ) : (
                                             usuario.institucion_educativa ? usuario.institucion_educativa : '-'
@@ -1284,7 +1333,7 @@ export default function TablaUsuarios() {
                                         {editingUserId === usuario.id ? (
                                             <input
                                                 className="input_table_usuario"
-                                                type="text"
+                                                type="email"
                                                 value={editedEmail}
                                                 onChange={(e) => setEditedEmail(e.target.value)}
                                             />
@@ -1298,7 +1347,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedDNI}
-                                                onChange={(e) => setEditedDNI(e.target.value)}
+                                                onChange={(e) => setEditedDNI(e.target.value.replace(/[^0-9]/g, ''))}
                                             />
                                         ) : (
                                             usuario.dni
@@ -1308,7 +1357,7 @@ export default function TablaUsuarios() {
                                         {editingUserId === usuario.id ? (
                                             <input
                                                 className="input_table_usuario"
-                                                type="text"
+                                                type="number"
                                                 value={editedPhone}
                                                 onChange={(e) => setEditedPhone(e.target.value)}
                                             />
@@ -1371,7 +1420,8 @@ export default function TablaUsuarios() {
                                         {editingUserId === usuario.id ? (
                                             <input
                                                 className="input_table_usuario"
-                                                type="text"
+                                                type="number"
+                                                step="0.1"
                                                 value={editedMontoTotal}
                                                 onChange={(e) => setEditedMontoTotal(e.target.value)}
                                             />
@@ -1384,7 +1434,8 @@ export default function TablaUsuarios() {
                                             <>                                        {editingUserId === usuario.id ? (
                                                 <input
                                                     className="input_table_usuario"
-                                                    type="text"
+                                                    type="number"
+                                                    step="0.1"
                                                     value={editedMontoPagado}
                                                     onChange={(e) => setEditedMontoPagado(e.target.value)}
                                                 />
@@ -1412,7 +1463,8 @@ export default function TablaUsuarios() {
                                             <>                                        {editingUserId === usuario.id ? (
                                                 <input
                                                     className="input_table_usuario"
-                                                    type="text"
+                                                    type="number"
+                                                    step="0.1"
                                                     value={editedMontoPagado1}
                                                     onChange={(e) => setEditedMontoPagado1(e.target.value)}
                                                 />
@@ -1440,7 +1492,8 @@ export default function TablaUsuarios() {
                                             <>                                        {editingUserId === usuario.id ? (
                                                 <input
                                                     className="input_table_usuario"
-                                                    type="text"
+                                                    type="number"
+                                                    step="0.1"
                                                     value={editedMontoPagado2}
                                                     onChange={(e) => setEditedMontoPagado2(e.target.value)}
                                                 />
@@ -1468,7 +1521,8 @@ export default function TablaUsuarios() {
                                             <>                                        {editingUserId === usuario.id ? (
                                                 <input
                                                     className="input_table_usuario"
-                                                    type="text"
+                                                    type="number"
+                                                    step="0.1"
                                                     value={editedMontoPagado3}
                                                     onChange={(e) => setEditedMontoPagado3(e.target.value)}
                                                 />
@@ -1566,7 +1620,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedTema}
-                                                onChange={(e) => setEditedTema(e.target.value)}
+                                                onChange={(e) => setEditedTema(e.target.value.replace(/[^a-zA-Z]/g, ''))}
                                             />
                                         ) : (
                                             usuario.tema
@@ -1703,7 +1757,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedDDate}
-                                                onChange={(e) => setEditedDDate(e.target.value)}
+                                                onChange={handleInputChange}
                                             />
                                         ) : (
                                             <strong>{usuario.fecha_estimada} </strong>

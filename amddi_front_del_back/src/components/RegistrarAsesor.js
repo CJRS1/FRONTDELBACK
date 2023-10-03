@@ -23,6 +23,29 @@ export default function RegistrarAsesor() {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
+
+        // Verificar si el campo es nombre, apellido paterno o apellido materno
+        if (name === "nombre" || name === "apePat" || name === "apeMat") {
+            // Si es uno de estos campos y contiene números, mostrar una alerta
+            if (value.length < 3) {
+                alert("El campo debe contener al menos 3 caracteres");
+                return;
+            }
+            if (/\d/.test(value)) {
+                alert("El campo no debe contener números");
+                return;
+            }
+        }
+
+        if (name === "dni") {
+            // Si es el campo DNI y contiene algo que no sea número, mostrar una alerta
+            if (value !== "" && (!/^\d+$/.test(value))) {
+                alert("El campo DNI debe tener exactamente 8 dígitos numéricos");
+                return;
+            }
+        }
+
+        // Actualizar el estado solo si no contiene números
         setFormData({ ...formData, [name]: value });
     };
 
@@ -230,7 +253,7 @@ export default function RegistrarAsesor() {
                             />
                             {formErrors.dni && <span className="error-message">{formErrors.dni}</span>}
                             <input className="input_registro_asesor"
-                                type="text"
+                                type="email"
                                 name="email"
                                 placeholder="Email"
                                 onChange={handleInputChange}
