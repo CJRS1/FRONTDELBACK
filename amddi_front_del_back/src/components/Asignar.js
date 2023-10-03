@@ -59,7 +59,7 @@ export default function Asignar() {
         // console.log("DNI antes de limpiar:", dni);
         const cleanedDNI = dni.replace(/\s/g, '');
         // console.log("DNI limpio:", cleanedDNI);
-        if (cleanedDNI === 8){
+        if (!isNaN(cleanedDNI)){
             try {
                 const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
                 // console.log("Usuario encontrado:", res.data);
@@ -96,7 +96,7 @@ export default function Asignar() {
                 console.error("Error buscando usuario por DNI:", error);
             }
         }
-        if (cleanedDNI !== 8){
+        if (isNaN(cleanedDNI)){
             try {
                 const res = await axios.get(`http://localhost:5000/usuariosa/${cleanedDNI}`);
                 // console.log("Usuario encontrado:", res.data);
@@ -200,10 +200,10 @@ export default function Asignar() {
                     <div className="asesor_c">
 
                         <input
-                            type="number"
+                            type="text"
                             className="input_dni_usuario"
                             value={dniInput}
-                            onChange={(e) => setDniInput(e.target.value.replace(/[^0-9]/g, ''))}
+                            onChange={(e) => setDniInput(e.target.value)}
                             placeholder="Ingrese el Id Usuario o el DNI"
                         />
                         <button className="button_backend_filtro" onClick={() => buscarUsuarioPorDNI(dniInput)}>Buscar</button>

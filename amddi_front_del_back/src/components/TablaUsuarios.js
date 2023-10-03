@@ -628,7 +628,7 @@ export default function TablaUsuarios() {
                     <input
                         type="text"
                         className="input_filtro input_usuario_filtro"
-                        placeholder="Filtrar por Nombre, Id Usuario, DNI, Mes, Email o Urgencia(1,2,3)"
+                        placeholder="Filtrar por Id Usuario, DNI, Mes, Email, Nombre Asesor o Urgencia(1,2,3,Finalizado)"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />

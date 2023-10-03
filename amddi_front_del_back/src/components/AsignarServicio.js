@@ -30,7 +30,7 @@ export default function MiInformacion() {
         const cleanedDNI = dni.replace(/\s/g, '');
         setHayUsuario(false);
         // console.log("DNI limpio:", cleanedDNI);
-        if (cleanedDNI.length === 8) {
+        if (!isNaN(cleanedDNI)) {
             try {
                 const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
                 if (res.data.content) {
@@ -44,7 +44,7 @@ export default function MiInformacion() {
                 console.error("Error buscando usuario por DNI:", error);
             }
         }
-        if (cleanedDNI.length !== 8) {
+        if (isNaN(cleanedDNI)) {
 
             try {
                 const res = await axios.get(`http://localhost:5000/usuariosa/${cleanedDNI}`);
@@ -149,10 +149,10 @@ export default function MiInformacion() {
                     <h3>Coloque el DNI del usuario:</h3>
                     <div className="search_u">
                         <input
-                            type="number"
+                            type="text"
                             className="input_dni_usuario"
                             value={dniInput}
-                            onChange={(e) => setDniInput(e.target.value.replace(/[^0-9]/g, ''))}
+                            onChange={(e) => setDniInput(e.target.value)}
                             placeholder="Ingrese el Id Usuario o el DNI"
                         />
                         <button className="button_backend_filtro" onClick={() => buscarUsuarioPorDNI(dniInput)}>Buscar</button>
@@ -164,6 +164,7 @@ export default function MiInformacion() {
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Id Usuario</th>
                             <th>Nombre</th>
                             <th>Apellido Paterno</th>
                             <th>DNI</th>
@@ -183,6 +184,7 @@ export default function MiInformacion() {
                         {usuarioporDNI.map((usuario) => (
                             <tr key={usuario.id}>
                                 <td>{usuario.id}</td>
+                                <td>{usuario.id_amddi}</td>
                                 <td>{usuario.nombre}</td>
                                 <td>{usuario.apePat}</td>
                                 <td>{usuario.dni}</td>
