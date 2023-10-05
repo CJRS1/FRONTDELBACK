@@ -8,11 +8,12 @@ export default function AuthGuard({ children }) {
     useEffect(() => {
         // Comprueba si hay un token en el almacenamiento local
         const token = localStorage.getItem('token');
-        // const currentpath = window.location.pathname;
-        if (!token) {
+        const currentpath = window.location.pathname;
+
+        if (requiresAuthentication(currentpath) && !token) {
             // Si no hay token, redirige al usuario a la página de inicio de sesión
             navigate('/login_a');
-        } else {
+        } else if (token) {
 
             try {
                 // Verifica el token
@@ -31,6 +32,26 @@ export default function AuthGuard({ children }) {
             }
         }
     }, [navigate]);
+
+    function requiresAuthentication(path) {
+        const protectedRoutes = [
+            '/tabla_usuarios',
+            '/asignar_usuario',
+            '/tabla_asesores',
+            '/mi_info',
+            '/asignar_servicio',
+            '/editar-asesor',
+            '/servicio_especialidad',
+            '/registrar_asesor',
+            '/subir_archivo',
+            '/asesorado_principal',
+            '/asesorado_secundario',
+            '/asesorado_finalizado'
+        ];
+
+        // Comprueba si la ruta está en la lista de rutas protegidas
+        return protectedRoutes.includes(path);
+    }
 
     return children;
 }
