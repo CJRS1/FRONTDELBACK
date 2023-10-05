@@ -8,11 +8,12 @@ export default function AuthGuard({ children }) {
     useEffect(() => {
         // Comprueba si hay un token en el almacenamiento local
         const token = localStorage.getItem('token');
-
+        // const currentpath = window.location.pathname;
         if (!token) {
             // Si no hay token, redirige al usuario a la página de inicio de sesión
             navigate('/login_a');
         } else {
+
             try {
                 // Verifica el token
                 const decodedToken = jwt_decode(token);
