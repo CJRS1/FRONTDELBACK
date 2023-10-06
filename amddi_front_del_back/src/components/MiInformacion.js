@@ -22,7 +22,7 @@ export default function MiInformacion() {
     // Verificar si el token existe
     if (token) {
       // Si el token existe, realiza una solicitud al servidor para obtener los datos del usuario
-      axios.get('http://localhost:5000/asesor', {
+      axios.get('https://amddibackend-production.up.railway.app/asesor', {
         headers: {
           Authorization: `Bearer ${token}`
         }

@@ -32,7 +32,7 @@ export default function MiInformacion() {
         // console.log("DNI limpio:", cleanedDNI);
         if (!isNaN(cleanedDNI)) {
             try {
-                const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
+                const res = await axios.get(`https://amddibackend-production.up.railway.app/usuarios/${cleanedDNI}`);
                 if (res.data.content) {
                     console.log(res.data.content);
 
@@ -47,7 +47,7 @@ export default function MiInformacion() {
         if (isNaN(cleanedDNI)) {
 
             try {
-                const res = await axios.get(`http://localhost:5000/usuariosa/${cleanedDNI}`);
+                const res = await axios.get(`https://amddibackend-production.up.railway.app/usuariosa/${cleanedDNI}`);
                 if (res.data.content) {
                     console.log(res.data.content);
                     setusuarioporDNI([res.data.content]);
@@ -76,7 +76,7 @@ export default function MiInformacion() {
     useEffect(() => {
         const obtenerServicios = async () => {
             try {
-                const response = await fetch("http://localhost:5000/servicios");
+                const response = await fetch("https://amddibackend-production.up.railway.app/servicios");
                 const data = await response.json();
                 // console.log(data);
 
@@ -95,7 +95,7 @@ export default function MiInformacion() {
 
         console.log(formData);
         try {
-            const res = await axios.post("http://localhost:5000/monto_pagado", formData);
+            const res = await axios.post("https://amddibackend-production.up.railway.app/monto_pagado", formData);
             // console.log("larespuesta",res);
             if (res.status === 200) {
                 // console.log("Solicitud exitosa con código de estado 200");
@@ -103,7 +103,7 @@ export default function MiInformacion() {
                 if (formData.id_servicio) {
 
                     console.log("Se añadió un estado")
-                    await axios.put(`http://localhost:5000/usuario_servicio_estado/${formData.id_usuarios}/${formData.id_servicio}`)
+                    await axios.put(`https://amddibackend-production.up.railway.app/usuario_servicio_estado/${formData.id_usuarios}/${formData.id_servicio}`)
                 }
 
 

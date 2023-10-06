@@ -54,7 +54,7 @@ export default function ServicioYEspecialidad() {
         // console.log(editedServiceName);
         try {
             // Realiza la actualización del nombre del servicio
-            await axios.put(`http://localhost:5000/servicios/${id}`, {
+            await axios.put(`https://amddibackend-production.up.railway.app/servicios/${id}`, {
                 nombre_servicio: editedServiceName,
             });
             // console.log('Servicio actualizado:', res.data.message);
@@ -77,7 +77,7 @@ export default function ServicioYEspecialidad() {
         // console.log(editedEspecialidadName);
         try {
             // Realiza la actualización del nombre del servicio
-            await axios.put(`http://localhost:5000/especialidades/${id}`, {
+            await axios.put(`https://amddibackend-production.up.railway.app/especialidades/${id}`, {
                 nombre_especialidad: editedEspecialidadName,
             });
             // console.log('Servicio actualizado:', res.data.message);
@@ -98,8 +98,8 @@ export default function ServicioYEspecialidad() {
     useEffect(() => {
         async function fetchservicio() {
             try {
-                // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/servicios');
-                const res = await axios.get('http://localhost:5000/servicios');
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production.up.railway.app/servicios');
+                const res = await axios.get('https://amddibackend-production.up.railway.app/servicios');
                 // console.log(res.data.message);
                 // console.log('Response from server:', res.data);
 
@@ -115,8 +115,8 @@ export default function ServicioYEspecialidad() {
         }
         async function fetchespecialidad() {
             try {
-                // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/especialidades');
-                const res = await axios.get('http://localhost:5000/especialidades');
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production.up.railway.app/especialidades');
+                const res = await axios.get('https://amddibackend-production.up.railway.app/especialidades');
                 // console.log(res.data.message);
                 // console.log('Response from server:', res.data);
 
@@ -158,7 +158,7 @@ export default function ServicioYEspecialidad() {
 
     // const handleEliminarServicio = async (id) => {
     //     try {
-    //         const res = await axios.delete(`http://localhost:5000/servicios/${id}`);
+    //         const res = await axios.delete(`https://amddibackend-production.up.railway.app/servicios/${id}`);
     //         console.log('Asesor eliminado:', res.data.message);
 
     //         // Actualizar la lista de asesores después de eliminar uno
@@ -173,7 +173,7 @@ export default function ServicioYEspecialidad() {
 
     // const handleEliminarEspecialidad = async (id) => {
     //     try {
-    //         const res = await axios.delete(`http://localhost:5000/especialidades/${id}`);
+    //         const res = await axios.delete(`https://amddibackend-production.up.railway.app/especialidades/${id}`);
     //         console.log('Asesor eliminado:', res.data.message);
 
     //         // Actualizar la lista de asesores después de eliminar uno
@@ -190,7 +190,7 @@ export default function ServicioYEspecialidad() {
         event.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:5000/servicios", {
+            const response = await fetch("https://amddibackend-production.up.railway.app/servicios", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -225,7 +225,7 @@ export default function ServicioYEspecialidad() {
         event.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:5000/especialidades", {
+            const response = await fetch("https://amddibackend-production.up.railway.app/especialidades", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

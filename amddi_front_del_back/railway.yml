@@ -1,0 +1,5 @@
+version: 2
+environments:
+  production:
+    buildCommand: npm run build
+    startCommand: npm run start

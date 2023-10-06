@@ -115,7 +115,7 @@ export default function RegistrarAsesor() {
                 return;
             }
 
-            const response = await fetch("http://localhost:5000/asesores", {
+            const response = await fetch("https://amddibackend-production.up.railway.app/asesores", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -130,7 +130,7 @@ export default function RegistrarAsesor() {
                     // Mostrar mensaje de éxito
                     console.log(data.msg);
                     // handleRegistrationSuccess();
-                    const asesorResponse = await fetch("http://localhost:5000/ultimo_asesor");
+                    const asesorResponse = await fetch("https://amddibackend-production.up.railway.app/ultimo_asesor");
                     const asesorData = await asesorResponse.json();
 
                     console.log(asesorData);
@@ -139,7 +139,7 @@ export default function RegistrarAsesor() {
                         const asesorId = asesorData.content.id;
 
                         try {
-                            const response = await fetch("http://localhost:5000/asesor_especialidad", {
+                            const response = await fetch("https://amddibackend-production.up.railway.app/asesor_especialidad", {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json"
@@ -192,7 +192,7 @@ export default function RegistrarAsesor() {
     useEffect(() => {
         const obtenerEspecialidades = async () => {
             try {
-                const response = await fetch("http://localhost:5000/especialidades");
+                const response = await fetch("https://amddibackend-production.up.railway.app/especialidades");
                 const data = await response.json();
                 setEspecialidades(data);
             } catch (error) {

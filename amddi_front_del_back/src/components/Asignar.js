@@ -34,8 +34,8 @@ export default function Asignar() {
     useEffect(() => {
         async function fetchAsesorConUsuario() {
             try {
-                // console.log('Haciendo llamada a la API a:', 'http://localhost:5000/asesores_usuarios');
-                const res = await axios.get('http://localhost:5000/asesores_usuarios');
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production.up.railway.app/asesores_usuarios');
+                const res = await axios.get('https://amddibackend-production.up.railway.app/asesores_usuarios');
                 // console.log(res.data.message);
                 // console.log('Response from server:', res.data);
 
@@ -61,7 +61,7 @@ export default function Asignar() {
         // console.log("DNI limpio:", cleanedDNI);
         if (!isNaN(cleanedDNI)){
             try {
-                const res = await axios.get(`http://localhost:5000/usuarios/${cleanedDNI}`);
+                const res = await axios.get(`https://amddibackend-production.up.railway.app/usuarios/${cleanedDNI}`);
                 // console.log("Usuario encontrado:", res.data);
     
                 if (res.data.content) {
@@ -73,7 +73,7 @@ export default function Asignar() {
                     setusuarioporDNI([res.data.content]);
     
                     try {
-                        const resp = await axios.get(`http://localhost:5000/asesor/${res.data.content.carrera}`);
+                        const resp = await axios.get(`https://amddibackend-production.up.railway.app/asesor/${res.data.content.carrera}`);
                         // console.log("Asesor encontrado:", resp.data);
     
                         if (resp.data.content && resp.data.content.length > 0) {
@@ -98,7 +98,7 @@ export default function Asignar() {
         }
         if (isNaN(cleanedDNI)){
             try {
-                const res = await axios.get(`http://localhost:5000/usuariosa/${cleanedDNI}`);
+                const res = await axios.get(`https://amddibackend-production.up.railway.app/usuariosa/${cleanedDNI}`);
                 // console.log("Usuario encontrado:", res.data);
     
                 if (res.data.content) {
@@ -110,7 +110,7 @@ export default function Asignar() {
                     setusuarioporDNI([res.data.content]);
     
                     try {
-                        const resp = await axios.get(`http://localhost:5000/asesor/${res.data.content.carrera}`);
+                        const resp = await axios.get(`https://amddibackend-production.up.railway.app/asesor/${res.data.content.carrera}`);
                         // console.log("Asesor encontrado:", resp.data);
     
                         if (resp.data.content && resp.data.content.length > 0) {
@@ -142,7 +142,7 @@ export default function Asignar() {
         if (userConfirmed) {
             // El usuario eligió "Sí", realiza la acción correspondiente aquí
             try {
-                await axios.post(`http://localhost:5000/asignaciones/${id_asesor}/${id_usuarios}`);
+                await axios.post(`https://amddibackend-production.up.railway.app/asignaciones/${id_asesor}/${id_usuarios}`);
                 // console.log("Asignación exitosa:", res.data);
                 alert("La asignación fue exitosa");
                 // alert(res.data.msg);
@@ -164,7 +164,7 @@ export default function Asignar() {
             // console.log(id_usuarios);
             if (userConfirmed) {
                 try {
-                    await axios.post(`http://localhost:5000/asignaciones_sec/${id_asesor}/${id_usuarios}`);
+                    await axios.post(`https://amddibackend-production.up.railway.app/asignaciones_sec/${id_asesor}/${id_usuarios}`);
                     // console.log("Asignación exitosa:", res.data.msg);
                     alert("La asignación fue exitosa");
                     window.location.reload();
