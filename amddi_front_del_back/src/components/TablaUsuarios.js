@@ -569,7 +569,7 @@ export default function TablaUsuarios() {
     const getColor = (fechaEstimada) => {
         // Convertimos las fechas a objetos Date
         const fechaActual = new Date();
-
+        console.log(fechaActual);
         // Separar la fecha estimada en día, mes y año
         const partesFechaEstimada = fechaEstimada.split('/');
         const diaEstimado = parseInt(partesFechaEstimada[0], 10);
@@ -582,18 +582,18 @@ export default function TablaUsuarios() {
         const diferencia = fechaEstimadaDate - fechaActual;
 
         // Convertimos la diferencia a días
-        const diferenciaDias = diferencia / (1000 * 60 * 60 * 24);
-
+        const diferenciaDias = diferencia / (1000 * 60 * 60 * 24) +1;
+        console.log("dd",diferenciaDias);
         // Determinamos el color
-        if (diferenciaDias > 10) {
+        if (diferenciaDias >= 7) {
             return "#00d799";
-        } else if (diferenciaDias > 7) {
+        } else if ((diferenciaDias < 7) && (diferenciaDias >= 4)) {
             return "#ffd700";
+        } else if ((diferenciaDias < 4) && (diferenciaDias >= 1)){
+            return "red";
         } else if (diferenciaDias <= 0 ){
             return "black";
-        } else {
-            return "red";
-        }
+        } 
     };
 
 
@@ -606,8 +606,10 @@ export default function TablaUsuarios() {
 
         if (fecha) {
             const partesFecha = fecha.split('/');
+            console.log(partesFecha);
             if (partesFecha.length === 3) {
                 const numeroMes = parseInt(partesFecha[1], 10);
+                console.log(numeroMes);
                 if (!isNaN(numeroMes) && numeroMes >= 1 && numeroMes <= 12) {
                     return meses[numeroMes - 1];
                 }

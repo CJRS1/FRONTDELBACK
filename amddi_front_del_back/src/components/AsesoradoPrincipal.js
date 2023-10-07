@@ -151,14 +151,14 @@ export default function AsesoradoSecundario() {
         const diferencia = fechaEstimadaDate - fechaActual;
 
         // Convertimos la diferencia a días
-        const diferenciaDias = diferencia / (1000 * 60 * 60 * 24);
+        const diferenciaDias = diferencia / (1000 * 60 * 60 * 24) + 1;
 
         // Determinamos el color
-        if (diferenciaDias > 10) {
+        if (diferenciaDias > 7) {
             return "#00d799";
-        } else if (diferenciaDias > 7) {
+        } else if ((diferenciaDias < 7) && (diferenciaDias >= 4)) {
             return "#ffd700";
-        } else {
+        } else if ((diferenciaDias < 4) && (diferenciaDias >= 1)){
             return "red";
         }
     };
