@@ -23,7 +23,7 @@ export default function Inicio({ setIsLoggedIn}) {
 
         try {
             // Realiza una solicitud de inicio de sesión al servidor
-            const response = await axios.post("https://amddibackend-production.up.railway.app/loginA", {
+            const response = await axios.post("https://amddibackend-production-2880.up.railway.app/loginA", {
                 email,
                 password, // Aquí enviamos el email y la contraseña en el cuerpo de la solicitud
             });
@@ -47,7 +47,7 @@ export default function Inicio({ setIsLoggedIn}) {
                 } else if (decodedToken.rol === "asesor") {
                     console.log("Este es un", decodedToken.rol);
                     try {
-                        const res = await axios.get(`https://amddibackend-production.up.railway.app/asesoress/${email}`);
+                        const res = await axios.get(`https://amddibackend-production-2880.up.railway.app/asesoress/${email}`);
                         if (res.status === 200) {
                             // La solicitud fue exitosa (código de estado 200)
                             const responseData = res.data.content;

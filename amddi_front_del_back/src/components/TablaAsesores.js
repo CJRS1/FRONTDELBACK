@@ -31,7 +31,7 @@ export default function TablaAsesores() {
     useEffect(() => {
         const obtenerEspecialidades = async () => {
             try {
-                const response = await fetch("https://amddibackend-production.up.railway.app/especialidades");
+                const response = await fetch("https://amddibackend-production-2880.up.railway.app/especialidades");
                 const data = await response.json();
                 setEspecialidades(data);
             } catch (error) {
@@ -100,7 +100,7 @@ export default function TablaAsesores() {
 
             // console.log("hola", usuarioData);
 
-            await axios.put(`https://amddibackend-production.up.railway.app/asesores/${id}`, usuarioData);
+            await axios.put(`https://amddibackend-production-2880.up.railway.app/asesores/${id}`, usuarioData);
             // Actualiza el servicio si se ha seleccionado uno nuevo
 
             if (selectedEspecialidades.length > 0) {
@@ -110,7 +110,7 @@ export default function TablaAsesores() {
                     especialidades: selectedEspecialidades.map((value) => value.value)
                 };
                 // console.log("elasese", aseEspe)
-                await axios.put(`https://amddibackend-production.up.railway.app/asesor_especialidad`, aseEspe)
+                await axios.put(`https://amddibackend-production-2880.up.railway.app/asesor_especialidad`, aseEspe)
             }
 
             setEditingAsesorId(null);
@@ -138,8 +138,8 @@ export default function TablaAsesores() {
     useEffect(() => {
         async function fetchAsesorConUsuario() {
             try {
-                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production.up.railway.app/asesores_usuarios');
-                const res = await axios.get('https://amddibackend-production.up.railway.app/asesores_usuarios');
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/asesores_usuarios');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/asesores_usuarios');
                 // console.log(res.data.content);
                 // console.log('Response from server:', res.data);
 
@@ -166,7 +166,7 @@ export default function TablaAsesores() {
             const userConfirmed = window.confirm('¿Estás seguro de eliminar a este asesor?');
 
             if (userConfirmed) {
-                await axios.delete(`https://amddibackend-production.up.railway.app/asesores/${id}`);
+                await axios.delete(`https://amddibackend-production-2880.up.railway.app/asesores/${id}`);
                 // Actualizar la lista de asesores después de eliminar uno
                 const updatedAsesores = AsesorConUsuario.filter(asesor => asesor.id !== id);
                 setAsesorConUsuario(updatedAsesores);

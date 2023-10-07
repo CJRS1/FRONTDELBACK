@@ -92,7 +92,7 @@ export default function EditarUsuario() {
                 return;
             }
 
-            const response = await fetch("https://amddibackend-production.up.railway.app/asesores", {
+            const response = await fetch("https://amddibackend-production-2880.up.railway.app/asesores", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -125,7 +125,7 @@ export default function EditarUsuario() {
     useEffect(() => {
         const obtenerEspecialidades = async () => {
             try {
-                const response = await fetch("https://amddibackend-production.up.railway.app/especialidades");
+                const response = await fetch("https://amddibackend-production-2880.up.railway.app/especialidades");
                 const data = await response.json();
                 setEspecialidades(data);
             } catch (error) {

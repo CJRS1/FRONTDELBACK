@@ -26,7 +26,7 @@ export default function EditarAsesor() {
     useEffect(() => {
         const obtenerDatosAsesor = async () => {
             try {
-                const response = await fetch(`https://amddibackend-production.up.railway.app/asesores/${asesorId}`);
+                const response = await fetch(`https://amddibackend-production-2880.up.railway.app/asesores/${asesorId}`);
                 const data = await response.json();
                 // console.log(data.content.nombre);
                 setFormData(data.content); // Establecer los datos del asesor en el estado formData
@@ -43,7 +43,7 @@ export default function EditarAsesor() {
     // useEffect(() => {
     //     const obtenerEspecialidades = async () => {
     //         try {
-    //             const response = await fetch("https://amddibackend-production.up.railway.app/especialidades");
+    //             const response = await fetch("https://amddibackend-production-2880.up.railway.app/especialidades");
     //             const data = await response.json();
     //             console.log(data);
     //             setEspecialidades(data);
@@ -64,7 +64,7 @@ export default function EditarAsesor() {
         event.preventDefault();
 
         try {
-            const response = await fetch(`https://amddibackend-production.up.railway.app/asesores/${asesorId}`, {
+            const response = await fetch(`https://amddibackend-production-2880.up.railway.app/asesores/${asesorId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
