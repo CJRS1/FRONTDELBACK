@@ -91,78 +91,6 @@ export default function AsesoradoFinalizado() {
         }
     }, [location]);
 
-    // const [pdf, setPdf] = useState(null);
-
-    // const handleEditarPDF = async (id) => {
-    //     // Crea un objeto FormData para enviar el archivo PDF
-
-    //     const formData = new FormData();
-    //     formData.append("pdf", pdf);
-    //     console.log(id);
-    //     try {
-    //         const res = await axios.put(`https://amddibackend-production.up.railway.app/actualizar-pdf/${id}`, formData);
-    //         alert(res.data.msg);
-    //         // console.log(res.data.msg);
-    //     } catch (error) {
-    //         console.error('Error al editar pdf:', error);
-    //     }
-    // }
-
-    // const handlePdfChange = (e) => {
-    //     // Actualiza el estado con el archivo PDF seleccionado
-    //     setPdf(e.target.files[0]);
-    // };
-
-    // const handleSubmit = async (id) => {
-    //     // e.preventDefault();
-
-    //     // Crea un objeto FormData para enviar el archivo PDF
-    //     const formData = new FormData();
-    //     formData.append("pdf", pdf);
-
-    //     try {
-    //         // Realiza una solicitud POST para subir el archivo PDF
-    //         console.log(`https://amddibackend-production.up.railway.app/subir-pdf/${id}`)
-    //         const response = await axios.post(`https://amddibackend-production.up.railway.app/subir-pdf/${id}`, formData);
-
-    //         // Muestra la respuesta del servidor
-    //         alert(response.data.msg);
-    //         // window.location.reload();
-    //         // console.log("Respuesta del servidor:", response.data);
-    //     } catch (error) {
-    //         console.error("Error al subir el PDF:", error);
-    //     }
-    // };
-
-    const getColor = (fechaEstimada) => {
-        // Convertimos las fechas a objetos Date
-        const fechaActual = new Date();
-
-        // Separar la fecha estimada en día, mes y año
-        const partesFechaEstimada = fechaEstimada.split('/');
-        const diaEstimado = parseInt(partesFechaEstimada[0], 10);
-        const mesEstimado = parseInt(partesFechaEstimada[1], 10) - 1; // Restar 1 al mes, ya que en JavaScript los meses van de 0 a 11
-        const añoEstimado = parseInt(partesFechaEstimada[2], 10);
-
-        const fechaEstimadaDate = new Date(añoEstimado, mesEstimado, diaEstimado);
-
-        // Calculamos la diferencia entre las dos fechas
-        const diferencia = fechaEstimadaDate - fechaActual;
-
-        // Convertimos la diferencia a días
-        const diferenciaDias = diferencia / (1000 * 60 * 60 * 24);
-
-        // Determinamos el color
-        if (diferenciaDias > 10) {
-            return "#00d799";
-        } else if (diferenciaDias > 7) {
-            return "#ffd700";
-        } else {
-            return "red";
-        }
-    };
-
-
     return (
         <div className="asesorado_container">
             <div className="franja_verd franja_ancho">
@@ -286,7 +214,7 @@ export default function AsesoradoFinalizado() {
                     userData.asignacion_secundaria.map((item, index) => (
                         item.usuario.estado === "Finalizado" && (
                             <div className="asesorado_card" key={index} >
-                                <div className="info_asesorado_container" style={{ borderColor: item.usuario.fecha_estimada ? getColor(item.usuario.fecha_estimada) : 'black' }}>
+                                <div className="info_asesorado_container" style={{ borderColor: 'black' }}>
                                     <div className="info_asesorado_card">
                                         <div className="form_asesorado1">
                                             <h4>Id Amddi:</h4>
