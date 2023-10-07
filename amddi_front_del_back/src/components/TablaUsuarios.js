@@ -68,8 +68,8 @@ export default function TablaUsuarios() {
     useEffect(() => {
         async function fetchServicios() {
             try {
-                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production.up.railway.app/servicios');
-                const res = await axios.get('https://amddibackend-production.up.railway.app/servicios');
+                // console.log('Haciendo llamada a la API a:', 'https://localhost:5000/servicios');
+                const res = await axios.get('https://localhost:5000/servicios');
                 // console.log(res.data.message);
                 // console.log('Response from server:', res.data);
 
@@ -88,8 +88,8 @@ export default function TablaUsuarios() {
     useEffect(() => {
         async function fetchEspecialidades() {
             try {
-                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production.up.railway.app/especialidades');
-                const res = await axios.get('https://amddibackend-production.up.railway.app/especialidades');
+                // console.log('Haciendo llamada a la API a:', 'https://localhost:5000/especialidades');
+                const res = await axios.get('https://localhost:5000/especialidades');
                 // console.log(res.data.message);
                 // console.log('Response from server:', res.data);
 
@@ -108,8 +108,8 @@ export default function TablaUsuarios() {
     useEffect(() => {
         async function fetchTesis() {
             try {
-                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production.up.railway.app/Tesis');
-                const res = await axios.get('https://amddibackend-production.up.railway.app/estado_tesis');
+                // console.log('Haciendo llamada a la API a:', 'https://localhost:5000/Tesis');
+                const res = await axios.get('https://localhost:5000/estado_tesis');
                 // console.log(res.data.message);
                 // console.log('Response from server t:', res.data);
 
@@ -128,8 +128,8 @@ export default function TablaUsuarios() {
     useEffect(() => {
         async function fetchObservacion() {
             try {
-                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production.up.railway.app/Observacion');
-                const res = await axios.get('https://amddibackend-production.up.railway.app/estado_observacion');
+                // console.log('Haciendo llamada a la API a:', 'https://localhost:5000/Observacion');
+                const res = await axios.get('https://localhost:5000/estado_observacion');
                 // console.log(res.data.message);
                 // console.log('Response from server o:', res.data);
 
@@ -277,7 +277,7 @@ export default function TablaUsuarios() {
     const handleEliminar2 = async (id) => {
         console.log("elid", id);
         try {
-            await axios.delete(`https://amddibackend-production.up.railway.app/asignacionesSec/${id}`)
+            await axios.delete(`https://localhost:5000/asignacionesSec/${id}`)
         } catch (e) {
             console.error('Error al actualizar usuario o servicio:', e);
         }
@@ -319,7 +319,7 @@ export default function TablaUsuarios() {
 
             console.log("hola", usuarioData);
 
-            await axios.put(`https://amddibackend-production.up.railway.app/usuarios/${id}`, usuarioData);
+            await axios.put(`https://localhost:5000/usuarios/${id}`, usuarioData);
             // console.log('Usuario actualizado:', usuarioRes.data.message);
             // window.location.reload();
             // Actualiza el servicio si se ha seleccionado uno nuevo
@@ -327,7 +327,7 @@ export default function TablaUsuarios() {
                 const servicioData = {
                     id_servicio: selectedService,
                 };
-                await axios.put(`https://amddibackend-production.up.railway.app/usuario_servicio/${id}/${selectedService}`, servicioData);
+                await axios.put(`https://localhost:5000/usuario_servicio/${id}/${selectedService}`, servicioData);
                 // console.log('Servicio actualizado:', servicioRes.data.message);
             }
 
@@ -337,7 +337,7 @@ export default function TablaUsuarios() {
                     id_asesor: asesorPrincipal
                 }
                 // console.log(data);
-                await axios.put(`https://amddibackend-production.up.railway.app/asignaciones`,
+                await axios.put(`https://localhost:5000/asignaciones`,
                     data
                 );
                 // console.log("la data", res.data.message)
@@ -349,7 +349,7 @@ export default function TablaUsuarios() {
                     id_asesor: asesorSecundario
                 }
                 // console.log("latadasec", dataS);
-                await axios.put(`https://amddibackend-production.up.railway.app/asignacionesSec`,
+                await axios.put(`https://localhost:5000/asignacionesSec`,
                     dataS)
                 // console.log(resP.data.message)
             }
@@ -372,7 +372,7 @@ export default function TablaUsuarios() {
             agregarMontoPagado(3, editedMontoPagado3, editedFechaPago3);
 
             if (monto_pagado.length > 0) {
-                await axios.put(`https://amddibackend-production.up.railway.app/monto_pagado/${id}`, {
+                await axios.put(`https://localhost:5000/monto_pagado/${id}`, {
                     monto_pagado,
                 });
                 // alert("Monto pagado actualizado");
@@ -392,8 +392,8 @@ export default function TablaUsuarios() {
     useEffect(() => {
         async function fetchUsuariosConServicios() {
             try {
-                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production.up.railway.app/usuarios_con_servicio');
-                const res = await axios.get('https://amddibackend-production.up.railway.app/usuarios_con_servicio');
+                // console.log('Haciendo llamada a la API a:', 'https://localhost:5000/usuarios_con_servicio');
+                const res = await axios.get('https://localhost:5000/usuarios_con_servicio');
                 // console.log('Response from server:', res.data);
                 if (res.data.content && Array.isArray(res.data.content)) {
                     // console.log('Usuarios con servicios recibidos:', res.data.content);
@@ -420,7 +420,7 @@ export default function TablaUsuarios() {
     useEffect(() => {
         async function fetchAsesores() {
             try {
-                const res = await axios.get('https://amddibackend-production.up.railway.app/asesores');
+                const res = await axios.get('https://localhost:5000/asesores');
                 // console.log(res.data.message);
                 if (res.data.content && Array.isArray(res.data.content)) {
                     // console.log('Asesores:', res.data.content);
@@ -514,7 +514,7 @@ export default function TablaUsuarios() {
         try {
             const userConfirmed = window.confirm('¿Estás seguro de eliminar a este asesor?');
             if (userConfirmed) {
-                const res = await axios.delete(`https://amddibackend-production.up.railway.app/usuarios/${id}`);
+                const res = await axios.delete(`https://localhost:5000/usuarios/${id}`);
                 console.log('Asesor eliminado:', res.data.message);
 
                 // Actualizar la lista de asesores después de eliminar uno
@@ -535,7 +535,7 @@ export default function TablaUsuarios() {
         try {
             console.log("editar", (id));
 
-            const res = await axios.delete(`https://amddibackend-production.up.railway.app/eliminar-pdf/${id}`);
+            const res = await axios.delete(`https://localhost:5000/eliminar-pdf/${id}`);
             alert(res.data.msg);
             console.log('Asesor eliminado:', res.data.message);
             window.location.reload();
@@ -548,7 +548,7 @@ export default function TablaUsuarios() {
         const formData = new FormData();
         formData.append("pdf", pdf);
         try {
-            await axios.put(`https://amddibackend-production.up.railway.app/actualizar-pdf/${id}`, formData);
+            await axios.put(`https://localhost:5000/actualizar-pdf/${id}`, formData);
             // alert(res.data.msg);
             // console.log(res.data.msg);
         } catch (error) {
@@ -581,7 +581,6 @@ export default function TablaUsuarios() {
         // Calculamos la diferencia entre las dos fechas
         const diferencia = fechaEstimadaDate - fechaActual;
 
-        // Convertimos la diferencia a días
         const diferenciaDias = diferencia / (1000 * 60 * 60 * 24) +1;
         console.log("dd",diferenciaDias);
         // Determinamos el color
@@ -595,8 +594,6 @@ export default function TablaUsuarios() {
             return "black";
         } 
     };
-
-
 
     function obtenerNombreMes(fecha) {
         const meses = [
@@ -854,7 +851,7 @@ export default function TablaUsuarios() {
                                         ) : (
                                             filteredUser.pdf_url.map((pdf, index) => (
                                                 <li key={index}>
-                                                    <a href={`https://amddibackend-production.up.railway.app${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
+                                                    <a href={`https://localhost:5000${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fillRule="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
                                                             <path fillRule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z" />
                                                         </svg>
@@ -1462,7 +1459,7 @@ export default function TablaUsuarios() {
                                         ) : (
                                             usuario.pdf_url.map((pdf, index) => (
                                                 <li key={index}>
-                                                    <a href={`https://amddibackend-production.up.railway.app${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
+                                                    <a href={`https://localhost:5000${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fillRule="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
                                                             <path fillRule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z" />
                                                         </svg>

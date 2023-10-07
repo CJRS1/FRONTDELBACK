@@ -263,7 +263,7 @@ export default function TablaAsesores() {
                                             className="input_table_usuario"
                                             type="text"
                                             value={editedSLastName}
-                                            onChange={(e) => setEditedLastName(e.target.value)}
+                                            onChange={(e) => setEditedSLastName(e.target.value)}
                                         />
                                     ) : (
                                         filteredAsesor.apeMat
@@ -402,7 +402,7 @@ export default function TablaAsesores() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedSLastName}
-                                                onChange={(e) => setEditedLastName(e.target.value)}
+                                                onChange={(e) => setEditedSLastName(e.target.value)}
                                             />
                                         ) : (
                                             asesor.apeMat

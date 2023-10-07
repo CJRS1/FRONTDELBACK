@@ -27,10 +27,6 @@ export default function RegistrarAsesor() {
         // Verificar si el campo es nombre, apellido paterno o apellido materno
         if (name === "nombre" || name === "apePat" || name === "apeMat") {
             // Si es uno de estos campos y contiene números, mostrar una alerta
-            if (value.length < 3) {
-                alert("El campo debe contener al menos 3 caracteres");
-                return;
-            }
             if (/\d/.test(value)) {
                 alert("El campo no debe contener números");
                 return;

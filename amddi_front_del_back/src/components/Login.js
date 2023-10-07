@@ -31,7 +31,7 @@ export default function Inicio({ setIsLoggedIn}) {
             if (response.status === 200) {
                 // Inicio de sesión exitoso
                 const data = response.data; // No es necesario usar await ni .json()
-
+                console.log(data);
                 // Almacena el token en el almacenamiento local o en una cookie
                 localStorage.setItem("token", data.token);
                 localStorage.setItem('isLoggedIn', true);
