@@ -25,6 +25,15 @@ export default function TablaUsuarios() {
 
     const [listaEstadosTesis, setListaEstadosTesis] = useState([]);
     const [listaEstadosObservacion, setListaEstadosObservacion] = useState([]);
+    const [listaEstadosMonografia, setListaEstadosMonografia] = useState([]);
+    const [listaEstadosPlanDeNegocio, setListaEstadosPlanDeNegocio] = useState([]);
+    const [listaEstadosInformePracticas, setListaEstadosInformePracticas] = useState([]);
+    const [listaEstadosTesinas, setListaEstadosTesinas] = useState([]);
+    const [listaEstadosDiapositivas, setListaEstadosDiapositivas] = useState([]);
+    const [listaEstadosParafraseo, setListaEstadosParafraseo] = useState([]);
+    const [listaEstadosTrabajoSuficiencia, setListaEstadosTrabajoSuficiencia] = useState([]);
+    const [listaEstadosArticulo, setListaEstadosArticulo] = useState([]);
+
 
     const [servicios, setServicios] = useState([]);
     const [especialidades, setEspecialidades] = useState([]);
@@ -125,6 +134,7 @@ export default function TablaUsuarios() {
         fetchTesis();
     }, []);
 
+
     useEffect(() => {
         async function fetchObservacion() {
             try {
@@ -143,6 +153,160 @@ export default function TablaUsuarios() {
         }
 
         fetchObservacion();
+    }, []);
+
+    useEffect(() => {
+        async function fetchTrabajoSuficiencia() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_trabajo_suficiencia');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosTrabajoSuficiencia(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchTrabajoSuficiencia();
+    }, []);
+    useEffect(() => {
+        async function fetchTesinas() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_tesinas');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosTesinas(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchTesinas();
+    }, []);
+    useEffect(() => {
+        async function fetchPlanDeNegocio() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_plan_de_negocio');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosPlanDeNegocio(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchPlanDeNegocio();
+    }, []);
+    useEffect(() => {
+        async function fetchMonografia() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_monografia');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosMonografia(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchMonografia();
+    }, []);
+    useEffect(() => {
+        async function fetchInformePracticas() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_informe_de_practicas');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosInformePracticas(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchInformePracticas();
+    }, []);
+    useEffect(() => {
+        async function fetchDiapositivas() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_diapositivas');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosDiapositivas(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchDiapositivas();
+    }, []);
+
+    useEffect(() => {
+        async function fetchParafraseo() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_tesis');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosParafraseo(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchParafraseo();
+    }, []);
+    useEffect(() => {
+        async function fetchArticulo() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_articulo');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosArticulo(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchArticulo();
     }, []);
 
     const handleInputChange = (e) => {
