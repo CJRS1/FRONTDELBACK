@@ -196,7 +196,9 @@ export default function TablaUsuarios() {
 
             setSelectedEstado(userToEdit.estado);
 
-            setEditedMontoPagado(userToEdit.monto_pagado[0].monto_pagado || 0);
+            // setEditedMontoPagado(userToEdit.monto_pagado[0].monto_pagado || 0);
+            setEditedMontoPagado(userToEdit.monto_pagado && userToEdit.monto_pagado[0] ? parseFloat(userToEdit.monto_pagado[0].monto_pagado) || 0 : 0);
+
             setEditedFechaPago(userToEdit.monto_pagado[0].fecha_pago || '');
 
             if (userToEdit.monto_pagado.length > 1) {
