@@ -58,7 +58,7 @@ export default function SubirArchivo() {
 
         // Crea un objeto FormData para enviar el archivo PDF
         const formData = new FormData();
-        formData.append("pdf", pdf);
+        formData.append("file", pdf);
 
         try {
             // Realiza una solicitud POST para subir el archivo PDF
