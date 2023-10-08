@@ -91,10 +91,6 @@ export default function ServicioYEspecialidad() {
     };
 
 
-    const itemsPerPage = 10;
-    const [currentPage, setCurrentPage] = useState(1);
-    const [currentPage2, setCurrentPage2] = useState(1);
-
     useEffect(() => {
         async function fetchservicio() {
             try {
@@ -135,13 +131,13 @@ export default function ServicioYEspecialidad() {
         fetchservicio();
     }, []);
 
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
 
-    const handlePageChange2 = (pageNumber) => {
-        setCurrentPage2(pageNumber);
-    };
+
+    
+    const itemsPerPage = 10;
+    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage2, setCurrentPage2] = useState(1);
+
 
     const itemsCount = servicio.length;
 
@@ -155,6 +151,13 @@ export default function ServicioYEspecialidad() {
     const endIndex2 = startIndex2 + itemsPerPage;
     const currentData2 = especialidad.slice(startIndex2, endIndex2);
 
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const handlePageChange2 = (pageNumber) => {
+        setCurrentPage2(pageNumber);
+    };
 
     // const handleEliminarServicio = async (id) => {
     //     try {
