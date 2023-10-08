@@ -196,7 +196,7 @@ export default function TablaUsuarios() {
 
             setSelectedEstado(userToEdit.estado);
 
-            setEditedMontoPagado(userToEdit.monto_pagado[0].monto_pagado || '');
+            setEditedMontoPagado(userToEdit.monto_pagado[0].monto_pagado || 0);
             setEditedFechaPago(userToEdit.monto_pagado[0].fecha_pago || '');
 
             if (userToEdit.monto_pagado.length > 1) {
@@ -446,7 +446,7 @@ export default function TablaUsuarios() {
         // setFilteredUser(foundUser);
         const searchTerms1 = searchTerm.trim().replace(/\s+/g, ' ');
         let cleanedSearchTerm = searchTerm.replace(/\s/g, "");
-        
+
         console.log(searchTerms1);
         const foundUser = usuariosConServicios.map(usuario => {
             const urgencia = usuario.fecha_estimada ? getColor(usuario.fecha_estimada) : null;
@@ -464,12 +464,12 @@ export default function TablaUsuarios() {
                 cleanedSearchTerm = 'black'
             }
             const idAmddiMatches = usuario.id_amddi && usuario.id_amddi.startsWith(cleanedSearchTerm);
-            
+
             return {
                 ...usuario,
                 urgencia,
                 mes,
-                idAmddiMatches 
+                idAmddiMatches
             };
 
         }).filter(usuario => {
@@ -582,18 +582,18 @@ export default function TablaUsuarios() {
         // Calculamos la diferencia entre las dos fechas
         const diferencia = fechaEstimadaDate - fechaActual;
 
-        const diferenciaDias = diferencia / (1000 * 60 * 60 * 24) +1;
-        console.log("dd",diferenciaDias);
+        const diferenciaDias = diferencia / (1000 * 60 * 60 * 24) + 1;
+        console.log("dd", diferenciaDias);
         // Determinamos el color
         if (diferenciaDias >= 7) {
             return "#00d799";
         } else if ((diferenciaDias < 7) && (diferenciaDias >= 4)) {
             return "#ffd700";
-        } else if ((diferenciaDias < 4) && (diferenciaDias >= 1)){
+        } else if ((diferenciaDias < 4) && (diferenciaDias >= 1)) {
             return "red";
-        } else if (diferenciaDias <= 0 ){
+        } else if (diferenciaDias <= 0) {
             return "black";
-        } 
+        }
     };
 
     function obtenerNombreMes(fecha) {
@@ -1198,7 +1198,7 @@ export default function TablaUsuarios() {
                                             filteredUser.asesor_ventas ? filteredUser.asesor_ventas : '-'
                                         )}
                                     </td>
-                                    <td>
+                                    {/* <td>
                                         {editingUserId === filteredUser.id ? (
                                             <select
                                                 className="select_serv"
@@ -1226,7 +1226,42 @@ export default function TablaUsuarios() {
                                                 {filteredUser.estado}
                                             </ul>
                                         )}
+                                    </td> */}
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <select
+                                                className="select_serv"
+                                                value={selectedEstado}
+                                                onChange={(e) => setSelectedEstado(e.target.value)}
+                                            >
+                                                {filteredUser.usuario_servicio[0] ? (
+                                                    filteredUser.usuario_servicio[0].servicio.id === 1 ||
+                                                        filteredUser.usuario_servicio[0].servicio.id === 2 ||
+                                                        filteredUser.usuario_servicio[0].servicio.id === 3 ? (
+                                                        listaEstadosTesis.map((estado) => (
+                                                            <option key={estado.id} value={estado.estado}>
+                                                                {estado.estado}
+                                                            </option>
+                                                        ))
+                                                    ) : filteredUser.usuario_servicio[0].servicio.id === 4 ||
+                                                        filteredUser.usuario_servicio[0].servicio.id === 5 ? (
+                                                        listaEstadosObservacion.map((estado) => (
+                                                            <option key={estado.id} value={estado.estado}>
+                                                                {estado.estado}
+                                                            </option>
+                                                        ))
+                                                    ) : (
+                                                        <option value="">Falta asignar servicio</option>
+                                                    )
+                                                ) : (
+                                                    <option value="">-</option>
+                                                )}
+                                            </select>
+                                        ) : (
+                                            <ul>{filteredUser.usuario_servicio[0] ? filteredUser.estado : "-"}</ul>
+                                        )}
                                     </td>
+
                                     <td style={{ color: filteredUser.fecha_estimada ? getColor(filteredUser.fecha_estimada) : 'black' }}>
                                         {editingUserId === filteredUser.id ? (
                                             <input
@@ -1787,7 +1822,7 @@ export default function TablaUsuarios() {
                                             usuario.asesor_ventas ? usuario.asesor_ventas : '-'
                                         )}
                                     </td>
-                                    <td>
+                                    {/* <td>
                                         {editingUserId === usuario.id ? (
                                             <select
                                                 className="select_serv"
@@ -1815,7 +1850,42 @@ export default function TablaUsuarios() {
                                                 {usuario.estado}
                                             </ul>
                                         )}
+                                    </td> */}
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <select
+                                                className="select_serv"
+                                                value={selectedEstado}
+                                                onChange={(e) => setSelectedEstado(e.target.value)}
+                                            >
+                                                {usuario.usuario_servicio[0] ? (
+                                                    usuario.usuario_servicio[0].servicio.id === 1 ||
+                                                        usuario.usuario_servicio[0].servicio.id === 2 ||
+                                                        usuario.usuario_servicio[0].servicio.id === 3 ? (
+                                                        listaEstadosTesis.map((estado) => (
+                                                            <option key={estado.id} value={estado.estado}>
+                                                                {estado.estado}
+                                                            </option>
+                                                        ))
+                                                    ) : usuario.usuario_servicio[0].servicio.id === 4 ||
+                                                        usuario.usuario_servicio[0].servicio.id === 5 ? (
+                                                        listaEstadosObservacion.map((estado) => (
+                                                            <option key={estado.id} value={estado.estado}>
+                                                                {estado.estado}
+                                                            </option>
+                                                        ))
+                                                    ) : (
+                                                        <option value="">Falta asignar servicio</option>
+                                                    )
+                                                ) : (
+                                                    <option value="">-</option>
+                                                )}
+                                            </select>
+                                        ) : (
+                                            <ul>{usuario.usuario_servicio[0] ? usuario.estado : "-"}</ul>
+                                        )}
                                     </td>
+
 
 
                                     <td style={{ color: usuario.fecha_estimada ? getColor(usuario.fecha_estimada) : 'black' }}>
