@@ -55,10 +55,13 @@ export default function SubirArchivo() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        if (!pdf) {
+            alert('Por favor, selecciona un archivo.');
+            return;
+        }
         // Crea un objeto FormData para enviar el archivo PDF
         const formData = new FormData();
-        formData.append("file", pdf);
+        formData.append('file', pdf);
 
         try {
             // Realiza una solicitud POST para subir el archivo PDF
