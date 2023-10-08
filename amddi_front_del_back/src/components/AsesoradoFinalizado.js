@@ -142,7 +142,7 @@ export default function AsesoradoFinalizado() {
                                             </span>
                                             ))}
                                         </div>
-                                    </div>
+                                    </div>1
                                     <div className="info_asesorado_card info_asesorado_card_column">
                                         <div className="form_asesorado2">
                                             <h4>Los PDFs que fueron adjuntados:</h4>

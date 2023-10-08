@@ -132,7 +132,7 @@ export default function AsesoradoSecundario() {
     const getColor = (fechaEstimada) => {
         // Convertimos las fechas a objetos Date
         const fechaActual = new Date();
-
+        fecha_pago.setHours(fecha_pago.getHours() - 5);
         // Separar la fecha estimada en día, mes y año
         const partesFechaEstimada = fechaEstimada.split('/');
         const diaEstimado = parseInt(partesFechaEstimada[0], 10);
