@@ -63,7 +63,7 @@ export default function SubirArchivo() {
         try {
             // Realiza una solicitud POST para subir el archivo PDF
             // console.log(`https://amddibackend-production-2880.up.railway.app/subir-pdf/${usuarioporDNI[0].id}`)
-            const response = await axios.post(`https://amddibackend-production-2880.up.railway.app/subir-pdf/${usuarioporDNI[0].id}`, formData);
+            const response = await axios.post(`https://amddibackend-production-2880.up.railway.app/upload/${usuarioporDNI[0].id}`, formData);
 
             // Muestra la respuesta del servidor
             alert(response.data.msg);
