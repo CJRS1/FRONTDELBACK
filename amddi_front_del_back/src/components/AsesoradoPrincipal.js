@@ -101,7 +101,7 @@ export default function AsesoradoSecundario() {
         formData.append("pdf", pdf);
         // console.log(id);
         try {
-            const res = await axios.put(`https://amddibackend-production-2880.up.railway.app/actualizar-pdf/${id}`, formData);
+            const res = await axios.put(`https://amddibackend-production-2880.up.railway.app/update/${id}`, formData);
             alert(res.data.msg);
             // console.log(res.data.msg);
         } catch (error) {
@@ -124,7 +124,7 @@ export default function AsesoradoSecundario() {
         try {
             // Realiza una solicitud POST para subir el archivo PDF
             // console.log(`https://amddibackend-production-2880.up.railway.app/subir-pdf/${id}`)
-            const response = await axios.post(`https://amddibackend-production-2880.up.railway.app/subir-pdf/${id}`, formData);
+            const response = await axios.post(`https://amddibackend-production-2880.up.railway.app/upload/${id}`, formData);
 
             // Muestra la respuesta del servidor
             alert(response.data.msg);

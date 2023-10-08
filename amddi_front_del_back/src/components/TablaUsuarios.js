@@ -199,7 +199,8 @@ export default function TablaUsuarios() {
             // setEditedMontoPagado(userToEdit.monto_pagado[0].monto_pagado || 0);
             setEditedMontoPagado(userToEdit.monto_pagado && userToEdit.monto_pagado[0] ? parseFloat(userToEdit.monto_pagado[0].monto_pagado) || 0 : 0);
 
-            setEditedFechaPago(userToEdit.monto_pagado[0].fecha_pago || '');
+            setEditedFechaPago(userToEdit.monto_pagado && userToEdit.monto_pagado[0] && userToEdit.monto_pagado[0].fecha_pago ? userToEdit.monto_pagado[0].fecha_pago : '');
+
 
             if (userToEdit.monto_pagado.length > 1) {
 
@@ -548,9 +549,9 @@ export default function TablaUsuarios() {
     const handleEditarPDF = async (id) => {
         // Crea un objeto FormData para enviar el archivo PDF
         const formData = new FormData();
-        formData.append("pdf", pdf);
+        formData.append("file", pdf);
         try {
-            await axios.put(`https://amddibackend-production-2880.up.railway.app/actualizar-pdf/${id}`, formData);
+            await axios.put(`https://amddibackend-production-2880.up.railway.app/update/${id}`, formData);
             // alert(res.data.msg);
             // console.log(res.data.msg);
         } catch (error) {
@@ -1237,27 +1238,80 @@ export default function TablaUsuarios() {
                                                 onChange={(e) => setSelectedEstado(e.target.value)}
                                             >
                                                 {filteredUser.usuario_servicio[0] ? (
-                                                    filteredUser.usuario_servicio[0].servicio.id === 1 ||
-                                                        filteredUser.usuario_servicio[0].servicio.id === 2 ||
-                                                        filteredUser.usuario_servicio[0].servicio.id === 3 ? (
-                                                        listaEstadosTesis.map((estado) => (
-                                                            <option key={estado.id} value={estado.estado}>
-                                                                {estado.estado}
-                                                            </option>
-                                                        ))
-                                                    ) : filteredUser.usuario_servicio[0].servicio.id === 4 ||
-                                                        filteredUser.usuario_servicio[0].servicio.id === 5 ? (
-                                                        listaEstadosObservacion.map((estado) => (
-                                                            <option key={estado.id} value={estado.estado}>
-                                                                {estado.estado}
-                                                            </option>
-                                                        ))
-                                                    ) : (
-                                                        <option value="">Falta asignar servicio</option>
-                                                    )
+                                                    <select>
+                                                        {filteredUser.usuario_servicio[0].servicio.id === 1 ||
+                                                            filteredUser.usuario_servicio[0].servicio.id === 2 ||
+                                                            filteredUser.usuario_servicio[0].servicio.id === 3 ? (
+                                                            listaEstadosTesis.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : filteredUser.usuario_servicio[0].servicio.id === 4 ||
+                                                            filteredUser.usuario_servicio[0].servicio.id === 5 ? (
+                                                            listaEstadosObservacion.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : filteredUser.usuario_servicio[0].servicio.id === 6 ? (
+                                                            listaEstadosParafraseo.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : filteredUser.usuario_servicio[0].servicio.id === 7 ? (
+                                                            listaEstadosTrabajoSuficiencia.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : filteredUser.usuario_servicio[0].servicio.id === 8 ||
+                                                            filteredUser.usuario_servicio[0].servicio.id === 9 ||
+                                                            filteredUser.usuario_servicio[0].servicio.id === 10 ? (
+                                                            listaEstadosArticulo.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : filteredUser.usuario_servicio[0].servicio.id === 11 ? (
+                                                            listaEstadosMonografia.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : filteredUser.usuario_servicio[0].servicio.id === 12 ? (
+                                                            listaEstadosPlanDeNegocio.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : filteredUser.usuario_servicio[0].servicio.id === 13 ? (
+                                                            listaEstadosInformePracticas.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : filteredUser.usuario_servicio[0].servicio.id === 14 ? (
+                                                            listaEstadosTesinas.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : filteredUser.usuario_servicio[0].servicio.id === 15 ? (
+                                                            listaEstadosDiapositivas.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : (
+                                                            <option value="">Falta asignar servicio</option>
+                                                        )}
+                                                    </select>
                                                 ) : (
                                                     <option value="">-</option>
                                                 )}
+
                                             </select>
                                         ) : (
                                             <ul>{filteredUser.usuario_servicio[0] ? filteredUser.estado : "-"}</ul>
@@ -1861,27 +1915,80 @@ export default function TablaUsuarios() {
                                                 onChange={(e) => setSelectedEstado(e.target.value)}
                                             >
                                                 {usuario.usuario_servicio[0] ? (
-                                                    usuario.usuario_servicio[0].servicio.id === 1 ||
-                                                        usuario.usuario_servicio[0].servicio.id === 2 ||
-                                                        usuario.usuario_servicio[0].servicio.id === 3 ? (
-                                                        listaEstadosTesis.map((estado) => (
-                                                            <option key={estado.id} value={estado.estado}>
-                                                                {estado.estado}
-                                                            </option>
-                                                        ))
-                                                    ) : usuario.usuario_servicio[0].servicio.id === 4 ||
-                                                        usuario.usuario_servicio[0].servicio.id === 5 ? (
-                                                        listaEstadosObservacion.map((estado) => (
-                                                            <option key={estado.id} value={estado.estado}>
-                                                                {estado.estado}
-                                                            </option>
-                                                        ))
-                                                    ) : (
-                                                        <option value="">Falta asignar servicio</option>
-                                                    )
+                                                    <select>
+                                                        {usuario.usuario_servicio[0].servicio.id === 1 ||
+                                                            usuario.usuario_servicio[0].servicio.id === 2 ||
+                                                            usuario.usuario_servicio[0].servicio.id === 3 ? (
+                                                            listaEstadosTesis.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : usuario.usuario_servicio[0].servicio.id === 4 ||
+                                                            usuario.usuario_servicio[0].servicio.id === 5 ? (
+                                                            listaEstadosObservacion.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : usuario.usuario_servicio[0].servicio.id === 6 ? (
+                                                            listaEstadosParafraseo.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : usuario.usuario_servicio[0].servicio.id === 7 ? (
+                                                            listaEstadosTrabajoSuficiencia.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : usuario.usuario_servicio[0].servicio.id === 8 ||
+                                                            usuario.usuario_servicio[0].servicio.id === 9 ||
+                                                            usuario.usuario_servicio[0].servicio.id === 10 ? (
+                                                            listaEstadosArticulo.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : usuario.usuario_servicio[0].servicio.id === 11 ? (
+                                                            listaEstadosMonografia.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : usuario.usuario_servicio[0].servicio.id === 12 ? (
+                                                            listaEstadosPlanDeNegocio.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : usuario.usuario_servicio[0].servicio.id === 13 ? (
+                                                            listaEstadosInformePracticas.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : usuario.usuario_servicio[0].servicio.id === 14 ? (
+                                                            listaEstadosTesinas.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : usuario.usuario_servicio[0].servicio.id === 15 ? (
+                                                            listaEstadosDiapositivas.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : (
+                                                            <option value="">Falta asignar servicio</option>
+                                                        )}
+                                                    </select>
                                                 ) : (
                                                     <option value="">-</option>
                                                 )}
+
                                             </select>
                                         ) : (
                                             <ul>{usuario.usuario_servicio[0] ? usuario.estado : "-"}</ul>
