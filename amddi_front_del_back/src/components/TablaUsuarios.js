@@ -179,7 +179,7 @@ export default function TablaUsuarios() {
             try {
                 // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
                 const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_tesinas');
-                // console.log(res.data.message);
+                console.log(res.data.message);
                 // console.log('Response from server t:', res.data);
 
                 if (res.data.content && Array.isArray(res.data.content)) {
@@ -255,7 +255,7 @@ export default function TablaUsuarios() {
             try {
                 // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
                 const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_diapositivas');
-                // console.log(res.data.message);
+                console.log(res.data.message);
                 // console.log('Response from server t:', res.data);
 
                 if (res.data.content && Array.isArray(res.data.content)) {
@@ -313,31 +313,34 @@ export default function TablaUsuarios() {
         const inputValue = e.target.value;
 
         // Validar el formato y eliminar caracteres no permitidos
-        const cleanedValue = inputValue.replace(/[^0-9/]/g, '');
+        if (inputValue.trim() !== '') {
+            // Validar el formato y eliminar caracteres no permitidos
+            const cleanedValue = inputValue.replace(/[^0-9/]/g, '');
 
-        // Dividir la entrada en partes (día, mes, año) utilizando las barras diagonales
-        const parts = cleanedValue.split('/');
+            // Dividir la entrada en partes (día, mes, año) utilizando las barras diagonales
+            const parts = cleanedValue.split('/');
 
-        // Obtener los valores numéricos de día, mes y año
-        const day = parseInt(parts[0]) || '';
-        const month = parseInt(parts[1]) || '';
-        const year = parseInt(parts[2]) || '';
+            // Obtener los valores numéricos de día, mes y año
+            const day = parseInt(parts[0]) || '';
+            const month = parseInt(parts[1]) || '';
+            const year = parseInt(parts[2]) || '';
 
-        // Verificar si el primer dígito de día y mes es cero y corregirlo
-        if (day.toString().length > 1 && day.toString()[0] === '0') {
-            // Eliminar el cero al inicio
-            parts[0] = day.toString().substring(1);
+            // Verificar si el primer dígito de día y mes es cero y corregirlo
+            if (day.toString().length > 1 && day.toString()[0] === '0') {
+                // Eliminar el cero al inicio
+                parts[0] = day.toString().substring(1);
+            }
+            if (month.toString().length > 1 && month.toString()[0] === '0') {
+                // Eliminar el cero al inicio
+                parts[1] = month.toString().substring(1);
+            }
+
+            // Formatear la fecha en el formato deseado (día/mes/año)
+            const formattedDate = `${parts[0]}/${parts[1]}/${year}`;
+
+            // Actualizar el estado con la fecha formateada
+            setEditedDDate(formattedDate);
         }
-        if (month.toString().length > 1 && month.toString()[0] === '0') {
-            // Eliminar el cero al inicio
-            parts[1] = month.toString().substring(1);
-        }
-
-        // Formatear la fecha en el formato deseado (día/mes/año)
-        const formattedDate = `${parts[0]}/${parts[1]}/${year}`;
-
-        // Actualizar el estado con la fecha formateada
-        setEditedDDate(formattedDate);
     };
 
     const handleEditar = (id) => {
@@ -455,12 +458,13 @@ export default function TablaUsuarios() {
         // Utilizamos una expresión regular para verificar el formato "día/mes/año"
         const dateFormat = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/\d{4}$/;
 
-
-
-        if (!dateFormat.test(editedDDate)) {
-            // Si el formato no es válido, mostrar una alerta
-            window.alert('Formato de fecha incorrecto. El formato debe ser día/mes/año sin ceros adelante de los días y meses.');
-            return;
+        if (editedDDate.trim() !== '') {
+            // Verificar si el formato no es válido
+            if (!dateFormat.test(editedDDate)) {
+                // Si el formato no es válido, mostrar una alerta
+                window.alert('Formato de fecha incorrecto. El formato debe ser día/mes/año sin ceros adelante de los días y meses.');
+                return;
+            }
         }
 
         try {
@@ -1402,7 +1406,7 @@ export default function TablaUsuarios() {
                                                 onChange={(e) => setSelectedEstado(e.target.value)}
                                             >
                                                 {filteredUser.usuario_servicio[0] ? (
-                                                    <select>
+                                                    <>
                                                         {filteredUser.usuario_servicio[0].servicio.id === 1 ||
                                                             filteredUser.usuario_servicio[0].servicio.id === 2 ||
                                                             filteredUser.usuario_servicio[0].servicio.id === 3 ? (
@@ -1471,16 +1475,18 @@ export default function TablaUsuarios() {
                                                         ) : (
                                                             <option value="">Falta asignar servicio</option>
                                                         )}
-                                                    </select>
+                                                    </>
                                                 ) : (
                                                     <option value="">-</option>
                                                 )}
-
                                             </select>
                                         ) : (
-                                            <ul>{filteredUser.usuario_servicio[0] ? filteredUser.estado : "-"}</ul>
+                                            <ul>
+                                                {filteredUser.usuario_servicio[0] ? filteredUser.estado : "-"}
+                                            </ul>
                                         )}
                                     </td>
+
 
                                     <td style={{ color: filteredUser.fecha_estimada ? getColor(filteredUser.fecha_estimada) : 'black' }}>
                                         {editingUserId === filteredUser.id ? (
@@ -2079,7 +2085,7 @@ export default function TablaUsuarios() {
                                                 onChange={(e) => setSelectedEstado(e.target.value)}
                                             >
                                                 {usuario.usuario_servicio[0] ? (
-                                                    <select>
+                                                    <>
                                                         {usuario.usuario_servicio[0].servicio.id === 1 ||
                                                             usuario.usuario_servicio[0].servicio.id === 2 ||
                                                             usuario.usuario_servicio[0].servicio.id === 3 ? (
@@ -2148,16 +2154,18 @@ export default function TablaUsuarios() {
                                                         ) : (
                                                             <option value="">Falta asignar servicio</option>
                                                         )}
-                                                    </select>
+                                                    </>
                                                 ) : (
                                                     <option value="">-</option>
                                                 )}
-
                                             </select>
                                         ) : (
-                                            <ul>{usuario.usuario_servicio[0] ? usuario.estado : "-"}</ul>
+                                            <ul>
+                                                {usuario.usuario_servicio[0] ? usuario.estado : "-"}
+                                            </ul>
                                         )}
                                     </td>
+
 
 
 
