@@ -21,25 +21,19 @@ export default function AsesoradoSecundario() {
         window.scrollTo(0, 0);
     }, [location]);
 
-    let slidesToShow = 1; // Default to 1 slide
-    if (userData && userData.asignacion_secundaria.length >= 2) {
-        slidesToShow = 2; // If there are 2 or more elements, show 2 slides
-    }
-
-
     const settings = {
         speed: 500,
-        slidesToShow: slidesToShow,
+        slidesToShow: 1,
         slidesToScroll: 1,
         // autoplay: true,
         // autoplaySpeed: 2000,
         dots: true,
-        // centerMode: true,
+        centerMode: true,
         responsive: [
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: 1,
+                    slidesToShow: 3,
                     slidesToScroll: 1,
                 }
             },
