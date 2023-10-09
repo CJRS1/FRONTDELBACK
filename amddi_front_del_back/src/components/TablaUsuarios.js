@@ -466,7 +466,7 @@ export default function TablaUsuarios() {
                 return;
             }
         }
-        
+
 
         try {
             // Actualiza el usuario
@@ -705,11 +705,11 @@ export default function TablaUsuarios() {
     const handleEliminarPDF = async (id) => {
         // Mostrar una confirmación al usuario
         const confirmarEliminacion = window.confirm('¿Estás seguro de que deseas eliminar este PDF?');
-    
+
         if (confirmarEliminacion) {
             try {
                 console.log("eliminar", id);
-    
+
                 const res = await axios.delete(`https://amddibackend-production-2880.up.railway.app/eliminar-pdf/${id}`);
                 alert(res.data.msg);
                 console.log('PDF eliminado:', res.data.message);
@@ -722,17 +722,17 @@ export default function TablaUsuarios() {
             console.log('Eliminación cancelada por el usuario');
         }
     };
-    
+
 
     const handleEditarPDF = async (id) => {
         // Mostrar una confirmación al usuario
         const confirmarEdicion = window.confirm('¿Estás seguro de que deseas editar este PDF?');
-    
+
         if (confirmarEdicion) {
             // Crea un objeto FormData para enviar el archivo PDF
             const formData = new FormData();
             formData.append("file", pdf);
-    
+
             try {
                 await axios.put(`https://amddibackend-production-2880.up.railway.app/update/${id}`, formData);
                 alert('PDF editado exitosamente');
@@ -744,7 +744,7 @@ export default function TablaUsuarios() {
             console.log('Edición cancelada por el usuario');
         }
     };
-    
+
 
     // const [editedPDF_URL, setEditedPDF_URL] = useState("");
 
@@ -1255,12 +1255,13 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedTema}
-                                                onChange={(e) => setEditedTema(e.target.value.replace(/[^a-zA-Z]/g, ''))}
+                                                onChange={(e) => setEditedTema(e.target.value.replace(/[^a-zA-Z\s]/g, ''))}
                                             />
                                         ) : (
                                             filteredUser.tema
                                         )}
                                     </td>
+
                                     <td>
                                         {editingUserId === filteredUser.id ? (
                                             <>
@@ -1956,7 +1957,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedTema}
-                                                onChange={(e) => setEditedTema(e.target.value.replace(/[^a-zA-Z]/g, ''))}
+                                                onChange={(e) => setEditedTema(e.target.value.replace(/[^a-zA-Z\s]/g, ''))}
                                             />
                                         ) : (
                                             usuario.tema
