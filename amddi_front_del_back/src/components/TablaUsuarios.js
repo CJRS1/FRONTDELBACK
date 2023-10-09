@@ -703,30 +703,48 @@ export default function TablaUsuarios() {
     };
 
     const handleEliminarPDF = async (id) => {
-        console.log("eliminar", id);
-        try {
-            console.log("editar", (id));
+        // Mostrar una confirmación al usuario
+        const confirmarEliminacion = window.confirm('¿Estás seguro de que deseas eliminar este PDF?');
+    
+        if (confirmarEliminacion) {
+            try {
+                console.log("eliminar", id);
+    
+                const res = await axios.delete(`https://amddibackend-production-2880.up.railway.app/eliminar-pdf/${id}`);
+                alert(res.data.msg);
+                console.log('PDF eliminado:', res.data.message);
+                window.location.reload();
+            } catch (error) {
+                console.error('Error al eliminar PDF:', error);
+            }
+        } else {
+            // El usuario canceló la eliminación, no hacer nada
+            console.log('Eliminación cancelada por el usuario');
+        }
+    };
+    
 
-            const res = await axios.delete(`https://amddibackend-production-2880.up.railway.app/eliminar-pdf/${id}`);
-            alert(res.data.msg);
-            console.log('Asesor eliminado:', res.data.message);
-            window.location.reload();
-        } catch (error) {
-            console.error('Error al eliminar pdf:', error);
-        }
-    }
     const handleEditarPDF = async (id) => {
-        // Crea un objeto FormData para enviar el archivo PDF
-        const formData = new FormData();
-        formData.append("file", pdf);
-        try {
-            await axios.put(`https://amddibackend-production-2880.up.railway.app/update/${id}`, formData);
-            // alert(res.data.msg);
-            // console.log(res.data.msg);
-        } catch (error) {
-            console.error('Error al editar pdf:', error);
+        // Mostrar una confirmación al usuario
+        const confirmarEdicion = window.confirm('¿Estás seguro de que deseas editar este PDF?');
+    
+        if (confirmarEdicion) {
+            // Crea un objeto FormData para enviar el archivo PDF
+            const formData = new FormData();
+            formData.append("file", pdf);
+    
+            try {
+                await axios.put(`https://amddibackend-production-2880.up.railway.app/update/${id}`, formData);
+                alert('PDF editado exitosamente');
+            } catch (error) {
+                console.error('Error al editar PDF:', error);
+            }
+        } else {
+            // El usuario canceló la edición, no hacer nada
+            console.log('Edición cancelada por el usuario');
         }
-    }
+    };
+    
 
     // const [editedPDF_URL, setEditedPDF_URL] = useState("");
 
