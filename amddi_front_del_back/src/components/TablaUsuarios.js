@@ -458,7 +458,7 @@ export default function TablaUsuarios() {
         // Utilizamos una expresión regular para verificar el formato "día/mes/año"
         const dateFormat = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/\d{4}$/;
 
-        if (editedDDate.trim() !== '') {
+        if (editedDDate !== null && editedDDate.trim() !== '') {
             // Verificar si el formato no es válido
             if (!dateFormat.test(editedDDate)) {
                 // Si el formato no es válido, mostrar una alerta
@@ -466,6 +466,7 @@ export default function TablaUsuarios() {
                 return;
             }
         }
+        
 
         try {
             // Actualiza el usuario
