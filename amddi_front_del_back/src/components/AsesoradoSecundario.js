@@ -171,7 +171,7 @@ export default function AsesoradoSecundario() {
                     <p>Loading...</p>
                 ) : (
                     userData.asignacion_secundaria.map((item, index) => (
-                        item.usuario.estado !== "Finalizado" && (
+                        item.usuario.estado !== "FINALIZADO" && (
                             <div className="asesorado_card" key={index} >
                                 <div className="info_asesorado_container" style={{ borderColor: item.usuario.fecha_estimada ? getColor(item.usuario.fecha_estimada) : 'black' }}>
                                     <div className="info_asesorado_card">

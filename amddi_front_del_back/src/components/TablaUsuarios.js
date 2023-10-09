@@ -632,7 +632,7 @@ export default function TablaUsuarios() {
             if (cleanedSearchTerm === '3') {
                 cleanedSearchTerm = '#00d799'
             }
-            if (cleanedSearchTerm === 'Finalizado') {
+            if (cleanedSearchTerm === 'FINALIZADO') {
                 cleanedSearchTerm = 'black'
             }
             const idAmddiMatches = usuario.id_amddi && usuario.id_amddi.startsWith(cleanedSearchTerm);
@@ -818,7 +818,7 @@ export default function TablaUsuarios() {
                     <input
                         type="text"
                         className="input_filtro input_usuario_filtro"
-                        placeholder="Filtrar por Id Usuario, DNI, Mes, Email, Nombre Asesor o Urgencia(1,2,3,Finalizado)"
+                        placeholder="Filtrar por Id Usuario, DNI, Mes, Email, Nombre Asesor o Urgencia(1,2,3,FINALIZADO)"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />

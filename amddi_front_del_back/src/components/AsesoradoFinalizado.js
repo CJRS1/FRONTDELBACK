@@ -103,7 +103,7 @@ export default function AsesoradoFinalizado() {
                     <p>Loading...</p>
                 ) : (
                     userData.asignacion.map((item, index) => (
-                        item.usuario.estado === "Finalizado" && (
+                        item.usuario.estado === "FINALIZADO" && (
                             <div className="asesorado_card" key={index} >
                                 <div className="info_asesorado_container" style={{ borderColor: 'black' }}>
                                     <div className="info_asesorado_card">
@@ -212,7 +212,7 @@ export default function AsesoradoFinalizado() {
                 ) : (
 
                     userData.asignacion_secundaria.map((item, index) => (
-                        item.usuario.estado === "Finalizado" && (
+                        item.usuario.estado === "FINALIZADO" && (
                             <div className="asesorado_card" key={index} >
                                 <div className="info_asesorado_container" style={{ borderColor: 'black' }}>
                                     <div className="info_asesorado_card">
