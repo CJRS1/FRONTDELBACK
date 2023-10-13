@@ -14,8 +14,19 @@ export default function AsesoradoSecundario() {
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(true);
     const [userData, setUserData] = useState(null);
-    const [estados, setEstados] = useState([]);
+    // const [estados, setEstados] = useState([]);
     const [estadoSelected, setEstadoSelected] = useState("");
+
+    const [listaEstadosTesis, setListaEstadosTesis] = useState([]);
+    const [listaEstadosObservacion, setListaEstadosObservacion] = useState([]);
+    const [listaEstadosMonografia, setListaEstadosMonografia] = useState([]);
+    const [listaEstadosPlanDeNegocio, setListaEstadosPlanDeNegocio] = useState([]);
+    const [listaEstadosInformePracticas, setListaEstadosInformePracticas] = useState([]);
+    const [listaEstadosTesinas, setListaEstadosTesinas] = useState([]);
+    const [listaEstadosDiapositivas, setListaEstadosDiapositivas] = useState([]);
+    const [listaEstadosParafraseo, setListaEstadosParafraseo] = useState([]);
+    const [listaEstadosTrabajoSuficiencia, setListaEstadosTrabajoSuficiencia] = useState([]);
+    const [listaEstadosArticulo, setListaEstadosArticulo] = useState([]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -60,6 +71,9 @@ export default function AsesoradoSecundario() {
         ]
     };
 
+    console.log(userData);
+    // console.log(estados);
+
     useEffect(() => {
         window.scrollTo(0, 0);
 
@@ -73,7 +87,7 @@ export default function AsesoradoSecundario() {
             })
                 .then(response => {
                     setUserData(response.data.content.asesor);
-                    setEstados(response.data.content.estados);
+                    // setEstados(response.data.content.estados);
                 })
                 .catch(error => {
                     console.log(error);
@@ -92,11 +106,12 @@ export default function AsesoradoSecundario() {
         // Crea un objeto FormData para enviar el archivo PDF
 
         const formData = new FormData();
-        formData.append("pdf", pdf);
+        formData.append('file', pdf);
         // console.log(id);
         try {
             const res = await axios.put(`https://amddibackend-production-2880.up.railway.app/update/${id}`, formData);
             alert(res.data.msg);
+            window.location.reload();
             // console.log(res.data.msg);
         } catch (error) {
             console.error('Error al editar pdf:', error);
@@ -108,12 +123,19 @@ export default function AsesoradoSecundario() {
         setPdf(e.target.files[0]);
     };
 
-    const handleSubmit = async (id) => {
-        // e.preventDefault();
+    const [loading, setLoading] = useState(false);
 
+    const handleSubmit = async (e, id) => {
+        e.preventDefault();
+        console.log("hola")
+        if (!pdf) {
+            alert('Por favor, selecciona un archivo.');
+            return;
+        }
+        setLoading(true);
         // Crea un objeto FormData para enviar el archivo PDF
         const formData = new FormData();
-        formData.append("pdf", pdf);
+        formData.append('file', pdf);
 
         try {
             // Realiza una solicitud POST para subir el archivo PDF
@@ -122,10 +144,12 @@ export default function AsesoradoSecundario() {
 
             // Muestra la respuesta del servidor
             alert(response.data.msg);
-            // window.location.reload();
+            window.location.reload();
             // console.log("Respuesta del servidor:", response.data);
         } catch (error) {
             console.error("Error al subir el PDF:", error);
+        } finally {
+            setLoading(false); // Oculta el indicador de carga cuando la solicitud se completa, ya sea con éxito o con error
         }
     };
 
@@ -153,7 +177,7 @@ export default function AsesoradoSecundario() {
             return "#00d799";
         } else if ((diferenciaDias < 7) && (diferenciaDias >= 4)) {
             return "#ffd700";
-        } else if ((diferenciaDias < 4) && (diferenciaDias >= 1)){
+        } else if ((diferenciaDias < 4) && (diferenciaDias >= 1)) {
             return "red";
         }
     };
@@ -161,18 +185,213 @@ export default function AsesoradoSecundario() {
     const handleEditarEstado = async (id) => {
         try {
 
-            const estado = {
+            const estadoData = {
                 estado: estadoSelected
             }
-
-            await axios.put(`https://amddibackend-production-2880.up.railway.app/usuarios/${id}`, estado);
-            // console.log('Usuario actualizado:', res.data.message);
+            console.log(estadoData);
+            const res = await axios.put(`https://amddibackend-production-2880.up.railway.app/usuarios/${id}`, estadoData);
+            console.log('Usuario actualizado:', res.data.message);
 
             window.location.reload();
         } catch (e) {
             console.log(e.message);
         }
     }
+
+    useEffect(() => {
+        async function fetchTesis() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_tesis');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosTesis(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchTesis();
+    }, []);
+
+
+    useEffect(() => {
+        async function fetchObservacion() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Observacion');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_observacion');
+                // console.log(res.data.message);
+                // console.log('Response from server o:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosObservacion(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchObservacion();
+    }, []);
+
+    useEffect(() => {
+        async function fetchTrabajoSuficiencia() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_trabajo_suficiencia');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosTrabajoSuficiencia(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchTrabajoSuficiencia();
+    }, []);
+    useEffect(() => {
+        async function fetchTesinas() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_tesinas');
+                console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosTesinas(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchTesinas();
+    }, []);
+    useEffect(() => {
+        async function fetchPlanDeNegocio() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_plan_de_negocio');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosPlanDeNegocio(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchPlanDeNegocio();
+    }, []);
+    useEffect(() => {
+        async function fetchMonografia() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_monografia');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosMonografia(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchMonografia();
+    }, []);
+    useEffect(() => {
+        async function fetchInformePracticas() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_informe_de_practicas');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosInformePracticas(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchInformePracticas();
+    }, []);
+    useEffect(() => {
+        async function fetchDiapositivas() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_diapositivas');
+                console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosDiapositivas(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchDiapositivas();
+    }, []);
+
+    useEffect(() => {
+        async function fetchParafraseo() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_tesis');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosParafraseo(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchParafraseo();
+    }, []);
+    useEffect(() => {
+        async function fetchArticulo() {
+            try {
+                // console.log('Haciendo llamada a la API a:', 'https://amddibackend-production-2880.up.railway.app/Tesis');
+                const res = await axios.get('https://amddibackend-production-2880.up.railway.app/estado_articulo');
+                // console.log(res.data.message);
+                // console.log('Response from server t:', res.data);
+
+                if (res.data.content && Array.isArray(res.data.content)) {
+                    // console.log('Los servicios son:', res.data.content);
+                    setListaEstadosArticulo(res.data.content);
+                }
+            } catch (error) {
+                console.error('Error fetching estados:', error);
+            }
+        }
+
+        fetchArticulo();
+    }, []);
 
     return (
         <div className="asesorado_container">
@@ -224,11 +443,80 @@ export default function AsesoradoSecundario() {
                                                 value={estadoSelected}
                                                 onChange={(e) => setEstadoSelected(e.target.value)}
                                             >
-                                                {estados.map(estados => (
-                                                    <option key={estados.id} value={estados.estado}>
-                                                        {estados.estado}
-                                                    </option>
-                                                ))}
+                                                {item.usuario.usuario_servicio[0] ? (
+                                                    <>
+                                                        {item.usuario.usuario_servicio[0].servicio.id === 1 ||
+                                                            item.usuario.usuario_servicio[0].servicio.id === 2 ||
+                                                            item.usuario.usuario_servicio[0].servicio.id === 3 ? (
+                                                            listaEstadosTesis.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : item.usuario.usuario_servicio[0].servicio.id === 4 ||
+                                                            item.usuario.usuario_servicio[0].servicio.id === 5 ? (
+                                                            listaEstadosObservacion.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : item.usuario.usuario_servicio[0].servicio.id === 6 ? (
+                                                            listaEstadosParafraseo.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : item.usuario.usuario_servicio[0].servicio.id === 7 ? (
+                                                            listaEstadosTrabajoSuficiencia.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : item.usuario.usuario_servicio[0].servicio.id === 8 ||
+                                                            item.usuario.usuario_servicio[0].servicio.id === 9 ||
+                                                            item.usuario.usuario_servicio[0].servicio.id === 10 ? (
+                                                            listaEstadosArticulo.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : item.usuario.usuario_servicio[0].servicio.id === 11 ? (
+                                                            listaEstadosMonografia.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : item.usuario.usuario_servicio[0].servicio.id === 12 ? (
+                                                            listaEstadosPlanDeNegocio.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : item.usuario.usuario_servicio[0].servicio.id === 13 ? (
+                                                            listaEstadosInformePracticas.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : item.usuario.usuario_servicio[0].servicio.id === 14 ? (
+                                                            listaEstadosTesinas.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : item.usuario.usuario_servicio[0].servicio.id === 15 ? (
+                                                            listaEstadosDiapositivas.map((estado) => (
+                                                                <option key={estado.id} value={estado.estado}>
+                                                                    {estado.estado}
+                                                                </option>
+                                                            ))
+                                                        ) : (
+                                                            <option value="">Falta asignar servicio</option>
+                                                        )}
+                                                    </>
+                                                ) : (
+                                                    <option value="">-</option>
+                                                )}
                                             </select>
                                             <button onClick={() => handleEditarEstado(item.usuario.id)}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fillRule="#00d799" className="bi bi-send-check" viewBox="0 0 16 16">
@@ -259,8 +547,12 @@ export default function AsesoradoSecundario() {
                                             <div className="form_asesorado2" key={pdf.id}>
 
                                                 <a href={`https://amddibackend-production-2880.up.railway.app${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fillRule="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
+                                                    {/* <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fillRule="currentColor" className="bi bi-filetype-pdf" viewBox="0 0 16 16">
                                                         <path fillRule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z" />
+                                                    </svg> */}
+                                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#00d799" class="bi bi-file-earmark-word" viewBox="0 0 16 16">
+                                                        <path d="M5.485 6.879a.5.5 0 1 0-.97.242l1.5 6a.5.5 0 0 0 .967.01L8 9.402l1.018 3.73a.5.5 0 0 0 .967-.01l1.5-6a.5.5 0 0 0-.97-.242l-1.036 4.144-.997-3.655a.5.5 0 0 0-.964 0l-.997 3.655L5.485 6.88z" />
+                                                        <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
                                                     </svg>
                                                 </a>
                                                 <h4>{pdf.fecha_pdf_url} </h4>
@@ -268,7 +560,7 @@ export default function AsesoradoSecundario() {
                                                     className="xdd"
                                                     key={pdf.usuarioId}
                                                     type="file"
-                                                    accept=".pdf"
+                                                    accept=".doc, .docx"
                                                     onChange={handlePdfChange}
                                                 // Asegúrate de especificar el tipo de archivo permitido
                                                 // onChange={(e) => handleFileUpload(index, e.target.files[0])}
@@ -289,9 +581,9 @@ export default function AsesoradoSecundario() {
                                         </div>
                                         <div className="form_asesorado2">
                                             <form
-                                                onSubmit={() => handleSubmit(item.usuario.id)}
+                                                onSubmit={(e) => handleSubmit(e, item.usuario.id)}
                                                 encType="multipart/form-data">
-                                                <input type="file" accept=".pdf"
+                                                <input type="file" accept=".doc, .docx" name="file"
                                                     onChange={handlePdfChange}
                                                     className="input_asesorado" />
                                                 <button type="submit">
@@ -300,6 +592,7 @@ export default function AsesoradoSecundario() {
                                                     </svg>
                                                 </button>
                                             </form>
+                                            {loading && <p>Cargando...</p>}
                                         </div>
                                     </div>
                                     <div className="info_asesorado_card info_asesorado_card_column">
