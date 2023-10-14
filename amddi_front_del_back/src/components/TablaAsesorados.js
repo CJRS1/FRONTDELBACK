@@ -117,7 +117,7 @@ export default function TablaAsesorados() {
                 <h1>Lista de mis asesorados</h1>
             </div>
             <div className="tabla_container">
-            <div className="urgency_buttons">
+                <div className="urgency_buttons">
                     <button onClick={() => handleUrgencyLevelChange(0)} className="btn_urgencia">Todos</button>
                     <button onClick={() => handleUrgencyLevelChange(1)} className="btn_urgencia">Urgencia 1</button>
                     <button onClick={() => handleUrgencyLevelChange(2)} className="btn_urgencia">Urgencia 2</button>
@@ -143,34 +143,25 @@ export default function TablaAsesorados() {
                         ) : (
                             filterDataByUrgency(displayData).map((item, index) => (
                                 <tr key={index}>
-                                    <td>
-                                        {startIndex + index + 1}
-                                    </td>
-                                    <td>
-                                        {item.usuario.id_amddi}
-                                    </td>
-                                    <td>
-                                        {item.usuario.categoria}
-                                    </td>
-                                    <td>
-                                        {index < userData.asignacion.length ? "Principal" : "Secundario"}
-                                    </td>
-                                    <td>
-                                        {item.usuario.usuario_servicio[0].servicio.nombre_servicio}
-                                    </td>
-                                    <td>
-                                        {item.usuario.tema}
-                                    </td>
-                                    <td>
-                                        {item.usuario.estado}
-                                    </td>
-                                    <td style={{ color: item.usuario.fecha_estimada ? getColor(item.usuario.fecha_estimada) : 'black' }}>
-                                        <strong>{item.usuario.fecha_estimada}</strong>
-                                    </td>
+                                    {item.usuario.categoria === "Premium" && ( // Verificar si la categoría es "premium"
+                                        <>
+                                            <td>{startIndex + index + 1}</td>
+                                            <td>{item.usuario.id_amddi}</td>
+                                            <td>{item.usuario.categoria}</td>
+                                            <td>{index < userData.asignacion.length ? "Principal" : "Secundario"}</td>
+                                            <td>{item.usuario.usuario_servicio[0].servicio.nombre_servicio}</td>
+                                            <td>{item.usuario.tema}</td>
+                                            <td>{item.usuario.estado}</td>
+                                            <td style={{ color: item.usuario.fecha_estimada ? getColor(item.usuario.fecha_estimada) : 'black' }}>
+                                                <strong>{item.usuario.fecha_estimada}</strong>
+                                            </td>
+                                        </>
+                                    )}
                                 </tr>
                             ))
                         )}
                     </tbody>
+
                 </table>
                 <ReactPaginate
                     activePage={currentPage}

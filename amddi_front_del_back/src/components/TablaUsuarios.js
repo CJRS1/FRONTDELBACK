@@ -65,6 +65,7 @@ export default function TablaUsuarios() {
     const [editedFechaPago2, setEditedFechaPago2] = useState("");
     const [editedMontoPagado3, setEditedMontoPagado3] = useState("");
     const [editedFechaPago3, setEditedFechaPago3] = useState("");
+    const [editedCategoria, setEditedCategoria] = useState("");
 
     const [editedMontoTotal, setEditedMontoTotal] = useState(0.0);
 
@@ -359,6 +360,7 @@ export default function TablaUsuarios() {
             setEditedTema(userToEdit.tema);
             setEditedIdAmddi(userToEdit.id_amddi);
             setEditedPais(userToEdit.pais);
+            setEditedCategoria(userToEdit.categoria);
             setEditedInstitucionEducativa(userToEdit.institucion_educativa);
 
             setSelectedEstado(userToEdit.estado);
@@ -417,6 +419,7 @@ export default function TablaUsuarios() {
         setEditedPhone("");
         setEditedIdAmddi("");
         setEditedPais("");
+        setEditedCategoria("");
         // setEditedPDF_URL("");
         // setEditedMontoPagado(0.0);
         setEditedMontoTotal(0.0);
@@ -479,6 +482,7 @@ export default function TablaUsuarios() {
                 dni: editedDNI,
                 email: editedEmail,
                 celular: editedPhone,
+                categoria: editedCategoria,
                 asesor_ventas: editedAsesorVentas,
                 tema: editedTema,
                 pais: editedPais,
@@ -808,6 +812,8 @@ export default function TablaUsuarios() {
     }
 
 
+
+
     return (
         <div className="tabla_usuarios">
             <div className="franja_verd">
@@ -862,6 +868,7 @@ export default function TablaUsuarios() {
                     <tbody>
                         {filteredUser ? (
                             filteredUser.map(filteredUser => (
+
                                 <tr key={filteredUser.id}>
                                     <td>{filteredUser.id}</td>
                                     <td>
@@ -880,9 +887,23 @@ export default function TablaUsuarios() {
                                         />
                                     ) : (
                                         filteredUser.id_amddi ? filteredUser.id_amddi : '-'
-                                    )} 
+                                    )}
                                     </td>
-                                    {/*  */}
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <select
+                                                className="select_serv"
+                                                value={editedCategoria}
+                                                onChange={(e) => setEditedCategoria(e.target.value)}
+                                            >
+                                                <option value="Premium">Premium</option>
+                                                <option value="Normal">Normal</option>
+                                            </select>
+                                        ) : (
+                                            filteredUser.categoria
+                                        )}
+                                    </td>
+
                                     <td>
                                         {editingUserId === filteredUser.id ? (
                                             <input
@@ -1020,7 +1041,7 @@ export default function TablaUsuarios() {
                                                         className="xdd"
                                                         key={index}
                                                         type="file"
-                                                        accept=".pdf"
+                                                        accept=".doc, .docx"
                                                         onChange={handlePdfChange}
                                                     // Asegúrate de especificar el tipo de archivo permitido
                                                     // onChange={(e) => handleFileUpload(index, e.target.files[0])}
@@ -1047,9 +1068,9 @@ export default function TablaUsuarios() {
                                                 <li key={index}>
                                                     <a href={`https://amddibackend-production-2880.up.railway.app${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#00d799" class="bi bi-file-earmark-word" viewBox="0 0 16 16">
-                                                        <path d="M5.485 6.879a.5.5 0 1 0-.97.242l1.5 6a.5.5 0 0 0 .967.01L8 9.402l1.018 3.73a.5.5 0 0 0 .967-.01l1.5-6a.5.5 0 0 0-.97-.242l-1.036 4.144-.997-3.655a.5.5 0 0 0-.964 0l-.997 3.655L5.485 6.88z" />
-                                                        <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
-                                                    </svg>
+                                                            <path d="M5.485 6.879a.5.5 0 1 0-.97.242l1.5 6a.5.5 0 0 0 .967.01L8 9.402l1.018 3.73a.5.5 0 0 0 .967-.01l1.5-6a.5.5 0 0 0-.97-.242l-1.036 4.144-.997-3.655a.5.5 0 0 0-.964 0l-.997 3.655L5.485 6.88z" />
+                                                            <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                                                        </svg>
                                                     </a>
                                                     <br />
                                                     {pdf.fecha_pdf_url}
@@ -1557,6 +1578,7 @@ export default function TablaUsuarios() {
                                         </svg>
                                     </button></td>
                                 </tr>
+
                             ))
                         ) : (
                             currentData.map(usuario => (
@@ -1577,19 +1599,24 @@ export default function TablaUsuarios() {
                                         />
                                     ) : (
                                         usuario.id_amddi ? usuario.id_amddi : '-'
-                                    )} </td>
+                                    )}
+                                    </td>
                                     <td>
                                         {editingUserId === usuario.id ? (
-                                            <input
-                                                className="input_table_usuario"
-                                                type="text"
-                                                value={editedUserName}
-                                                onChange={(e) => setEditedUserName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
-                                            />
+                                            <select
+                                                className="select_serv"
+                                                value={editedCategoria}
+                                                onChange={(e) => setEditedCategoria(e.target.value)}
+                                            >
+                                                <option value="Premium">Premium</option>
+                                                <option value="Normal">Normal</option>
+                                            </select>
                                         ) : (
                                             usuario.categoria
                                         )}
                                     </td>
+
+
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input
@@ -1732,7 +1759,7 @@ export default function TablaUsuarios() {
                                                         className="xdd"
                                                         key={index}
                                                         type="file"
-                                                        accept=".pdf"
+                                                        accept=".doc, .docx"
                                                         onChange={handlePdfChange}
                                                     // Asegúrate de especificar el tipo de archivo permitido
                                                     // onChange={(e) => handleFileUpload(index, e.target.files[0])}
@@ -1758,10 +1785,10 @@ export default function TablaUsuarios() {
                                             usuario.pdf_url.map((pdf, index) => (
                                                 <li key={index}>
                                                     <a href={`https://amddibackend-production-2880.up.railway.app${pdf.pdf_url}`} target="_blank" rel="noopener noreferrer" downlad="true">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#00d799" class="bi bi-file-earmark-word" viewBox="0 0 16 16">
-                                                        <path d="M5.485 6.879a.5.5 0 1 0-.97.242l1.5 6a.5.5 0 0 0 .967.01L8 9.402l1.018 3.73a.5.5 0 0 0 .967-.01l1.5-6a.5.5 0 0 0-.97-.242l-1.036 4.144-.997-3.655a.5.5 0 0 0-.964 0l-.997 3.655L5.485 6.88z" />
-                                                        <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
-                                                    </svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#00d799" class="bi bi-file-earmark-word" viewBox="0 0 16 16">
+                                                            <path d="M5.485 6.879a.5.5 0 1 0-.97.242l1.5 6a.5.5 0 0 0 .967.01L8 9.402l1.018 3.73a.5.5 0 0 0 .967-.01l1.5-6a.5.5 0 0 0-.97-.242l-1.036 4.144-.997-3.655a.5.5 0 0 0-.964 0l-.997 3.655L5.485 6.88z" />
+                                                            <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                                                        </svg>
                                                     </a>
                                                     <br />
                                                     {pdf.fecha_pdf_url}
