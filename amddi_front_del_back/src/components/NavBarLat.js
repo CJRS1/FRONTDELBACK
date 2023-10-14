@@ -126,14 +126,14 @@ export default function NavBarLat({ setIsLoggedIn, isAdmin, isAsesor, setIsAdmin
     const email = userData?.email || parsedData?.email || '';
 
     useEffect(() => {
-        if (isAsesor && location.pathname !== '/asesorado_principal' && location.pathname !== '/asesorado_secundario' && location.pathname !== '/asesorado_finalizado') {
+        if (isAsesor && location.pathname !== '/asesorado_principal' && location.pathname !== '/asesorado_secundario' && location.pathname !== '/asesorado_finalizado' && location.pathname !== '/asesorados') {
             // Redirige al asesor a /asesorado_principal si no está en uno de los enlaces permitidos
             navigate('/asesorado_principal');
         }
     }, [isAsesor, location, navigate]);
 
     useEffect(() => {
-        if (isAdmin && location.pathname !== '/registrar_asesor' && location.pathname !== '/tabla_usuarios' && location.pathname !== '/tabla_asesores'&& location.pathname !== '/subir_archivo'&& location.pathname !== '/asignar_usuario'&& location.pathname !== '/asignar_servicio'&& location.pathname !== '/servicio_especialidad') {
+        if (isAdmin && location.pathname !== '/registrar_asesor' && location.pathname !== '/tabla_usuarios' && location.pathname !== '/tabla_asesores' && location.pathname !== '/subir_archivo' && location.pathname !== '/asignar_usuario' && location.pathname !== '/asignar_servicio' && location.pathname !== '/servicio_especialidad') {
             // Redirige al asesor a /asesorado_principal si no está en uno de los enlaces permitidos
             navigate('/registrar_asesor');
         }
@@ -266,6 +266,15 @@ export default function NavBarLat({ setIsLoggedIn, isAdmin, isAsesor, setIsAdmin
                                         <path d="m5.93 6.704-.846 8.451a.768.768 0 0 0 1.523.203l.81-4.865a.59.59 0 0 1 1.165 0l.81 4.865a.768.768 0 0 0 1.523-.203l-.845-8.451A1.492 1.492 0 0 1 10.5 5.5L13 2.284a.796.796 0 0 0-1.239-.998L9.634 3.84a.72.72 0 0 1-.33.235c-.23.074-.665.176-1.304.176-.64 0-1.074-.102-1.305-.176a.72.72 0 0 1-.329-.235L4.239 1.286a.796.796 0 0 0-1.24.998l2.5 3.216c.317.316.475.758.43 1.204Z" />
                                     </svg>
                                     <h5 className={opcionesClass} >Asesorados Finalizados</h5>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/asesorados" className={linkClass}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" className="bi bi-person-bounding-box" viewBox="0 0 16 16">
+                                        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z" />
+                                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                                    </svg>
+                                    <h5 className={opcionesClass} >Tabla de Asesorados</h5>
                                 </Link>
                             </li>
                             {/* <li>

@@ -831,6 +831,7 @@ export default function TablaUsuarios() {
                             <th>Nº</th>
                             <th>Mes</th>
                             <th>Id Usuario</th>
+                            <th>Categoria</th>
                             <th>Nombre</th>
                             <th>Apellidos</th>
                             <th>País</th>
@@ -879,7 +880,9 @@ export default function TablaUsuarios() {
                                         />
                                     ) : (
                                         filteredUser.id_amddi ? filteredUser.id_amddi : '-'
-                                    )} </td>
+                                    )} 
+                                    </td>
+                                    {/*  */}
                                     <td>
                                         {editingUserId === filteredUser.id ? (
                                             <input
@@ -1575,6 +1578,18 @@ export default function TablaUsuarios() {
                                     ) : (
                                         usuario.id_amddi ? usuario.id_amddi : '-'
                                     )} </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedUserName}
+                                                onChange={(e) => setEditedUserName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
+                                            />
+                                        ) : (
+                                            usuario.categoria
+                                        )}
+                                    </td>
                                     <td>
                                         {editingUserId === usuario.id ? (
                                             <input

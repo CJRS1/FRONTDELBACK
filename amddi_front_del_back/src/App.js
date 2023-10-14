@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import jwt_decode from "jwt-decode";
 import Usuario from '../src/components/TablaUsuarios'
 import Asesor from '../src/components/TablaAsesores';
+import Asesorados from '../src/components/TablaAsesorados';
 import Header from '../src/components/NavBarLat';
 // import Inicio from '../src/components/Inicio';
 import Asignar from '../src/components/Asignar';
@@ -97,6 +98,7 @@ function App() {
                   <Route path="/asesorado_principal" element={<AsesoradoPrincipal />} />
                   <Route path="/asesorado_secundario" element={<AsesoradoSecundario />} />
                   <Route path="/asesorado_finalizado" element={<AsesoradoFinalizado />} />
+                  <Route path="/asesorados" element={<Asesorados />} />
                 </>
               )}
             </>
