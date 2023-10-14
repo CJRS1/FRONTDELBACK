@@ -111,6 +111,8 @@ export default function TablaAsesorados() {
         setUrgencyLevel(level);
     };
 
+    let count = 1;
+
     return (
         <div className="tabla_asesorados">
             <div className="franja_verd">
@@ -145,7 +147,7 @@ export default function TablaAsesorados() {
                                 <tr key={index}>
                                     {item.usuario.categoria === "Premium" && ( // Verificar si la categoría es "premium"
                                         <>
-                                            <td>{startIndex + index + 1}</td>
+                                            <td>{count++}</td>
                                             <td>{item.usuario.id_amddi}</td>
                                             <td>{item.usuario.categoria}</td>
                                             <td>{index < userData.asignacion.length ? "Principal" : "Secundario"}</td>
