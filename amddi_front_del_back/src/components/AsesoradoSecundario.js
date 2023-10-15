@@ -199,7 +199,7 @@ export default function AsesoradoSecundario() {
                                             <h4>{item.usuario.estado}</h4>
                                         </div>
                                     </div>
-                                    <div className="info_asesorado_card info_asesorado_card_column">
+                                    {/* <div className="info_asesorado_card info_asesorado_card_column">
                                         <div className="form_asesorado2">
                                             <h4>Fechas de los pagos:</h4>
                                         </div>
@@ -211,10 +211,10 @@ export default function AsesoradoSecundario() {
                                                 </span>
                                             ))}
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="info_asesorado_card info_asesorado_card_column">
                                         <div className="form_asesorado2">
-                                            <h4>Los PDFs que fueron adjuntados:</h4>
+                                            <h4>Los documentos que fueron adjuntados:</h4>
                                         </div>
                                         {item.usuario.pdf_url.map((pdf) => (
                                             <div className="form_asesorado2" key={pdf.id}>
@@ -247,7 +247,7 @@ export default function AsesoradoSecundario() {
                                     </div>
                                     <div className="info_asesorado_card info_asesorado_card_column">
                                         <div className="form_asesorado2">
-                                            <h4>Adjuntar PDF nuevo:</h4>
+                                            <h4>Adjuntar documento nuevo:</h4>
                                         </div>
                                         <div className="form_asesorado2">
                                             <form

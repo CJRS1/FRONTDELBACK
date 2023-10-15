@@ -742,9 +742,10 @@ table {
   display: flex;
 }
 .asesorado_container .info_asesorado_card {
-  width: 350px;
+  width: 500px;
   display: flex;
   align-items: center;
+  margin-top: 10px;
 }
 .asesorado_container .info_asesorado_card h4 {
   font-size: 18px !important;
@@ -785,6 +786,10 @@ table {
   padding: 20px 20px 20px;
   border: 5px solid #00d799;
   border-radius: 10px;
+}
+
+.btn_actualizar_estado {
+  margin-left: 15px;
 }
 
 .texto_asesor_principal {
