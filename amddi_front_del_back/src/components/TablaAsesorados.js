@@ -134,8 +134,9 @@ export default function TablaAsesorados() {
                             <th>Categoría</th>
                             <th>Asesorado como</th>
                             <th>Servicio</th>
-                            <th>Título</th>
+                            <th>Tema</th>
                             <th>Estado</th>
+                            <th>Documentos</th>
                             <th>Fecha Entrega</th>
                         </tr>
                     </thead>
@@ -154,6 +155,34 @@ export default function TablaAsesorados() {
                                             <td>{item.usuario.usuario_servicio[0].servicio.nombre_servicio}</td>
                                             <td>{item.usuario.tema}</td>
                                             <td>{item.usuario.estado}</td>
+                                            <td>
+                                                {item.usuario.pdf_url.map((pdf, index) => (
+                                                    <div key={index}>
+                                                        <a
+                                                            href={`https://amddibackend-production-2880.up.railway.app${pdf.pdf_url}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            download="true"
+                                                        >
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="25"
+                                                                height="25"
+                                                                fill="#00d799"
+                                                                className="bi bi-file-earmark-word"
+                                                                viewBox="0 0 16 16"
+                                                            >
+                                                                <path d="M5.485 6.879a.5.5 0 1 0-.97.242l1.5 6a.5.5 0 0 0 .967.01L8 9.402l1.018 3.73a.5.5 0 0 0 .967-.01l1.5-6a.5.5 0 0 0-.97-.242l-1.036 4.144-.997-3.655a.5.5 0 0 0-.964 0l-.997 3.655L5.485 6.88z" />
+                                                                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                                                            </svg>
+                                                        </a>
+                                                        <br />
+                                                        {pdf.fecha_pdf_url}
+                                                        <br />
+                                                    </div>
+                                                ))}
+                                            </td>
+
                                             <td style={{ color: item.usuario.fecha_estimada ? getColor(item.usuario.fecha_estimada) : 'black' }}>
                                                 <strong>{item.usuario.fecha_estimada}</strong>
                                             </td>
