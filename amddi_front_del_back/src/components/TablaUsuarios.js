@@ -1280,7 +1280,9 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedTema}
-                                                onChange={(e) => setEditedTema(e.target.value.replace(/[^a-zA-Z\s]/g, ''))}
+                                                onChange={(e) =>
+                                                    setEditedTema(e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚ\s]/g, ''))
+                                                }
                                             />
                                         ) : (
                                             filteredUser.tema
@@ -2001,7 +2003,9 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedTema}
-                                                onChange={(e) => setEditedTema(e.target.value.replace(/[^a-zA-Z\s]/g, ''))}
+                                                onChange={(e) =>
+                                                    setEditedTema(e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚ\s]/g, ''))
+                                                }
                                             />
                                         ) : (
                                             usuario.tema

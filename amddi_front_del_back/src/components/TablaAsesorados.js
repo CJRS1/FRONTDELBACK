@@ -131,10 +131,10 @@ export default function TablaAsesorados() {
                         <tr className="fondo_header">
                             <th>Nº</th>
                             <th>Id Usuario</th>
-                            <th>Categoria</th>
+                            <th>Categoría</th>
                             <th>Asesorado como</th>
                             <th>Servicio</th>
-                            <th>Titulo</th>
+                            <th>Título</th>
                             <th>Estado</th>
                             <th>Fecha Entrega</th>
                         </tr>
