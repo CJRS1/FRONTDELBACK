@@ -241,13 +241,21 @@ export default function AsesoradoFinalizado() {
                                     </div>
                                     <div className="info_asesorado_card">
                                         <div className="form_asesorado1">
+                                            <h4>Servicio:</h4>
+                                        </div>
+                                        <div className="form_asesorado">
+                                            <h4>{item.usuario.usuario_servicio[0].servicio.nombre_servicio}</h4>
+                                        </div>
+                                    </div>
+                                    <div className="info_asesorado_card">
+                                        <div className="form_asesorado1">
                                             <h4>Estado:</h4>
                                         </div>
                                         <div className="form_asesorado">
                                             <h4>{item.usuario.estado}</h4>
                                         </div>
                                     </div>
-                                    <div className="info_asesorado_card info_asesorado_card_column">
+                                    {/* <div className="info_asesorado_card info_asesorado_card_column">
                                         <div className="form_asesorado2">
                                             <h4>Fechas de los pagos:</h4>
                                         </div>
@@ -256,7 +264,7 @@ export default function AsesoradoFinalizado() {
                                                 <h4 key={index} >{fecha.fecha_pago}</h4>
                                             ))}
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="info_asesorado_card info_asesorado_card_column">
                                         <div className="form_asesorado2">
                                             <h4>Los PDFs que fueron adjuntados:</h4>
