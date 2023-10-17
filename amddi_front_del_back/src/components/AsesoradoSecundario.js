@@ -193,6 +193,14 @@ export default function AsesoradoSecundario() {
                                     </div>
                                     <div className="info_asesorado_card">
                                         <div className="form_asesorado1">
+                                            <h4>Servicio:</h4>
+                                        </div>
+                                        <div className="form_asesorado">
+                                            <h4>{item.usuario.usuario_servicio[0].servicio.nombre_servicio}</h4>
+                                        </div>
+                                    </div>
+                                    <div className="info_asesorado_card">
+                                        <div className="form_asesorado1">
                                             <h4>Estado:</h4>
                                         </div>
                                         <div className="form_asesorado">
