@@ -4,6 +4,11 @@ body {
   min-height: 100vh !important;
 }
 
+h3 {
+  padding: 0;
+  margin: 0;
+}
+
 ul {
   padding-left: 0 !important;
   margin-bottom: 0 !important;
@@ -381,7 +386,7 @@ input {
 
 .tabla_usuarios {
   padding-left: 70px;
-  min-width: 2800px;
+  min-width: 3000px;
   background: white;
   display: flex;
   flex-direction: column;

@@ -4,6 +4,11 @@ body {
 
 }
 
+h3 {
+    padding: 0;
+    margin: 0;
+}
+
 ul {
     padding-left: 0 !important;
     margin-bottom: 0 !important;
@@ -418,7 +423,7 @@ input {
 .tabla_usuarios {
     padding-left: 70px;
     // height: 135vh;
-    min-width: 2800px;
+    min-width: 3000px;
     background: white;
     display: flex;
     flex-direction: column;
@@ -870,7 +875,7 @@ table {
 
 }
 
-.btn_actualizar_estado{
+.btn_actualizar_estado {
     margin-left: 15px;
 }
 
@@ -961,12 +966,12 @@ table {
     align-items: center;
 }
 
-.urgency_buttons{
+.urgency_buttons {
     display: flex;
     margin-top: 30px;
 }
 
-.btn_urgencia{
+.btn_urgencia {
     margin: 0 10px 0 10px;
     padding: 10px;
     border-radius: 5px;
@@ -976,15 +981,19 @@ table {
     background: blue;
     color: white;
 }
+
 .btn_urgencia:nth-child(2) {
     background: red;
 }
+
 .btn_urgencia:nth-child(3) {
     background: #ffd700;
 }
+
 .btn_urgencia:nth-child(4) {
     background: #00d799;
 }
+
 .btn_urgencia:nth-child(5) {
     background: black;
     color: white;
