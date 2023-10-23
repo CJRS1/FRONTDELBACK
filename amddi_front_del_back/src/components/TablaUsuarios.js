@@ -1670,6 +1670,7 @@ export default function TablaUsuarios() {
                                                 onChange={(e) => setEditedCategoria(e.target.value)}
                                             >
                                                 <option value="Premium">Premium</option>
+                                                <option value="Platinium">Platinium</option>
                                                 <option value="Normal">Normal</option>
                                             </select>
                                         ) : (
