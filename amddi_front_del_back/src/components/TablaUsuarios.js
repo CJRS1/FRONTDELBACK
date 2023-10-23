@@ -986,7 +986,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedInstitucionEducativa}
-                                                onChange={(e) => setEditedInstitucionEducativa(e.target.value.replace(/[^a-zA-Z]/g, ''))}
+                                                onChange={(e) => setEditedInstitucionEducativa(e.target.value.replace(/[^a-zA-Z\s]/g, ''))}
                                             />
                                         ) : (
                                             filteredUser.institucion_educativa ? filteredUser.institucion_educativa : '-'
@@ -1764,7 +1764,7 @@ export default function TablaUsuarios() {
                                                 className="input_table_usuario"
                                                 type="text"
                                                 value={editedInstitucionEducativa}
-                                                onChange={(e) => setEditedInstitucionEducativa(e.target.value.replace(/[^a-zA-Z]/g, ''))}
+                                                onChange={(e) => setEditedInstitucionEducativa(e.target.value.replace(/[^a-zA-Z\s]/g, ''))}
                                             />
                                         ) : (
                                             usuario.institucion_educativa ? usuario.institucion_educativa : '-'
