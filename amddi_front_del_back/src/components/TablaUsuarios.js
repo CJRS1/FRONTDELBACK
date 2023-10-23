@@ -811,9 +811,6 @@ export default function TablaUsuarios() {
         return '-';
     }
 
-
-
-
     return (
         <div className="tabla_usuarios">
             <div className="franja_verd">
@@ -848,6 +845,7 @@ export default function TablaUsuarios() {
                             <th>DNI</th>
                             <th>Celular</th>
                             <th>PDF_URL</th>
+                            <th>Link del drive</th>
                             <th>Precio de Contrato</th>
                             <th>Pago 1era cuota</th>
                             <th>Pago 2da cuota</th>
@@ -1080,6 +1078,18 @@ export default function TablaUsuarios() {
                                         )}
 
 
+                                    </td>
+                                    <td>
+                                        {editingUserId === filteredUser.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedDNI}
+                                                onChange={(e) => setEditedDNI(e.target.value.replace(/[^0-9]/g, ''))}
+                                            />
+                                        ) : (
+                                            filteredUser.link_reunion
+                                        )}
                                     </td>
                                     <td>
                                         {editingUserId === filteredUser.id ? (
@@ -1797,6 +1807,18 @@ export default function TablaUsuarios() {
                                                     <br />
                                                 </li>
                                             ))
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editingUserId === usuario.id ? (
+                                            <input
+                                                className="input_table_usuario"
+                                                type="text"
+                                                value={editedDNI}
+                                                onChange={(e) => setEditedDNI(e.target.value.replace(/[^0-9]/g, ''))}
+                                            />
+                                        ) : (
+                                            usuario.link_reunion
                                         )}
                                     </td>
                                     <td>

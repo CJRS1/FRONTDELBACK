@@ -405,7 +405,9 @@ export default function AsesoradoSecundario() {
                     <p>Loading...</p>
                 ) : (
                     userData.asignacion.map((item, index) => (
-                        item.usuario.estado !== "FINALIZADO" && item.usuario.categoria === "Premium" && (
+                        item.usuario.estado !== "FINALIZADO"
+                        // && item.usuario.categoria === "Premium"
+                        && (
                             <div className="asesorado_card" key={index} >
                                 <div className="info_asesorado_container" style={{ borderColor: item.usuario.fecha_estimada ? getColor(item.usuario.fecha_estimada) : 'black' }}>
                                     <div className="info_asesorado_card">
@@ -526,19 +528,14 @@ export default function AsesoradoSecundario() {
                                             </button>
                                         </div>
                                     </div>
-                                    {/* <div className="info_asesorado_card info_asesorado_card_column">
-                                        <div className="form_asesorado2">
-                                            <h4>Fechas de los pagos:</h4>
+                                    <div className="info_asesorado_card">
+                                        <div className="form_asesorado1">
+                                            <h4>Link del drive:</h4>
                                         </div>
-                                        <div className="form_asesorado2">
-                                            {item.usuario.monto_pagado.map((fecha, index) => (
-                                                <span key={index}>
-                                                    {fecha.fecha_pago}
-                                                    {index < item.usuario.monto_pagado.length - 1 && ','}
-                                                </span>
-                                            ))}
+                                        <div className="form_asesorado">
+                                            <h4>{item.usuario.link_reunion}</h4>
                                         </div>
-                                    </div> */}
+                                    </div>
                                     <div className="info_asesorado_card info_asesorado_card_column">
                                         <div className="form_asesorado2">
                                             <h4>Los documentos que fueron adjuntados:</h4>

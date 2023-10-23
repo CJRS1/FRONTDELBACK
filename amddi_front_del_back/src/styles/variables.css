@@ -74,6 +74,7 @@ li {
   font-weight: 500;
   font-size: 17px !important;
   margin-bottom: 0 !important;
+  text-align: center;
 }
 .navlat_list li:last-child {
   margin-bottom: 0;
@@ -126,6 +127,7 @@ li {
 
 .name_text {
   display: none !important;
+  text-align: center !important;
 }
 
 .name_text.block {
@@ -332,6 +334,7 @@ input {
   color: #00d799;
   font-weight: 800;
   font-size: 35px;
+  text-align: center;
 }
 .datos_backend_card h4 {
   font-weight: 500;
