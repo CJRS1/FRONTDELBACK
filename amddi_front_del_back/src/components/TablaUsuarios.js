@@ -838,7 +838,7 @@ export default function TablaUsuarios() {
                             <th>Nº</th>
                             <th>Mes</th>
                             <th>Id Usuario</th>
-                            <th>Categoria</th>
+                            <th>Categoría</th>
                             <th>Nombre</th>
                             <th>Apellidos</th>
                             <th>País</th>
@@ -1669,9 +1669,9 @@ export default function TablaUsuarios() {
                                                 value={editedCategoria}
                                                 onChange={(e) => setEditedCategoria(e.target.value)}
                                             >
-                                                <option value="Premium">Premium</option>
-                                                <option value="Platinium">Platinium</option>
-                                                <option value="Normal">Normal</option>
+                                                <option value="Oro">Servicio Oro</option>
+                                                <option value="Plata">Servicio Plata</option>
+                                                <option value="Bronce">Servicio Bronce</option>
                                             </select>
                                         ) : (
                                             usuario.categoria
