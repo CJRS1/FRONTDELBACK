@@ -615,35 +615,72 @@ export default function TablaUsuarios() {
     }, []);
 
 
+    // const handleSearch = () => {
+    //     const searchTerms1 = searchTerm.trim().replace(/\s+/g, ' ');
+    //     let cleanedSearchTerm = searchTerm.replace(/\s/g, "");
+
+    //     console.log(searchTerms1);
+    //     const foundUser = usuariosConServicios.map(usuario => {
+    //         const urgencia = usuario.fecha_estimada ? getColor(usuario.fecha_estimada) : null;
+    //         const mes = usuario.monto_pagado[0]?.fecha_pago ? obtenerNombreMes(usuario.monto_pagado[0].fecha_pago) : null;
+    //         if (cleanedSearchTerm === '1') {
+    //             cleanedSearchTerm = 'red'
+    //         }
+/*             if (cleanedSearchTerm === '2') {
+                cleanedSearchTerm = '#ffd700'
+            }
+            if (cleanedSearchTerm === '3') {
+                cleanedSearchTerm = '#00d799'
+            } */
+    //         if (cleanedSearchTerm === 'FINALIZADO') {
+    //             cleanedSearchTerm = 'black'
+    //         }
+    //         const idAmddiMatches = usuario.id_amddi && usuario.id_amddi.startsWith(cleanedSearchTerm);
+
+    //         return {
+    //             ...usuario,
+    //             urgencia,
+    //             mes,
+    //             idAmddiMatches
+    //         };
+
+    //     }).filter(usuario => {
+    //         return (
+    //             usuario.urgencia.includes(cleanedSearchTerm) ||
+    //             usuario.mes.includes(cleanedSearchTerm) ||
+    //             usuario.departamento.includes(cleanedSearchTerm) ||
+    //             (usuario.asesor_ventas && usuario.asesor_ventas.includes(searchTerms1)) ||
+    //             usuario.pais.includes(cleanedSearchTerm) ||
+    //             usuario.dni.includes(cleanedSearchTerm) ||
+    //             usuario.email.includes(cleanedSearchTerm) ||
+    //             (usuario.id_amddi && usuario.id_amddi.toString().includes(cleanedSearchTerm)) || usuario.idAmddiMatches
+    //         );
+    //     });
+    //     console.log(foundUser);
+    //     setFilteredUser(foundUser);
+    // };
+
     const handleSearch = () => {
-        // const cleanedSearchTerm = searchTerm.replace(/\s/g, "");
-        // const foundUser = usuariosConServicios.filter(usuario => (
-        //     usuario.nombre.includes(cleanedSearchTerm) ||
-        //     usuario.dni.includes(cleanedSearchTerm) ||
-        //     usuario.email.includes(cleanedSearchTerm) ||
-        //     (usuario.id_amddi && usuario.id_amddi.toString().includes(cleanedSearchTerm))
-        // ));
-        // setFilteredUser(foundUser);
         const searchTerms1 = searchTerm.trim().replace(/\s+/g, ' ');
-        let cleanedSearchTerm = searchTerm.replace(/\s/g, "");
+        let cleanedSearchTerm = searchTerm.trim();
 
         console.log(searchTerms1);
         const foundUser = usuariosConServicios.map(usuario => {
             const urgencia = usuario.fecha_estimada ? getColor(usuario.fecha_estimada) : null;
             const mes = usuario.monto_pagado[0]?.fecha_pago ? obtenerNombreMes(usuario.monto_pagado[0].fecha_pago) : null;
-            if (cleanedSearchTerm === '1') {
-                cleanedSearchTerm = 'red'
+            let idAmddiMatches = false;
+
+            if (cleanedSearchTerm === 'URGENCIA1') {
+                cleanedSearchTerm = 'red';
             }
-            if (cleanedSearchTerm === '2') {
+            if (cleanedSearchTerm === 'URGENCIA2') {
                 cleanedSearchTerm = '#ffd700'
             }
-            if (cleanedSearchTerm === '3') {
+            if (cleanedSearchTerm === 'URGENCIA3') {
                 cleanedSearchTerm = '#00d799'
             }
-            if (cleanedSearchTerm === 'FINALIZADO') {
-                cleanedSearchTerm = 'black'
-            }
-            const idAmddiMatches = usuario.id_amddi && usuario.id_amddi.startsWith(cleanedSearchTerm);
+
+            idAmddiMatches = cleanedSearchTerm.includes('-') ? usuario.id_amddi?.toString().includes(cleanedSearchTerm) : false;
 
             return {
                 ...usuario,
@@ -651,28 +688,36 @@ export default function TablaUsuarios() {
                 mes,
                 idAmddiMatches
             };
-
         }).filter(usuario => {
+            const searchTermLower = cleanedSearchTerm.toLowerCase();
             return (
-                usuario.urgencia.includes(cleanedSearchTerm) ||
-                usuario.mes.includes(cleanedSearchTerm) ||
-                usuario.departamento.includes(cleanedSearchTerm) ||
+                (usuario.urgencia && usuario.urgencia === cleanedSearchTerm) || // Filtrar por coincidencia exacta de urgencia
+                (usuario.mes && usuario.mes.includes(cleanedSearchTerm)) ||
+                (usuario.departamento && usuario.departamento.includes(cleanedSearchTerm)) ||
                 (usuario.asesor_ventas && usuario.asesor_ventas.includes(searchTerms1)) ||
-                usuario.pais.includes(cleanedSearchTerm) ||
-                // usuario.nombre.includes(cleanedSearchTerm) ||
-                usuario.dni.includes(cleanedSearchTerm) ||
-                usuario.email.includes(cleanedSearchTerm) ||
-                (usuario.id_amddi && usuario.id_amddi.toString().includes(cleanedSearchTerm)) || usuario.idAmddiMatches
+                (usuario.pais && usuario.pais.includes(cleanedSearchTerm)) ||
+                (usuario.nombre && usuario.nombre.includes(cleanedSearchTerm)) ||
+                (usuario.dni && usuario.dni.includes(cleanedSearchTerm)) ||
+                ((searchTermLower.includes('@') ? usuario.email === searchTermLower : false)) || // Búsqueda estricta por correo electrónico
+                (usuario.estado && usuario.estado === cleanedSearchTerm) || // Filtrar por estado
+                usuario.idAmddiMatches
             );
         });
+
+        console.log(foundUser);
+        console.log(foundUser);
+        console.log(foundUser);
         console.log(foundUser);
         setFilteredUser(foundUser);
     };
 
 
+
+
     const clearSearch = () => {
         setSearchTerm("");
         setFilteredUser(null);
+        window.location.reload();
     };
 
 
